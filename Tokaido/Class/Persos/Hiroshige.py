@@ -1,0 +1,2 @@
+class Hiroshige(Persos):
+    pass
