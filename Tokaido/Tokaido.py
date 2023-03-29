@@ -6,7 +6,7 @@ On pourra egalement comparer ces dernieres avec celles des autres utilisatteurs 
 
 #Importation de tous les modules et classes nécessaires au bon fonctionnement du programme
 import Class.Authenticator
-import pygame
+import Class.Menu
 
 #Creation du plateau
 case = []
@@ -16,3 +16,4 @@ for i in range (54):
 #En premier lieu, l'utilisateur doit s'identifier
 Class.Authenticator.auth()
 
+Class.Menu.Menu_()
