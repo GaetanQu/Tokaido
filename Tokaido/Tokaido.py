@@ -1,5 +1,7 @@
 """
-Voici le code principal du programme. C'est ici que seront exécutées les fonctions créées dans les différents fichiers.
+Voici le code initial du programme.
+On y lancera d'abord l'authentificateur, puis un menu permettant de jouer et d'afficher ses statistiques.
+On pourra egalement comparer ces dernieres avec celles des autres utilisatteurs enregistres.
 """
 
 #Importation de tous les modules et classes nécessaires au bon fonctionnement du programme
