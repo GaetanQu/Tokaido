@@ -2,7 +2,7 @@
 import PySimpleGUI as sg
 import csv
 
-csv_directory = "Class/users.csv"
+csv_directory = "Tokaido/Class/users.csv"
 
 #Importation des donnees du fichier csv
 with open(csv_directory, mode = "r") as file :

@@ -6,7 +6,7 @@ On pourra egalement comparer ces dernieres avec celles des autres utilisatteurs 
 
 #Importation de tous les modules et classes nécessaires au bon fonctionnement du programme
 import Class.Authenticator
-import Class.Menu
+import Class.menu
 
 #Creation du plateau
 case = []
@@ -14,6 +14,5 @@ for i in range (54):
     case.append(i)
 
 #En premier lieu, l'utilisateur doit s'identifier
-Class.Authenticator.auth()
-
-Class.Menu.Menu_()
+if Class.Authenticator.auth() :
+    Class.menu.Menu_()
