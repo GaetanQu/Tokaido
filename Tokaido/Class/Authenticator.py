@@ -21,7 +21,7 @@ login_lcol = sg.Column([[sg.Text("Nom d'utilisateur")],
                         [sg.Text("Mot de passe")]])
 login_rcol = sg.Column([[sg.InputText(key="-ID-")],
                         [sg.InputText(key="-MDP-", password_char="*")]])
-login_buttons = [[sg.Button("Connexion"), sg.Button("Creer un compte"), sg.Text("", key="-WRONG-")]]
+login_buttons = [[sg.Button("Connexion", bind_return_key = True), sg.Button("Creer un compte"), sg.Text("", key="-WRONG-")]]
 
 #Creation de la fenetre de connexion
 login_window = sg.Window("Connectez-vous", [[login_title],[login_lcol, login_rcol], login_buttons ], finalize=True)
@@ -47,11 +47,13 @@ register_window.hide()
 def auth() :
     while True :
         window, event, values = sg.read_all_windows()
-        if event == sg.WINDOW_CLOSED :
-            break
+
+        #L'utilisateur ne se connecte pas
+        if event == sg.WINDOW_CLOSED:
+            return False
 
         #Connexion
-        if window == login_window and event == "Connexion" :
+        if window == login_window and event == "Connexion" or window == login_window and event == sg.Input("Return"):
             if values["-ID-"].lower() in user and values["-MDP-"] == user[values["-ID-"].lower()][1] :
                 break
             else :
@@ -90,4 +92,4 @@ def auth() :
     #Fermeture des fenetres
     login_window.close()
     register_window.close()
-    return 0
+    return True
