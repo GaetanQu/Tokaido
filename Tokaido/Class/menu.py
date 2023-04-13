@@ -1,6 +1,6 @@
 import pygame
 pygame.init()
-WHITE = (255,255,255)
+BG_COLOR = (251,253,248)
 
 class Menu():
     def __init__ (self) :
@@ -24,7 +24,7 @@ class Menu():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     break
-            screen.fill(WHITE)
+            screen.fill(BG_COLOR)
             screen.blit(bg, ((screen_width - bg_width)/2 ,(screen_height - bg_height)/2))
             pygame.display.flip()
         pass
