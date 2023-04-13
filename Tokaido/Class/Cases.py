@@ -21,35 +21,39 @@ class Cartes :
 
         self.ferme_cases=[7,17,26,31,37,47]
     
-    def test_case(self, joueur):
-        if joueur.case in pano_cases[1]:
+    def test_case(self, joueur):             
+        if joueur.case in self.pano_cases[1]:
             return self.pano_cartes[1]
-        elif joueur.case in pano_cases[2]:
+        elif joueur.case in self.pano_cases[2]:
             return self.pano_cartes[2]
-        elif joueur.case in pano_cases[3]:
+        elif joueur.case in self.pano_cases[3]:
             return self.pano_cartes[3]
-        elif joueur.case in echoppe_cases:
-            return echoppe_cartes[1].keys()+echoppe_cartes[2].keys()+echoppe_cartes[3].keys()+echoppe_cartes[4].keys()
-        elif joueur.case in source_cases:
-            return source_cartes.keys()
-        elif joueur.case in rencontre_cases:
-            return rencontre_cartes.keys()
-        elif joueur.case in relais_cases:    
-            return relais_cartes.keys()
+        elif joueur.case in self.echoppe_cases:
+            return self.echoppe_cartes[1].keys()+self.echoppe_cartes[2].keys()+self.echoppe_cartes[3].keys()+self.echoppe_cartes[4].keys()
+        elif joueur.case in self.source_cases:
+            return self.source_cartes.keys()
+        elif joueur.case in self.rencontre_cases:
+            return self.rencontre_cartes.keys()
+        elif joueur.case in self.relais_cases:    
+            return self.relais_cartes.keys()
 
-    def tirage(self, nb_cartes_a_tirer, emplacement_cartes, joueur):  #pour ne pas avoir 2x la meme case        
-        liste_cartes=emplacement_cartes.keys()
-        if joueur.case in self.echoppe_cases :    #on ne doit pas proposer a un joueur une carte quil a deja dans lechoppe
             
+            
+    def tirage(self, nb_cartes_a_tirer, joueur): 
+
+        cartes_concernees=self.test_case(joueur)      #afin de ne pas editer la liste initiale 
+        liste_cartes=cartes_concernees   
+
+        if joueur.case in self.echoppe_cases :    #CAS PARTICULIER : dans lechoppe, on ne doit pas proposer a un joueur une carte quil a deja        
             i=0
-            for carte in liste_cartes:
-                if carte==joueur.cartes_echoppe:
-                    liste_cartes.del(i)
+            for carte in liste_cartes:    
+                if carte in joueur.cartes_echoppe:
+                    del(liste_cartes[i])
                 i+=1
 
-        cartes_a_proposer=[]
+        cartes_a_proposer=[]                        #liste des cartes qui seront proposees au joueur
         for i in range (nb_cartes_a_tirer):
-            carte=random.randint(1,len(liste_cartes))
-            cartes_a_proposer.append(carte)
+            carte=Random.randint(1,len(liste_cartes))
+            cartes_a_proposer.append(cartes_concernees[carte])
+
             
-if joueur.case in self.echoppe_cases :

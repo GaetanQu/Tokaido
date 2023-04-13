@@ -1,10 +1,6 @@
-from codecs import backslashreplace_errors
 import pygame
 pygame.init()
 WHITE = (255,255,255)
-
-bg_width = 1920
-bg_height = 1080
 
 class Menu():
     def __init__ (self) :
@@ -12,6 +8,8 @@ class Menu():
 
     def launch(self):
         bg = pygame.image.load('Tokaido/class/images/menu/bg.jpg')
+
+        bg_width, bg_height = bg.get_size()
 
         screen = pygame.display.set_mode((0,0))
 
@@ -32,4 +30,4 @@ class Menu():
         pass
 
 menu = Menu()
-menu.launch()
+menu.launch()   
