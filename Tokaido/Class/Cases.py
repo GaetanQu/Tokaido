@@ -3,13 +3,13 @@ import Random
 class Cartes :
     def __init__(self):
         self.pano_cases=[[11,15,24,34,39,46,52],[6,12,19,23,32,50],[4,18,28,35,51]]    #mer, montagne, riziere
-        self.pano_cartes=[[],[],[]]
+        self.pano_cartes=[{},{},{}]         #oblige de faire une liste de bibliotheques pour uniformiser, sinon une des methodes fonctionnera pas
 
         self.echoppe_cases=[1,8,25,29,40,45,53]
-        self.echoppe_cartes[{},{},{},{}]
+        self.echoppe_cartes=[{},{},{},{}]
 
         self.source_cases=[5,13,22,33,42,48]
-        self.source_cartes={emplacement[points_rapportes]}
+        self.source_cartes={emplacement[[points_rapportes, prix_carte]]}
 
         self.rencontre_cases=[3,10,20,30,38,44,49]
         self.rencontre_cartes={}
@@ -20,14 +20,16 @@ class Cartes :
         self.temple_cases=[2,9,16,21,36,43]
 
         self.ferme_cases=[7,17,26,31,37,47]
+
+        
     
     def test_case(self, joueur):             
         if joueur.case in self.pano_cases[1]:
-            return self.pano_cartes[1]
+            return self.pano_cartes[1].keys()
         elif joueur.case in self.pano_cases[2]:
-            return self.pano_cartes[2]
+            return self.pano_cartes[2].keys()
         elif joueur.case in self.pano_cases[3]:
-            return self.pano_cartes[3]
+            return self.pano_cartes[3].keys()
         elif joueur.case in self.echoppe_cases:
             return self.echoppe_cartes[1].keys()+self.echoppe_cartes[2].keys()+self.echoppe_cartes[3].keys()+self.echoppe_cartes[4].keys()
         elif joueur.case in self.source_cases:
@@ -41,19 +43,26 @@ class Cartes :
             
     def tirage(self, nb_cartes_a_tirer, joueur): 
 
-        cartes_concernees=self.test_case(joueur)      #afin de ne pas editer la liste initiale 
-        liste_cartes=cartes_concernees   
+        liste_cartes_possibles=self.test_case(joueur)      #afin de ne pas editer la liste initiale 
+        cartes_a_proposer=[]                        #liste des cartes qui seront proposees au joueur
 
         if joueur.case in self.echoppe_cases :    #CAS PARTICULIER : dans lechoppe, on ne doit pas proposer a un joueur une carte quil a deja        
             i=0
-            for carte in liste_cartes:    
+            for carte in liste_cartes_possibles:    
                 if carte in joueur.cartes_echoppe:
-                    del(liste_cartes[i])
+                    del(liste_cartes_possibles[i])
                 i+=1
 
-        cartes_a_proposer=[]                        #liste des cartes qui seront proposees au joueur
+            
+        if joueur.case in self.pano_cases[1]:
+            for i in range (liste_cartes_possibles):
+                if liste_cartes_possibles[i] not in joueur.cartes_pano[1]:
+                    joueur.cartes_pano[1].append()
+
+
+                             
         for i in range (nb_cartes_a_tirer):
-            carte=Random.randint(1,len(liste_cartes))
-            cartes_a_proposer.append(cartes_concernees[carte])
+            carte=Random.randint(1,len(liste_cartes_possibles))
+            cartes_a_proposer.append(liste_cartes_possibles[carte])
 
             
