@@ -43,13 +43,26 @@ class Cartes :
         elif joueur.case in self.relais_cases:    
             return self.relais_cartes.keys()
 
-            
-            
-    def tirage(self, nb_cartes_a_tirer, joueur): 
+
+
+    def carte_random(self, nb_cartes_a_tirer, nb_cartes_a_choisir, liste_cartes_possibles, liste_cartes_du_joueur):
+        cartes_a_proposer=[]                                                            #liste des cartes qui seront proposees au joueur                       
+        for i in range (nb_cartes_a_tirer):                                             #constitution de la liste des cartes à proposer
+            indice_carte=Random.randint(1,len(liste_cartes_possibles))
+            cartes_a_proposer.append(liste_cartes_possibles[indice_carte])              #il faudra ajouter la partie pygame en prenant en compte le nombre de cartes a tirer
+        for i in range (nb_cartes_a_choisir):
+            if 'le joueur clique sur la carte'==True:
+                liste_cartes_du_joueur.append('carte a ajt')  
+            elif 'le joueur clique sur valider'==True:   #car dans lechoppe le joueur peut choisir plusieurs cartes
+                return liste_cartes_du_joueur
+        return liste_cartes_du_joueur
+
+
+
+
+    def tirage(self, joueur): 
 
         liste_cartes_possibles=self.test_case(joueur)                                   #afin de ne pas editer la liste initiale 
-
-
             
         if joueur.case in self.pano_cases[0]:                                           #SI CASE = PANO MER
             indice=0
@@ -69,7 +82,7 @@ class Cartes :
                 joueur.points+=self.pano_cartes[1][liste_cartes_possibles[indice]][0]   #[0] car les points sont stockés en 1er rang dans le dico.
 
 
-        elif joueur.case in self.pano_cases[3]:
+        elif joueur.case in self.pano_cases[2]:
             indice=0
             while liste_cartes_possibles[indice] in joueur.cartes_pano[2] :
                 indice+=1
@@ -85,7 +98,10 @@ class Cartes :
                 if carte in joueur.cartes_echoppe:
                     del(liste_cartes_possibles[i])
                 i+=1                     
-        
+            joueur.cartes_echoppe=self.carte_random (3,liste_cartes_possibles, joueur.cartes_echoppe)
+            return 
+
+
         elif joueur.case in self.rencontre_cases:
             i=0
             for carte in liste_cartes_possibles:    
@@ -93,9 +109,3 @@ class Cartes :
                     del(liste_cartes_possibles[i])
                 i+=1   
                 
-        cartes_a_proposer=[]                                                            #liste des cartes qui seront proposees au joueur               
-        for i in range (nb_cartes_a_tirer):                                 #constitution de la liste des cartes à proposer
-            indice_carte=Random.randint(1,len(liste_cartes_possibles))
-            cartes_a_proposer.append(liste_cartes_possibles[indice_carte])      #
-                
-            
