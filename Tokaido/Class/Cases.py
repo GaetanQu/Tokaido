@@ -96,6 +96,6 @@ class Cartes :
         cartes_a_proposer=[]                                                            #liste des cartes qui seront proposees au joueur               
         for i in range (nb_cartes_a_tirer):                                 #constitution de la liste des cartes à proposer
             indice_carte=Random.randint(1,len(liste_cartes_possibles))
-            cartes_a_proposer.append(liste_cartes_possibles[indice_carte])
-        
+            cartes_a_proposer.append(liste_cartes_possibles[indice_carte])      #
+                
             
