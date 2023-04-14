@@ -40,6 +40,7 @@ class Menu():
         TITLEPOS = (CENTERW - title_width/2, screen_height - 2*title_height)
 
 
+
         pygame.display.set_caption("Menu Tokaido")
         while True :
             for event in pygame.event.get():
