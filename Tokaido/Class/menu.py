@@ -11,6 +11,12 @@ BUTTON_HEIGHT = 60
 BUTTON_TEXT_COLOR = BLACK
 BUTTON_BACKGROUND_COLOR = WHITE
 
+bg = pygame.image.load('Tokaido/class/images/menu/bg.jpg')
+bg_width, bg_height = bg.get_size()
+
+title = pygame.image.load('Tokaido/class/images/menu/title.png')
+title_width, title_height = title.get_size()
+
 #play_button = pygame.Rect(100, 100, BUTTON_WIDTH, BUTTON_HEIGHT)
 
 class Menu():
@@ -18,18 +24,15 @@ class Menu():
         pass
 
     def launch(self):
-        screen = pygame.display.set_mode((1500, 720))
+        screen = pygame.display.set_mode((0,0))
         screen_width = screen.get_width()
         screen_height = screen.get_height()
 
-        CENTER = (screen_width/2 ,screen_height/2)
         CENTERW = screen_width/2
         CENTERH = screen_height/2
 
-        bg = pygame.image.load('Tokaido/class/images/menu/bg.jpg')
-        bg_width, bg_height = bg.get_size()
-        BGCENTER = (CENTERW - bg_width/2 ,CENTERH - bg_height/2)
-
+        BGCENTER = (CENTERW - bg_width/2 ,CENTERH - bg_height/1.5)
+        TITLEPOS = (CENTERW - title_width/2, screen_height - 2*title_height)
 
         pygame.display.set_caption("Menu Tokaido")
         while True :
@@ -39,9 +42,10 @@ class Menu():
                     break
             screen.fill(BG_COLOR)
             screen.blit(bg, BGCENTER)
+            screen.blit(title, TITLEPOS)
             #screen.blit(play_button, (CENTERW, (screen_height + CENTERH)/2))
             pygame.display.flip()
         pass
 
-menu = Menu()
-menu.launch()
+#menu = Menu()
+#menu.launch()
