@@ -40,9 +40,12 @@ def account_menu(screen, CENTERW, CENTERH):
     #Premiere animation durant laquelle on s'occupe du titre et de l'image
     for i in range (animation_duration) :
         clock.tick(60)
+
+
         rescale_animation_speed = 10*exp(-(4/animation_duration*i-0.5)**2)
         bg_animation_speed = 7*exp(-(4/animation_duration*i-2)**2)
         title_animation_speed = 50*exp(-(4/animation_duration*i))
+
 
         #On change les dimensions de l'image
         scaled_size = (scaled_size[0]- int(ratio * rescale_animation_speed), scaled_size[1]-int(rescale_animation_speed))
@@ -71,11 +74,51 @@ def account_menu(screen, CENTERW, CENTERH):
 
 
     while True :
-        clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 break
+
+            if event.type == pygame.MOUSEBUTTONUP and account_and_back_rect.collidepoint((pygame.mouse.get_pos())):
+                #On refait l'animation à l'envers
+                for i in range (animation_duration) :
+                    clock.tick(60)
+
+                    
+                    #Il a fallu modifier les équations pour avoir une symétrie de la vitesse par rapport à la 30ième frame
+                    rescale_animation_speed = -10*exp(-((4/animation_duration)*(i - 45)- 0.433)**(2))
+                    bg_animation_speed = -(7*exp(-(4/animation_duration*(i-2)-0.2)**2))
+                    title_animation_speed = -(50*exp(-(4/animation_duration*(-i+60+0.2))))
+
+                    #On change les dimensions de l'image
+                    scaled_size = (scaled_size[0]- int(ratio * rescale_animation_speed), scaled_size[1]-int(rescale_animation_speed))
+
+                    #On cree une nouvelle matrice a l'aide de la librairie cv2
+                    #Celle-ci utilisera la matrice faite a l'aide de l'image initiale,
+                    #les dimensions de la nouvelle matrice,
+                    #ainsi que le procede d'interpolation d'image utilise (une interpolation bicubique faisant la moyenne de groupes de 4x4 pixels)
+                    scaled_array = cv2.resize(array, scaled_size[::-1], interpolation = cv2.INTER_CUBIC)
+
+                    #On retransforme la matrice en une surface affichable pas pygame
+                    scaled_image = pygame.surfarray.make_surface(scaled_array)
+                    scaled_bg_width, scaled_bg_height = scaled_image.get_size()       
+
+                    bg_diff_pos = (0,int(bg_diff_pos[1] + bg_animation_speed))
+                    title_diff_pos = (0,int(title_diff_pos[1] - title_animation_speed))
+
+                    screen.fill(BG_COLOR)
+                    screen.blit(scaled_image, (CENTERW - scaled_bg_width / 2, (CENTERH - scaled_bg_height / 1.5)-(bg_diff_pos[1])))
+                    screen.blit(title, (CENTERW - title_width/2, (screen.get_height() - 2*title_height)-title_diff_pos[1]))
+                    pygame.display.flip()
+                return True
+
+
+            if account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
+                screen.blit(hovered_back, (30,30))
+            else :
+                screen.blit(back, (30,30))
+
+        pygame.display.flip()
 
     return True
 
@@ -106,12 +149,13 @@ class Menu():
                     break
 
                 if event.type == pygame.MOUSEBUTTONUP and account_and_back_rect.collidepoint((pygame.mouse.get_pos())):
-                    while not account_menu(screen, CENTERW, CENTERH):
+                    if account_menu(screen, CENTERW, CENTERH) :
                         pass
 
-            screen.fill(BG_COLOR)
-            screen.blit(bg, BGCENTER)
-            screen.blit(title, TITLEPOS)
+                else :
+                    screen.fill(BG_COLOR)
+                    screen.blit(bg, BGCENTER)
+                    screen.blit(title, TITLEPOS)
 
             if account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
                 screen.blit(hovered_account, (30,30))
