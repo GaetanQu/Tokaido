@@ -50,11 +50,12 @@ def auth() :
 
         #L'utilisateur ne se connecte pas
         if event == sg.WINDOW_CLOSED:
-            return False
+            return "Closed"
 
         #Connexion
         if window == login_window and event == "Connexion" or window == login_window and event == sg.Input("Return"):
             if values["-ID-"].lower() in user and values["-MDP-"] == user[values["-ID-"].lower()][1] :
+                player = [user[values["-ID-"]][0][0].upper()+user[values["-ID-"]][0][1::].lower(), user[values["-ID-"]][2], user[values["-ID-"]][3]]
                 break
             else :
                 window["-WRONG-"].update("Identifiant ou mot de passe incorrect")
@@ -75,6 +76,7 @@ def auth() :
                 with open(csv_directory, mode = "a", newline = "") as file :
                     filewriter = csv.writer(file, delimiter = ";")
                     #L'utilisateur aura pour donnees de victoire et de defaites 0, car il vient de s'inscrire
+                    player = [values["-NEWID-"][0].upper()+values["-NEWID-"][1::].lower(), 0, 0]
                     filewriter.writerow([str(values["-NEWID-"].lower()), str(values["-NEWMDP-"]), 0, 0])
                     file.close()
                 break
@@ -92,4 +94,4 @@ def auth() :
     #Fermeture des fenetres
     login_window.close()
     register_window.close()
-    return True
+    return player

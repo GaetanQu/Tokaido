@@ -12,8 +12,11 @@ import Class.Menu
 case = []
 for i in range (54):
     case.append(i)
-
+    0
 #En premier lieu, l'utilisateur doit s'identifier
-if Class.Authenticator.auth():
-    menu = Class.Menu.Menu()
+
+player = Class.Authenticator.auth()
+
+if player != "Closed":
+    menu = Class.Menu.Menu(player)
     menu.launch()
