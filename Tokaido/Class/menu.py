@@ -20,8 +20,8 @@ hovered_back = pygame.image.load('Tokaido/class/images/menu/hovered_back.png')
 account_and_back_rect = account.get_rect()
 account_and_back_rect.center = 30+75/2, 30+75/2
 
-player_police = pygame.font.SysFont("Arial" ,40)
-stats_police = pygame.font.SysFont("Arial", 60)
+player_font = pygame.font.Font('Tokaido/Fonts/Japon.ttf' ,40)
+stats_font = pygame.font.Font('Tokaido/Fonts/Japon.ttf', 100)
 
 BG_COLOR = (251,253,248)
 
@@ -44,13 +44,13 @@ class Menu():
         screen_width = screen.get_width()
         screen_height = screen.get_height()
 
-        player_surface = player_police.render(str(self.player[0]), 1, (20,20,20))
+        player_surface = player_font.render(str(self.player[0]), 1, (50,50,50))
         player_width = player_surface.get_width()
 
-        stats_surface_victories = stats_police.render("Victoires : " + str(self.player[1]), 1, (20,20,20))
+        stats_surface_victories = stats_font.render("Victoires : " + str(self.player[1]), 1, (50,50,50))
         stats_surface_victories_width, stats_surface_victories_height = stats_surface_victories.get_size()
 
-        stats_surface_defeats = stats_police.render("Défaites : " + str(self.player[2]), 1, (20, 20, 20))
+        stats_surface_defeats = stats_font.render("Defaites : " + str(self.player[2]), 1, (50,50,50))
         stats_surface_defeats_width, stats_surface_defeats_height = stats_surface_defeats.get_size()
         
         #Je voulais rescale l'image en utilisant les fonctions de pygame mais le resultat n'etait pas convaincant (interpolation inadaptee a une animation).
@@ -91,7 +91,7 @@ class Menu():
             screen.blit(scaled_bg, (CENTERW - scaled_bg_width / 2, (CENTERH - scaled_bg_height / 1.5)-(bg_diff_pos[1])))
 
             screen.blit(title, (CENTERW - title_width/2, (screen.get_height() - 2*title_height)-title_diff_pos[1]))
-            screen.blit(player_surface, (screen_width - player_width - 30, 30))
+            screen.blit(player_surface, (30 + 75 + 10, 30+75/4))
             pygame.display.flip()
 
         
@@ -111,7 +111,7 @@ class Menu():
             screen.blit(scaled_bg, (CENTERW - scaled_bg_width / 2, (CENTERH - scaled_bg_height / 1.5)-(bg_diff_pos[1])))
 
             screen.blit(title, (CENTERW - title_width/2, (screen.get_height() - 2*title_height)-title_diff_pos[1]))
-            screen.blit(player_surface, (screen_width - player_width - 30, 30))
+            screen.blit(player_surface, (30 + 75 + 10, 30+75/4))
 
 
             screen.blit(stats_surface_victories, (3*screen_width/10-stats_surface_victories_width/2, current_stats_pos_y))
@@ -151,7 +151,7 @@ class Menu():
                         screen.blit(scaled_bg, (CENTERW - scaled_bg_width / 2, (CENTERH - scaled_bg_height / 1.5)-(bg_diff_pos[1])))
                         screen.blit(title, (CENTERW - title_width/2, (screen.get_height() - 2*title_height)-title_diff_pos[1]))
                         title_rect.center = CENTERW - title_width/2, (screen.get_height() - 2*title_height)-title_diff_pos[1]
-                        screen.blit(player_surface, (screen_width - player_width - 30, 30))
+                        screen.blit(player_surface, (30 + 75 + 10, 30+75/4))
                         pygame.display.flip()
                     return True
 
@@ -178,7 +178,7 @@ class Menu():
         BGCENTER = (CENTERW - bg_width/2 ,CENTERH - bg_height/1.5)
         TITLEPOS = (CENTERW - title_width/2, screen_height - 2*title_height)
 
-        player_surface = player_police.render(str(self.player[0]), 1, (20,20,20))
+        player_surface = player_font.render(str(self.player[0]), 1, (50,50,50))
         player_width = player_surface.get_width()
 
         while True :
@@ -195,7 +195,7 @@ class Menu():
                 else :
                     screen.fill(BG_COLOR)
                     screen.blit(bg, BGCENTER)
-                    screen.blit(player_surface, (screen_width - player_width - 30, 30))
+                    screen.blit(player_surface, (30+75+10, 30+75/4))
                     screen.blit(title, TITLEPOS)
                     title_rect.center = TITLEPOS[0] + title.get_width()/2, TITLEPOS[1] + title.get_height()/2
 
@@ -205,9 +205,9 @@ class Menu():
                 screen.blit(account, (30,30))
 
             if title_rect.collidepoint(pygame.mouse.get_pos()):
-                screen.blit(hovered_title, TITLEPOS)
-            else :
                 screen.blit(title, TITLEPOS)
+            else :
+                screen.blit(hovered_title, TITLEPOS)
             
             pygame.display.flip()
         pass

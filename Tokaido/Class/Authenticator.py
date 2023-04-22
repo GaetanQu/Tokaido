@@ -35,7 +35,7 @@ register_rcol = sg.Column([[sg.InputText(key="-NEWID-")],
                            [sg.InputText(key="-NEWMDP-", password_char="*")],
                            [sg.InputText(key="-MDPCONFIRM-", password_char="*")]])
 register_wrong = [[sg.Text("", key="-NEWWRONG-")]]
-register_buttons = [[sg.Button("Creer un compte et me connecter"), sg.Button("J'ai deja un compte, me connecter")]]
+register_buttons = [[sg.Button("Creer un compte et me connecter",bind_return_key = True), sg.Button("J'ai deja un compte, me connecter")]]
 
 #Creation de la fenetre d'inscription
 register_window = sg.Window("Insrcivez-vous", [[register_title], [register_lcol, register_rcol],[register_wrong], [register_buttons]], finalize=True)
@@ -53,7 +53,7 @@ def auth() :
             return "Closed"
 
         #Connexion
-        if window == login_window and event == "Connexion" or window == login_window and event == sg.Input("Return"):
+        if window == login_window and event == "Connexion":
             if values["-ID-"].lower() in user and values["-MDP-"] == user[values["-ID-"].lower()][1] :
                 player = [user[values["-ID-"]][0][0].upper()+user[values["-ID-"]][0][1::].lower(), user[values["-ID-"]][2], user[values["-ID-"]][3]]
                 break
@@ -61,7 +61,7 @@ def auth() :
                 window["-WRONG-"].update("Identifiant ou mot de passe incorrect")
 
         #Inscription
-        if window == register_window and event == "Creer un compte et me connecter" :
+        if window == register_window and event == "Creer un compte et me connecter":
 
             #Verification que l'utilisateur n'est pas deja enregistre
             if values["-NEWID-"].lower() in user :
