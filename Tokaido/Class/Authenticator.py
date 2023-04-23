@@ -5,7 +5,7 @@ import csv
 csv_directory = "Tokaido/Class/users.csv"
 
 #Importation des donnees du fichier csv
-with open(csv_directory, mode = "r") as file :
+with open(csv_directory, mode = "r") as file :                                              
     filereader = csv.reader(file, delimiter=';')
     user = {}
     for ligne in filereader :
@@ -45,12 +45,20 @@ register_window.hide()
 
 #Definition de la classe Auth a appeler dans le programme principal
 def auth() :
+    login_window.un_hide()
+    init = True
     while True :
         window, event, values = sg.read_all_windows()
 
+        if init == True :
+            window["-MDP-"].update("")
+            window["-ID-"].update("")
+            init = False
+
         #L'utilisateur ne se connecte pas
         if event == sg.WINDOW_CLOSED:
-            return "Closed"
+            player = ["Closed", None, None]
+            break
 
         #Connexion
         if window == login_window and event == "Connexion":
@@ -92,6 +100,6 @@ def auth() :
             register_window.hide()
 
     #Fermeture des fenetres
-    login_window.close()
-    register_window.close()
+    login_window.hide()
+    register_window.hide()
     return player

@@ -8,15 +8,29 @@ On pourra egalement comparer ces dernieres avec celles des autres utilisatteurs 
 import Class.Authenticator
 import Class.Menu
 
+
 #Creation du plateau
 case = []
 for i in range (54):
     case.append(i)
     0
 #En premier lieu, l'utilisateur doit s'identifier
+player = []
 
-player = Class.Authenticator.auth()
+account = Class.Authenticator.auth()
+player.append(account)
 
-if player != "Closed":
-    menu = Class.Menu.Menu(player)
-    menu.launch()
+menu_event = ""
+
+while menu_event != "quit" :
+
+    if account[0] != "Closed":
+        menu = Class.Menu.Menu(account)
+        menu_event = menu.launch()
+
+    elif account[0] == "Closed":
+        break
+
+    if menu_event == "deconnexion":
+        account = Class.Authenticator.auth()
+

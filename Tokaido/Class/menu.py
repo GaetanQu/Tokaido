@@ -1,41 +1,51 @@
 from math import *
 import cv2
 import pygame
-pygame.font.init()
-
-clock = pygame.time.Clock()
-
-bg = pygame.image.load('Tokaido/class/images/menu/bg.png')
-bg_width, bg_height = bg.get_size()
-
-title = pygame.image.load('Tokaido/class/images/menu/title.png')
-hovered_title = pygame.image.load('Tokaido/class/images/menu/hovered_title.png')
-title_rect = title.get_rect()
-title_width, title_height = title.get_size()
-
-account = pygame.image.load('Tokaido/class/images/menu/account.png')
-hovered_account = pygame.image.load('Tokaido/class/images/menu/hovered_account.png')
-back = pygame.image.load('Tokaido/class/images/menu/back.png')
-hovered_back = pygame.image.load('Tokaido/class/images/menu/hovered_back.png')
-account_and_back_rect = account.get_rect()
-account_and_back_rect.center = 30+75/2, 30+75/2
-
-player_font = pygame.font.Font('Tokaido/Fonts/Japon.ttf' ,40)
-stats_font = pygame.font.Font('Tokaido/Fonts/Japon.ttf', 100)
-
-BG_COLOR = (251,253,248)
 
 
-
-
-pygame.init()
-pygame.display.init()
 class Menu():
     def __init__ (self, player) :
         self.player = player
+        pygame.init()
+        pygame.display.init()
+        pygame.font.init()
+
+        global clock, bg, bg_width, bg_height, BG_COLOR, title, hovered_title, title_rect, title_width, title_height, account, hovered_account, back, hovered_back, account_and_back_rect
+        global player_font, stats_font, disconnect_font, disconnect_surface, hovered_disconnect_surface, disconnect_width, disconnect_height, disconnect_rect
+        global croix, croix_rect, hovered_croix
+        clock = pygame.time.Clock()
+
+        bg = pygame.image.load('Tokaido/class/images/menu/bg.png')
+        bg_width, bg_height = bg.get_size()
+        BG_COLOR = (251,253,248)
+
+        croix = pygame.image.load('Tokaido/class/images/menu/croix.png')
+        hovered_croix = pygame.image.load('Tokaido/class/images/menu/hovered_croix.png')
+        croix_rect = croix.get_rect()
+
+        title = pygame.image.load('Tokaido/class/images/menu/title.png')
+        hovered_title = pygame.image.load('Tokaido/class/images/menu/hovered_title.png')
+        title_rect = title.get_rect()
+        title_width, title_height = title.get_size()
+
+        account = pygame.image.load('Tokaido/class/images/menu/account.png')
+        hovered_account = pygame.image.load('Tokaido/class/images/menu/hovered_account.png')
+        back = pygame.image.load('Tokaido/class/images/menu/back.png')
+        hovered_back = pygame.image.load('Tokaido/class/images/menu/hovered_back.png')
+        account_and_back_rect = account.get_rect()
+        account_and_back_rect.center = 30+75/2, 30+75/2
+
+        player_font = pygame.font.Font('Tokaido/Fonts/Japon.ttf' ,40)
+        stats_font = pygame.font.Font('Tokaido/Fonts/Japon.ttf', 100)
+
+        disconnect_font = pygame.font.Font('Tokaido/Fonts/Japon.ttf', 25)
+        disconnect_surface = disconnect_font.render("Changer de compte", 1, (70,70,70))
+        hovered_disconnect_surface = disconnect_font.render("Changer de compte", 1, (0,0,0))
+        disconnect_width, disconnect_height = disconnect_surface.get_size()
+        disconnect_rect = disconnect_surface.get_rect()
         pass
 
-    def account_menu(self, screen, CENTERW, CENTERH):     #ouvre le menu de compte avec une jolie petite animation qui comporte un resize et plusieurs translations
+    def account_menu(self):     #ouvre le menu de compte avec une jolie petite animation qui comporte un resize et plusieurs translations
     
         #Ce sont les dimensions de l'image de depart (seule bg sera resized, donc j'ai pas fait d'effort sur la nomenclature)
         start_size = (1275,627)
@@ -45,13 +55,17 @@ class Menu():
         screen_height = screen.get_height()
 
         player_surface = player_font.render(str(self.player[0]), 1, (50,50,50))
+        global player_width
         player_width = player_surface.get_width()
 
+        DISCONNECT_POS = screen_width - disconnect_width - 10, screen_height - disconnect_height - 10
+        disconnect_rect.center = screen_width - disconnect_width - 10 + disconnect_width/2, screen_height - disconnect_height - 10 + disconnect_height/2
+
         stats_surface_victories = stats_font.render("Victoires : " + str(self.player[1]), 1, (50,50,50))
-        stats_surface_victories_width, stats_surface_victories_height = stats_surface_victories.get_size()
+        stats_surface_victories_width = stats_surface_victories.get_width()
 
         stats_surface_defeats = stats_font.render("Defaites : " + str(self.player[2]), 1, (50,50,50))
-        stats_surface_defeats_width, stats_surface_defeats_height = stats_surface_defeats.get_size()
+        stats_surface_defeats_width = stats_surface_defeats.get_width()
         
         #Je voulais rescale l'image en utilisant les fonctions de pygame mais le resultat n'etait pas convaincant (interpolation inadaptee a une animation).
         #J'ai donc trouve ca sur Stack Overflow, sans explications evidemment mais je pense avoir compris :
@@ -92,6 +106,8 @@ class Menu():
 
             screen.blit(title, (CENTERW - title_width/2, (screen.get_height() - 2*title_height)-title_diff_pos[1]))
             screen.blit(player_surface, (30 + 75 + 10, 30+75/4))
+            screen.blit(back, (45,45))
+            screen.blit(croix, CROIX_POS)
             pygame.display.flip()
 
         
@@ -117,6 +133,8 @@ class Menu():
             screen.blit(stats_surface_victories, (3*screen_width/10-stats_surface_victories_width/2, current_stats_pos_y))
             screen.blit(stats_surface_defeats, (7*screen_width/10 - stats_surface_defeats_width/2, current_stats_pos_y))
 
+            screen.blit(back, (45,45))
+            screen.blit(croix, CROIX_POS)
             pygame.display.flip()
             
             
@@ -152,26 +170,43 @@ class Menu():
                         screen.blit(title, (CENTERW - title_width/2, (screen.get_height() - 2*title_height)-title_diff_pos[1]))
                         title_rect.center = CENTERW - title_width/2, (screen.get_height() - 2*title_height)-title_diff_pos[1]
                         screen.blit(player_surface, (30 + 75 + 10, 30+75/4))
+                        screen.blit(account, (30,30))
+                        screen.blit(croix, CROIX_POS)
                         pygame.display.flip()
                     return True
 
+                if disconnect_rect.collidepoint(pygame.mouse.get_pos()):
+                    screen.blit(hovered_disconnect_surface, DISCONNECT_POS)
+                else :
+                    screen.blit(disconnect_surface, DISCONNECT_POS)
+
+                if event.type == pygame.MOUSEBUTTONUP and disconnect_rect.collidepoint(pygame.mouse.get_pos()) :
+                    return "deconnexion"
+
+                if event.type == pygame.MOUSEBUTTONUP and croix_rect.collidepoint(pygame.mouse.get_pos()):
+                    return "quit"
+
+                if croix_rect.collidepoint(pygame.mouse.get_pos()):
+                    screen.blit(hovered_croix, CROIX_POS)
+                else :
+                    screen.blit(croix, CROIX_POS)
 
                 if account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
-                    screen.blit(hovered_back, (30,30))
+                    screen.blit(hovered_back, (45,45))
                 else :
-                    screen.blit(back, (30,30))
+                    screen.blit(back, (45,45))
 
             pygame.display.flip()
-
-        return True
 
 
     def launch(self):
         pygame.display.set_caption("Menu Tokaido")  
+        global screen
         screen = pygame.display.set_mode((0,0), pygame.HWSURFACE|pygame.DOUBLEBUF)
         screen_width = screen.get_width()
         screen_height = screen.get_height()
 
+        global CENTERW, CENTERH
         CENTERW = screen_width/2
         CENTERH = screen_height/2
 
@@ -189,8 +224,20 @@ class Menu():
                     break
 
                 if event.type == pygame.MOUSEBUTTONUP and account_and_back_rect.collidepoint((pygame.mouse.get_pos())):
-                    if self.account_menu(screen, CENTERW, CENTERH) :
-                        pass
+                    action = self.account_menu()
+                    if action == "deconnexion" :
+                        pygame.quit()
+                        return"deconnexion"
+
+                    elif action == "quit":
+                        pygame.quit()
+                        return "quit"
+
+                if event.type == pygame.MOUSEBUTTONUP and croix_rect.collidepoint(pygame.mouse.get_pos()):
+                    pygame.quit()
+                    return "quit"
+
+                
 
                 else :
                     screen.fill(BG_COLOR)
@@ -199,15 +246,23 @@ class Menu():
                     screen.blit(title, TITLEPOS)
                     title_rect.center = TITLEPOS[0] + title.get_width()/2, TITLEPOS[1] + title.get_height()/2
 
-            if account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
-                screen.blit(hovered_account, (30,30))
-            else :
-                screen.blit(account, (30,30))
+                    if account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
+                        screen.blit(hovered_account, (30,30))
+                    else :
+                        screen.blit(account, (30,30))
 
-            if title_rect.collidepoint(pygame.mouse.get_pos()):
-                screen.blit(title, TITLEPOS)
-            else :
-                screen.blit(hovered_title, TITLEPOS)
-            
+                    if title_rect.collidepoint(pygame.mouse.get_pos()):
+                        screen.blit(title, TITLEPOS)
+                    else :
+                        screen.blit(hovered_title, TITLEPOS)
+
+                    global CROIX_POS
+                    CROIX_POS = (screen_width - 50 - 10, 10)
+                    croix_rect.center = CROIX_POS[0] + 25, CROIX_POS[1]+25
+
+                    if croix_rect.collidepoint(pygame.mouse.get_pos()):
+                        screen.blit(hovered_croix, CROIX_POS)
+                    else :
+                        screen.blit(croix, CROIX_POS)
+
             pygame.display.flip()
-        pass
