@@ -23,7 +23,7 @@ login_rcol = sg.Column([[sg.InputText(key="-ID-")],
 login_buttons = [[sg.Button("Connexion", bind_return_key = True), sg.Button("Creer un compte"), sg.Text("", key="-WRONG-")]]
 
 #Creation de la fenetre de connexion
-login_window = sg.Window("Connectez-vous", [[login_title],[login_lcol, login_rcol], login_buttons ], finalize=True)
+login_window = sg.Window("Connectez-vous", [[login_title],[login_lcol, login_rcol], login_buttons], finalize=True)
 
 #Creation du layout de la fenetre d'inscription
 register_title = [[sg.Text("S'inscrire", font = ("Arial", 20))]]
@@ -46,7 +46,7 @@ register_window.hide()
 def auth() :
 
     #Importation des donnees du fichier csv
-    with open(csv_directory, mode = "r") as file :                                              
+    with open(csv_directory, mode = "r") as file :
         filereader = csv.reader(file, delimiter=';')
         user = {}
         for ligne in filereader :
