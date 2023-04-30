@@ -1,16 +1,15 @@
-#Ce fichier contient l'authentificateur. Les donnees seront enregistrees sur un fichier .csv et l'authificateur sera affiche via PySimpleGUI
+"""
+Ce fichier contient l'authentificateur. Les donnees seront enregistrees sur un fichier .csv et l'authificateur sera affiche via PySimpleGUI
+Il permettra de se connecter ou de creer un compte
+En plus de saisir des infomations dans le .csv, il retournera une liste contenant le pseudo du joueur ainsi que ses statistiques afin de les afficher dans le menu
+
+On vous l'accorde, il faudrait une cle de cryptage du mot de passe
+"""
+
 import PySimpleGUI as sg
 import csv
 
 csv_directory = "Tokaido/Class/users.csv"
-
-#Importation des donnees du fichier csv
-with open(csv_directory, mode = "r") as file :                                              
-    filereader = csv.reader(file, delimiter=';')
-    user = {}
-    for ligne in filereader :
-        user[ligne[0]] = ligne
-    file.close()
 
 #Defnition du theme de PySimpleGUI
 sg.theme('GrayGrayGray')
@@ -45,15 +44,27 @@ register_window.hide()
 
 #Definition de la classe Auth a appeler dans le programme principal
 def auth() :
+
+    #Importation des donnees du fichier csv
+    with open(csv_directory, mode = "r") as file :                                              
+        filereader = csv.reader(file, delimiter=';')
+        user = {}
+        for ligne in filereader :
+            user[ligne[0]] = ligne
+        file.close()
+
     login_window.un_hide()
-    init = True
+    login_window["-MDP-"].update("")
+    login_window["-ID-"].update("")
+    login_window["-WRONG-"].update("")
+
+    register_window["-NEWID-"].update("")
+    register_window["-NEWMDP-"].update("")
+    register_window["-MDPCONFIRM-"].update("")
+    register_window["-NEWWRONG-"].update("")
+
     while True :
         window, event, values = sg.read_all_windows()
-
-        if init == True :
-            window["-MDP-"].update("")
-            window["-ID-"].update("")
-            init = False
 
         #L'utilisateur ne se connecte pas
         if event == sg.WINDOW_CLOSED:
@@ -83,10 +94,10 @@ def auth() :
             else:
                 with open(csv_directory, mode = "a", newline = "") as file :
                     filewriter = csv.writer(file, delimiter = ";")
-                    #L'utilisateur aura pour donnees de victoire et de defaites 0, car il vient de s'inscrire
-                    player = [values["-NEWID-"][0].upper()+values["-NEWID-"][1::].lower(), 0, 0]
                     filewriter.writerow([str(values["-NEWID-"].lower()), str(values["-NEWMDP-"]), 0, 0])
                     file.close()
+                    #L'utilisateur aura pour donnees de victoire et de defaites 0, car il vient de s'inscrire
+                    player = [values["-NEWID-"][0].upper()+values["-NEWID-"][1::].lower(), 0, 0]
                 break
 
         #Passage de la fenetre de connexion a la fenetre d'inscription

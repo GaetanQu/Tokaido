@@ -53,7 +53,7 @@ class Cartes :
         for i in range (nb_cartes_a_choisir):
             if 'le joueur clique sur la carte'==True:
                 liste_cartes_du_joueur.append('carte a ajt')  
-            elif 'le joueur clique sur valider'==True:   #car dans lechoppe le joueur peut choisir plusieurs cartes
+            elif 'le joueur clique sur valider'==True:   #car dans l'echoppe le joueur peut choisir plusieurs cartes
                 return liste_cartes_du_joueur
         return liste_cartes_du_joueur
 

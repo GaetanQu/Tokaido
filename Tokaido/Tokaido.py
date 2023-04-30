@@ -6,8 +6,7 @@ On pourra egalement comparer ces dernieres avec celles des autres utilisatteurs 
 
 #Importation de tous les modules et classes nécessaires au bon fonctionnement du programme
 import Class.Authenticator
-import Class.Menu
-
+import Class.Menu1
 
 #Creation du plateau
 case = []
@@ -25,7 +24,7 @@ menu_event = ""
 while menu_event != "quit" :
 
     if account[0] != "Closed":
-        menu = Class.Menu.Menu(account)
+        menu = Class.Menu1.Menu(account)
         menu_event = menu.launch()
 
     elif account[0] == "Closed":
