@@ -74,7 +74,8 @@ def auth() :
         #Connexion
         if window == login_window and event == "Connexion":
             if values["-ID-"].lower() in user and values["-MDP-"] == user[values["-ID-"].lower()][1] :
-                player = [user[values["-ID-"]][0][0].upper()+user[values["-ID-"]][0][1::].lower(), user[values["-ID-"]][2], user[values["-ID-"]][3]]
+                ID = values["-ID-"].lower()
+                player = [user[ID][0][0].upper()+user[ID][0][1::].lower(), user[ID][2], user[ID][3]]
                 break
             else :
                 window["-WRONG-"].update("Identifiant ou mot de passe incorrect")

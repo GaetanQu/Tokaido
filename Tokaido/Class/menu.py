@@ -1,6 +1,9 @@
 from math import *
 import cv2
 import pygame
+from Class.Settings import *
+
+settings = Settings()
 
 ##########################################################################################################
 ##                                                                                                      ##
@@ -115,10 +118,10 @@ class Menu():
         self.hovered_disconnect_surface = disconnect_font.render(DISCONNECT_TEXT, 1, HOVERED_DISCONNECT_COLOR)
 
         DISCONNECT_WIDTH, DISCONNECT_HEIGHT = self.disconnect_surface.get_size()
-        DISCONNECT_POS = self.screen_width - DISCONNECT_WIDTH - DISCONNECT_MARGIN, self.screen_height - DISCONNECT_HEIGHT - DISCONNECT_MARGIN
+        self.DISCONNECT_POS = self.screen_width - DISCONNECT_WIDTH - DISCONNECT_MARGIN, self.screen_height - DISCONNECT_HEIGHT - DISCONNECT_MARGIN
 
         self.disconnect_rect = self.disconnect_surface.get_rect()
-        self.disconnect_rect.center = DISCONNECT_POS[0] + DISCONNECT_WIDTH/2, DISCONNECT_POS[1] + DISCONNECT_HEIGHT/2
+        self.disconnect_rect.center = self.DISCONNECT_POS[0] + DISCONNECT_WIDTH/2, self.DISCONNECT_POS[1] + DISCONNECT_HEIGHT/2
 
         PLAY_MARGIN_LEFT = 50
         PLAY_MARGIN_BETWEEN = 10
@@ -164,11 +167,17 @@ class Menu():
         self.play_solo_rect = self.play_solo_surface.get_rect()
         self.play_solo_rect.center = self.PLAY_SOLO_POS[0] + PLAY_SOLO_WIDTH/2, self.PLAY_SOLO_POS[1] + PLAY_SOLO_HEIGHT / 2
 
-    def affichage_constant(self, event) :
-        self.screen.fill(self.BG_COLOR)
+    def affichage_constant(self) : #Ca parait inutile mais ca permet une meilleure evolutivite du programme
+        #Affichage du pseudo du joueur connecte
+        self.screen.blit(self.main_player_name_surface, self.MAIN_PLAYER_NAME_SURFACE_POS)
 
+    def affichage_constant_avec_interaction(self, event):
         fake_event = pygame.event.Event(pygame.MOUSEMOTION, {'pos' : (0,0)})
         pygame.time.set_timer(fake_event, int(1000/FPS))
+
+        self.screen.fill(self.BG_COLOR) #Oui il n'y a pas d'interaction avec le BG mais c'est plus pratique de le mettre la
+
+
         #Affichage de la croix, on doit pourvoir fermer le jeu a tout instant
         if self.croix_rect.collidepoint(pygame.mouse.get_pos()) :
             self.screen.blit(self.hovered_croix, self.CROIX_POS)
@@ -176,18 +185,14 @@ class Menu():
                 return("quit")
         else :
             self.screen.blit(self.croix, self.CROIX_POS)
-        
-        #Affichage du pseudo du joueur connecte
-        self.screen.blit(self.main_player_name_surface, self.MAIN_PLAYER_NAME_SURFACE_POS)
 
     def launch(self) :
         global FPS
-        FPS = 75
+        FPS = int(settings.setting["FPS"])
         while True :
             self.clock.tick(FPS)
             for event in pygame.event.get():
-
-                if self.affichage_constant(event) == "quit":
+                if self.affichage_constant_avec_interaction(event) == "quit":
                     return "quit"
 
                 if event.type == pygame.QUIT :
@@ -203,11 +208,8 @@ class Menu():
                         elif action == "quit" :
                             return "quit"
                     elif self.settings_rect.collidepoint(pygame.mouse.get_pos()):
-                        settings_list = self.settings_menu()
-                        FPS = settings_list[1]
-
-                        if settings_list[0] == "quit":
-                            return "quit"
+                        settings.menu()
+                        FPS = int(settings.setting["FPS"])
 
                 #Affichage du background
                 self.screen.blit(self.bg, self.BG_POS)
@@ -240,6 +242,7 @@ class Menu():
                 else :
                     self.screen.blit(self.settings_surface, self.SETTINGS_POS)
 
+                self.affichage_constant()
                 #Actualisation de l'ecran
                 pygame.display.flip()
 
@@ -248,7 +251,7 @@ class Menu():
             
         while True:
             for event in pygame.event.get() :
-                if self.affichage_constant(event) == "quit":
+                if self.affichage_constant_avec_interaction(event) == "quit":
                     return "quit"
                 if event.type == pygame.QUIT :
                     pygame.quit()
@@ -257,14 +260,23 @@ class Menu():
                     self.screen.blit(self.hovered_back, self.BACK_POS)
                     if event.type == pygame.MOUSEBUTTONUP:
                         self.account_menu_transition(1, pos_list)
-                        return True
                 else :
                     self.screen.blit(self.back, self.BACK_POS)
+                
+                if self.disconnect_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.screen.blit(self.hovered_disconnect_surface, self.DISCONNECT_POS)
+                    if event.type == pygame.MOUSEBUTTONUP :
+                        pygame.quit()
+                        return "deconnexion"
+                else :
+                    self.screen.blit(self.disconnect_surface, self.DISCONNECT_POS)
             
             self.screen.blit(pos_list[0], pos_list[1])
             self.screen.blit(self.title, pos_list[2])
             self.screen.blit(self.main_player_wins_surface, pos_list[6])
             self.screen.blit(self.main_player_loses_surface, pos_list[7])
+
+            self.affichage_constant()
 
             pygame.display.flip()
 
@@ -274,7 +286,7 @@ class Menu():
         ANIMATION_DURATION = 1
 
         bg_size = pos_list[0].get_size()
-
+                                                 #\/ je ne sais pas pourquoi si je ne mets pas ce "+2" au retour l'animation ne se fait pas pleinement
         for i in range (FPS * ANIMATION_DURATION):
             self.clock.tick(FPS)
 
@@ -311,7 +323,7 @@ class Menu():
             main_player_loses_pos = self.translation(pos_list[7], diff_stats_translation)
 
             for event in pygame.event.get():
-                self.affichage_constant(event)
+                self.affichage_constant_avec_interaction(event)
             self.screen.blit(scaled_bg, bg_pos)
             self.screen.blit(self.title, title_pos)
             self.screen.blit(self.play_solo_surface, play_solo_pos)
@@ -325,12 +337,10 @@ class Menu():
             else :
                 self.screen.blit(self.back, self.BACK_POS)
 
+            self.affichage_constant()
             pygame.display.flip()
 
         return [scaled_bg, bg_pos, title_pos, play_solo_pos, play_split_pos, settings_pos, main_player_wins_pos, main_player_loses_pos]
     
     def translation (self, pos, diff_pos):
         return (pos[0] + diff_pos[0], pos[1] + diff_pos[1])
-
-menu = Menu(['Anateg', 8, 2])
-menu.launch()
