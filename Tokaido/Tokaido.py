@@ -8,7 +8,6 @@ On pourra egalement comparer ces dernieres avec celles des autres utilisatteurs 
 import Class.Authenticator
 import Class.Menu
 
-
 #Creation du plateau
 case = []
 for i in range (54):
@@ -33,4 +32,6 @@ while menu_event != "quit" :
 
     if menu_event == "deconnexion":
         account = Class.Authenticator.auth()
-
+        player = []
+        player.append(account)
+        menu_event = None

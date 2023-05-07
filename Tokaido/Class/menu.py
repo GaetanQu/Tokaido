@@ -1,268 +1,348 @@
 from math import *
 import cv2
 import pygame
+from Class.Settings import *
 
+settings = Settings()
 
+##########################################################################################################
+##                                                                                                      ##
+##C'est encore largement ameliorable, mais j'en peux plus de ce menu de mort j'y retournerais plus tard ##
+##                                                                                                      ##
+##########################################################################################################
+
+"""La classe menu"""
 class Menu():
-    def __init__ (self, player) :
-        self.player = player
+
+    #main player = [Pseudo, Victoires, Defaites]
+    def __init__(self, main_player):
+        self.main_player = main_player
+
+        """Initialisation de pygme"""
         pygame.init()
         pygame.display.init()
         pygame.font.init()
 
-        global clock, bg, bg_width, bg_height, BG_COLOR, title, hovered_title, title_rect, title_width, title_height, account, hovered_account, back, hovered_back, account_and_back_rect
-        global player_font, stats_font, disconnect_font, disconnect_surface, hovered_disconnect_surface, disconnect_width, disconnect_height, disconnect_rect
-        global croix, croix_rect, hovered_croix
-        clock = pygame.time.Clock()
+        pygame.display.set_caption("Tokaido")
 
-        bg = pygame.image.load('Tokaido/class/images/menu/bg.png')
-        bg_width, bg_height = bg.get_size()
-        BG_COLOR = (251,253,248)
+        self.screen = pygame.display.set_mode((0,0))
 
-        croix = pygame.image.load('Tokaido/class/images/menu/croix.png')
-        hovered_croix = pygame.image.load('Tokaido/class/images/menu/hovered_croix.png')
-        croix_rect = croix.get_rect()
-
-        title = pygame.image.load('Tokaido/class/images/menu/title.png')
-        hovered_title = pygame.image.load('Tokaido/class/images/menu/hovered_title.png')
-        title_rect = title.get_rect()
-        title_width, title_height = title.get_size()
-
-        account = pygame.image.load('Tokaido/class/images/menu/account.png')
-        hovered_account = pygame.image.load('Tokaido/class/images/menu/hovered_account.png')
-        back = pygame.image.load('Tokaido/class/images/menu/back.png')
-        hovered_back = pygame.image.load('Tokaido/class/images/menu/hovered_back.png')
-        account_and_back_rect = account.get_rect()
-        account_and_back_rect.center = 30+75/2, 30+75/2
-
-        player_font = pygame.font.Font('Tokaido/Fonts/Japon.ttf' ,40)
-        stats_font = pygame.font.Font('Tokaido/Fonts/Japon.ttf', 100)
-
-        disconnect_font = pygame.font.Font('Tokaido/Fonts/Japon.ttf', 25)
-        disconnect_surface = disconnect_font.render("Changer de compte", 1, (70,70,70))
-        hovered_disconnect_surface = disconnect_font.render("Changer de compte", 1, (0,0,0))
-        disconnect_width, disconnect_height = disconnect_surface.get_size()
-        disconnect_rect = disconnect_surface.get_rect()
-        pass
-
-    def account_menu(self):     #ouvre le menu de compte avec une jolie petite animation qui comporte un resize et plusieurs translations
-    
-        #Ce sont les dimensions de l'image de depart (seule bg sera resized, donc j'ai pas fait d'effort sur la nomenclature)
-        start_size = (1275,627)
-        ratio = int(1275/627)
-
-        screen_width = screen.get_width()
-        screen_height = screen.get_height()
-
-        player_surface = player_font.render(str(self.player[0]), 1, (50,50,50))
-        global player_width
-        player_width = player_surface.get_width()
-
-        DISCONNECT_POS = screen_width - disconnect_width - 10, screen_height - disconnect_height - 10
-        disconnect_rect.center = screen_width - disconnect_width - 10 + disconnect_width/2, screen_height - disconnect_height - 10 + disconnect_height/2
-
-        stats_surface_victories = stats_font.render("Victoires : " + str(self.player[1]), 1, (50,50,50))
-        stats_surface_victories_width = stats_surface_victories.get_width()
-
-        stats_surface_defeats = stats_font.render("Defaites : " + str(self.player[2]), 1, (50,50,50))
-        stats_surface_defeats_width = stats_surface_defeats.get_width()
+        #Les dimensions de l'ecran ainsi que les coordonnes du centre
+        self.screen_width, self.screen_height = self.screen.get_size()
         
-        #Je voulais rescale l'image en utilisant les fonctions de pygame mais le resultat n'etait pas convaincant (interpolation inadaptee a une animation).
-        #J'ai donc trouve ca sur Stack Overflow, sans explications evidemment mais je pense avoir compris :
-        #On convertit l'image "bg" en caracteres alphanumeriques et on met tout ca dans une matrice
-        array = pygame.surfarray.array3d(bg.convert_alpha())
-        scaled_size = start_size
-
-        animation_duration = 60
-        bg_diff_pos = (0,0)
-        title_diff_pos = (0,0)
-
-        #Premiere animation durant laquelle on s'occupe du titre et de l'image
-        for i in range (animation_duration) :
-            clock.tick(60)
-
-            rescale_animation_speed = 10*exp(-(4/animation_duration*i-0.5)**2)
-            bg_animation_speed = 7*exp(-(4/animation_duration*i-2)**2)
-            title_animation_speed = 50*exp(-(4/animation_duration*i))
-
-            #On change les dimensions de la matrice correspondant a notre image
-            scaled_size = (scaled_size[0]- int(ratio * rescale_animation_speed), scaled_size[1]-int(rescale_animation_speed))
-
-            #On cree une nouvelle matrice a l'aide de la librairie cv2
-            #Celle-ci utilisera la matrice faite a l'aide de l'image initiale,
-            #les dimensions de la nouvelle matrice,
-            #ainsi que le procede d'interpolation d'image utilise (une interpolation bicubique faisant la moyenne de groupes de 4x4 pixels)
-            scaled_array = cv2.resize(array, scaled_size[::-1], interpolation = cv2.INTER_CUBIC)
-
-            #On transforme la matrice rescaled en une surface affichable par pygame
-            scaled_bg = pygame.surfarray.make_surface(scaled_array)
-            scaled_bg_width, scaled_bg_height = scaled_bg.get_size()       
-
-            bg_diff_pos = (0,int(bg_diff_pos[1] + bg_animation_speed))
-            title_diff_pos = (0,int(title_diff_pos[1] - title_animation_speed))
-
-            screen.fill(BG_COLOR)
-            screen.blit(scaled_bg, (CENTERW - scaled_bg_width / 2, (CENTERH - scaled_bg_height / 1.5)-(bg_diff_pos[1])))
-
-            screen.blit(title, (CENTERW - title_width/2, (screen.get_height() - 2*title_height)-title_diff_pos[1]))
-            screen.blit(player_surface, (30 + 75 + 10, 30+75/4))
-            screen.blit(back, (45,45))
-            screen.blit(croix, CROIX_POS)
-            pygame.display.flip()
-
+        self.CENTERX = self.screen_width / 2
+        self.CENTERY = self.screen_height / 2
         
-        #Seconde animation durant laquelle on se charge cette fois des statistiques et du bouton pour changer de compte
-        lim_stats_pos_y = screen_height/2 + screen_height/8
-        current_stats_pos_y = screen_height
-        i=0
-        while current_stats_pos_y > lim_stats_pos_y:
-            clock.tick(60)
-            i+=1
-            stats_animation_speed = 30*exp(-(4/animation_duration*i)**2)
-            #stats_diff_pos = (0, int(stats_diff_pos[1]-stats_animation_speed))
+        #L'horloge
+        self.clock = pygame.time.Clock()
 
-            current_stats_pos_y = int(current_stats_pos_y-stats_animation_speed)
+        #Les images
+        
+        self.BG_COLOR = (251,253,248)
 
-            screen.fill(BG_COLOR)
-            screen.blit(scaled_bg, (CENTERW - scaled_bg_width / 2, (CENTERH - scaled_bg_height / 1.5)-(bg_diff_pos[1])))
+        self.bg = pygame.image.load('Tokaido/class/images/menu/bg.png')
+        self.bg_array = pygame.surfarray.array3d(self.bg.convert_alpha())
 
-            screen.blit(title, (CENTERW - title_width/2, (screen.get_height() - 2*title_height)-title_diff_pos[1]))
-            screen.blit(player_surface, (30 + 75 + 10, 30+75/4))
+        self.BG_WIDTH, self.BG_HEIGHT = self.bg.get_size()
+        self.BG_RATIO = int(self.BG_WIDTH / self.BG_HEIGHT)
+
+        self.BG_COLOR = (251,253,248)
+        self.BG_POS = (self.CENTERX - self.BG_WIDTH/2 ,self.CENTERY - self.BG_HEIGHT/1.5)
 
 
-            screen.blit(stats_surface_victories, (3*screen_width/10-stats_surface_victories_width/2, current_stats_pos_y))
-            screen.blit(stats_surface_defeats, (7*screen_width/10 - stats_surface_defeats_width/2, current_stats_pos_y))
+        self.title = pygame.image.load('Tokaido/class/images/menu/title.png')
+        self.hovered_title = pygame.image.load('Tokaido/class/images/menu/hovered_title.png')
 
-            screen.blit(back, (45,45))
-            screen.blit(croix, CROIX_POS)
-            pygame.display.flip()
-            
-            
+        TITLE_WIDTH, TITLE_HEIGHT = self.title.get_size()
+        self.TITLE_POS = (self.CENTERX - TITLE_WIDTH/2, self.screen_height - 2*TITLE_HEIGHT)
 
+        self.title_rect = self.title.get_rect()
+        self.title_rect.center= self.TITLE_POS[0] + TITLE_WIDTH / 2, self.TITLE_POS[1] + TITLE_HEIGHT / 2
+
+        self.ACCOUNT_POS = (30, 30)
+        self.BACK_POS = (40,40)
+
+        self.account = pygame.image.load('Tokaido/class/images/menu/account.png')
+        self.hovered_account = pygame.image.load('Tokaido/class/images/menu/hovered_account.png')
+
+        self.back = pygame.image.load('Tokaido/class/images/menu/back.png')
+        self.hovered_back = pygame.image.load('Tokaido/class/images/menu/hovered_back.png')
+
+        ACCOUNT_AND_BACK_WIDTH, ACCOUNT_AND_BACK_HEIGHT = self.account.get_size()
+
+        self.account_and_back_rect = self.account.get_rect()
+        self.account_and_back_rect.center = self.ACCOUNT_POS[0] + ACCOUNT_AND_BACK_WIDTH / 2, self.ACCOUNT_POS[1] + ACCOUNT_AND_BACK_HEIGHT / 2
+        
+
+        CROIX_MARGIN = 20
+
+        self.croix = pygame.image.load('Tokaido/class/images/menu/croix.png')
+        self.hovered_croix = pygame.image.load('Tokaido/class/images/menu/hovered_croix.png')
+
+        CROIX_WIDTH, CROIX_HEIGHT = self.croix.get_size()
+        self.CROIX_POS = (self.screen_width - CROIX_WIDTH - CROIX_MARGIN, CROIX_MARGIN)
+
+        self.croix_rect = self.croix.get_rect()
+        self.croix_rect.center = self.CROIX_POS[0] + CROIX_WIDTH / 2, self.CROIX_POS[1] + CROIX_HEIGHT / 2
+
+        #Les polices
+        JAPON = 'Tokaido/Fonts/Japon.ttf'
+
+        ACCOUNT_NAME_MARGIN = 10
+        self.MAIN_PLAYER_NAME_SURFACE_POS = (self.ACCOUNT_POS[0] + ACCOUNT_AND_BACK_WIDTH + ACCOUNT_NAME_MARGIN, self.ACCOUNT_POS[1] + ACCOUNT_AND_BACK_HEIGHT /4)
+
+        main_player_name_font = pygame.font.Font(JAPON, 40)
+        self.main_player_name_surface = main_player_name_font.render(str(self.main_player[0]), 1, (50,50,50))
+
+
+        STATS_COLOR = (50,50,50)
+        
+        main_player_stats_font = pygame.font.Font(JAPON, 100)
+        self.main_player_wins_surface = main_player_stats_font.render("Victoires : " + str(self.main_player[1]), 1, STATS_COLOR)
+        self.main_player_loses_surface = main_player_stats_font.render("Defaites : " + str(self.main_player[2]), 1, STATS_COLOR)
+
+        self.MAIN_PLAYER_WINS_SURFACE_WIDTH = self.main_player_wins_surface.get_width()
+        self.MAIN_PLAYER_LOSES_SURFACE_WIDTH = self.main_player_loses_surface.get_width()
+
+        self.MAIN_PLAYER_WINS_POS_X = 3/10 * self.screen_width - self.MAIN_PLAYER_WINS_SURFACE_WIDTH / 2
+        self.MAIN_PLAYER_LOSES_POS_X = 7/10 * self.screen_width - self.MAIN_PLAYER_LOSES_SURFACE_WIDTH / 2
+
+
+        DISCONNECT_TEXT = "Changer de compte"
+        DISCONNECT_MARGIN = 10
+        DISCONNECT_COLOR = (70,70,70)
+        HOVERED_DISCONNECT_COLOR = (0,0,0)
+
+        disconnect_font = pygame.font.Font(JAPON, 25)
+        self.disconnect_surface = disconnect_font.render(DISCONNECT_TEXT, 1, DISCONNECT_COLOR)
+        self.hovered_disconnect_surface = disconnect_font.render(DISCONNECT_TEXT, 1, HOVERED_DISCONNECT_COLOR)
+
+        DISCONNECT_WIDTH, DISCONNECT_HEIGHT = self.disconnect_surface.get_size()
+        self.DISCONNECT_POS = self.screen_width - DISCONNECT_WIDTH - DISCONNECT_MARGIN, self.screen_height - DISCONNECT_HEIGHT - DISCONNECT_MARGIN
+
+        self.disconnect_rect = self.disconnect_surface.get_rect()
+        self.disconnect_rect.center = self.DISCONNECT_POS[0] + DISCONNECT_WIDTH/2, self.DISCONNECT_POS[1] + DISCONNECT_HEIGHT/2
+
+        PLAY_MARGIN_LEFT = 50
+        PLAY_MARGIN_BETWEEN = 10
+        PLAY_MARGIN_BOTTOM = 50
+
+        play_font = pygame.font.Font(JAPON, 50)
+        PLAY_COLOR = (70,70,70)
+        HOVERED_PLAY_COLOR = (150,150,150)
+
+
+        SETTINGS_TEXT = "Parametres"
+
+        self.settings_surface = play_font.render(SETTINGS_TEXT, 1, PLAY_COLOR)
+        self.hovered_settings_surface = play_font.render(SETTINGS_TEXT, 1, HOVERED_PLAY_COLOR)
+
+        SETTINGS_WIDTH, SETTINGS_HEIGHT = self.settings_surface.get_size()
+        self.SETTINGS_POS = PLAY_MARGIN_LEFT, self.screen_height - SETTINGS_HEIGHT - PLAY_MARGIN_BOTTOM
+
+        self.settings_rect = self.settings_surface.get_rect()
+        self.settings_rect.center = self.SETTINGS_POS[0] + SETTINGS_WIDTH / 2, self.SETTINGS_POS[1] + SETTINGS_HEIGHT / 2
+
+
+        PLAY_SPLIT_TEXT = "Jouer a plusieurs sur le meme ecran"
+
+        self.play_split_surface = play_font.render(PLAY_SPLIT_TEXT, 1, PLAY_COLOR)
+        self.hovered_play_split_surface = play_font.render(PLAY_SPLIT_TEXT, 1, HOVERED_PLAY_COLOR)
+
+        PLAY_SPLIT_WIDTH, PLAY_SPLIT_HEIGHT = self.play_split_surface.get_size()
+        self.PLAY_SPLIT_POS = PLAY_MARGIN_LEFT, self.SETTINGS_POS[1] - PLAY_SPLIT_HEIGHT - PLAY_MARGIN_BETWEEN
+
+        self.play_split_rect = self.play_split_surface.get_rect()
+        self.play_split_rect.center = self.PLAY_SPLIT_POS[0] + PLAY_SPLIT_WIDTH / 2, self.PLAY_SPLIT_POS[1] + PLAY_SPLIT_HEIGHT / 2
+        
+
+        PLAY_SOLO_TEXT = "Jouer seul"
+        
+        self.play_solo_surface = play_font.render(PLAY_SOLO_TEXT, 1, PLAY_COLOR)
+        self.hovered_play_solo_surface = play_font.render(PLAY_SOLO_TEXT, 1, HOVERED_PLAY_COLOR)
+
+        PLAY_SOLO_WIDTH, PLAY_SOLO_HEIGHT = self.play_solo_surface.get_size()
+        self.PLAY_SOLO_POS = PLAY_MARGIN_LEFT, self.PLAY_SPLIT_POS[1] - PLAY_SOLO_HEIGHT - PLAY_MARGIN_BETWEEN
+
+        self.play_solo_rect = self.play_solo_surface.get_rect()
+        self.play_solo_rect.center = self.PLAY_SOLO_POS[0] + PLAY_SOLO_WIDTH/2, self.PLAY_SOLO_POS[1] + PLAY_SOLO_HEIGHT / 2
+
+    def affichage_constant(self) : #Ca parait inutile mais ca permet une meilleure evolutivite du programme
+        #Affichage du pseudo du joueur connecte
+        self.screen.blit(self.main_player_name_surface, self.MAIN_PLAYER_NAME_SURFACE_POS)
+
+    def affichage_constant_avec_interaction(self, event):
+        fake_event = pygame.event.Event(pygame.MOUSEMOTION, {'pos' : (0,0)})
+        pygame.time.set_timer(fake_event, int(1000/FPS))
+
+        self.screen.fill(self.BG_COLOR) #Oui il n'y a pas d'interaction avec le BG mais c'est plus pratique de le mettre la
+
+
+        #Affichage de la croix, on doit pourvoir fermer le jeu a tout instant
+        if self.croix_rect.collidepoint(pygame.mouse.get_pos()) :
+            self.screen.blit(self.hovered_croix, self.CROIX_POS)
+            if event.type == pygame.MOUSEBUTTONUP :
+                return("quit")
+        else :
+            self.screen.blit(self.croix, self.CROIX_POS)
+
+    def launch(self) :
+        global FPS
+        FPS = int(settings.setting["FPS"])
         while True :
+            self.clock.tick(FPS)
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if self.affichage_constant_avec_interaction(event) == "quit":
+                    return "quit"
+
+                if event.type == pygame.QUIT :
                     pygame.quit()
-                    break
+                    return "quit"
 
-                if event.type == pygame.MOUSEBUTTONUP and account_and_back_rect.collidepoint((pygame.mouse.get_pos())):
-                    #On refait l'animation à l'envers
-                    for i in range (animation_duration) :
-                        clock.tick(60)
-
+                if event.type == pygame.MOUSEBUTTONUP :
+                    if self.account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
+                        action = self.account_menu()
+                        if action == "deconnexion" :
+                            return "deconnexion"
                     
-                        #Il a fallu modifier les équations pour avoir une symétrie de la vitesse par rapport à la 30ième frame
-                        rescale_animation_speed = -10*exp(-((4/animation_duration)*(i - 45)- 0.433)**(2))
-                        bg_animation_speed = -(7*exp(-(4/animation_duration*(i-2)-0.2)**2))
-                        title_animation_speed = -(50*exp(-(4/animation_duration*(-i+60+0.2))))
+                        elif action == "quit" :
+                            return "quit"
+                    elif self.settings_rect.collidepoint(pygame.mouse.get_pos()):
+                        settings.menu()
+                        FPS = int(settings.setting["FPS"])
 
-                        #C'est litteralement un copier/coller de ce qui a ete fait au dessus
-                        scaled_size = (scaled_size[0]- int(ratio * rescale_animation_speed), scaled_size[1]-int(rescale_animation_speed))
-                        scaled_array = cv2.resize(array, scaled_size[::-1], interpolation = cv2.INTER_CUBIC)
-                        scaled_bg = pygame.surfarray.make_surface(scaled_array)
-                        scaled_bg_width, scaled_bg_height = scaled_bg.get_size()       
+                #Affichage du background
+                self.screen.blit(self.bg, self.BG_POS)
 
-                        bg_diff_pos = (0,int(bg_diff_pos[1] + bg_animation_speed))
-                        title_diff_pos = (0,int(title_diff_pos[1] - title_animation_speed))
-
-                        screen.fill(BG_COLOR)
-                        screen.blit(scaled_bg, (CENTERW - scaled_bg_width / 2, (CENTERH - scaled_bg_height / 1.5)-(bg_diff_pos[1])))
-                        screen.blit(title, (CENTERW - title_width/2, (screen.get_height() - 2*title_height)-title_diff_pos[1]))
-                        title_rect.center = CENTERW - title_width/2, (screen.get_height() - 2*title_height)-title_diff_pos[1]
-                        screen.blit(player_surface, (30 + 75 + 10, 30+75/4))
-                        screen.blit(account, (30,30))
-                        screen.blit(croix, CROIX_POS)
-                        pygame.display.flip()
-                    return True
-
-                if disconnect_rect.collidepoint(pygame.mouse.get_pos()):
-                    screen.blit(hovered_disconnect_surface, DISCONNECT_POS)
+                #Affichage du titre
+                if self.title_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.screen.blit(self.hovered_title, self.TITLE_POS)
                 else :
-                    screen.blit(disconnect_surface, DISCONNECT_POS)
+                    self.screen.blit(self.title, self.TITLE_POS)
 
-                if event.type == pygame.MOUSEBUTTONUP and disconnect_rect.collidepoint(pygame.mouse.get_pos()) :
-                    return "deconnexion"
+                #Affichage du bouton de menu de compte
+                if self.account_and_back_rect.collidepoint(pygame.mouse.get_pos()) :
+                    self.screen.blit(self.hovered_account, self.ACCOUNT_POS)
+                else :
+                    self.screen.blit(self.account, self.ACCOUNT_POS)
 
-                if event.type == pygame.MOUSEBUTTONUP and croix_rect.collidepoint(pygame.mouse.get_pos()):
+                #Affichage des boutons pour jouer
+                if self.play_solo_rect.collidepoint(pygame.mouse.get_pos()) :
+                    self.screen.blit(self.hovered_play_solo_surface, self.PLAY_SOLO_POS)
+                else :
+                    self.screen.blit(self.play_solo_surface, self.PLAY_SOLO_POS)
+
+                if self.play_split_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.screen.blit(self.hovered_play_split_surface, self.PLAY_SPLIT_POS)
+                else :
+                    self.screen.blit(self.play_split_surface, self.PLAY_SPLIT_POS)
+
+                if self.settings_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.screen.blit(self.hovered_settings_surface, self.SETTINGS_POS)
+                else :
+                    self.screen.blit(self.settings_surface, self.SETTINGS_POS)
+
+                self.affichage_constant()
+                #Actualisation de l'ecran
+                pygame.display.flip()
+
+    def account_menu(self):
+        pos_list = self.account_menu_transition(0, [self.bg, self.BG_POS, self.TITLE_POS, self.PLAY_SOLO_POS, self.PLAY_SPLIT_POS, self.SETTINGS_POS, (1/3 * self.screen_width - self.MAIN_PLAYER_WINS_SURFACE_WIDTH, self.screen_height), (3/4 * self.screen_width - self.MAIN_PLAYER_LOSES_SURFACE_WIDTH/2, self.screen_height)])                   #pos_list = [bg, bg_pos, title_pos, play_solo_pos, play_split_pos, main_player_wins_pos, main_player_loses_pos]
+            
+        while True:
+            for event in pygame.event.get() :
+                if self.affichage_constant_avec_interaction(event) == "quit":
                     return "quit"
-
-                if croix_rect.collidepoint(pygame.mouse.get_pos()):
-                    screen.blit(hovered_croix, CROIX_POS)
-                else :
-                    screen.blit(croix, CROIX_POS)
-
-                if account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
-                    screen.blit(hovered_back, (45,45))
-                else :
-                    screen.blit(back, (45,45))
-
-            pygame.display.flip()
-
-
-    def launch(self):
-        pygame.display.set_caption("Menu Tokaido")  
-        global screen
-        screen = pygame.display.set_mode((0,0), pygame.HWSURFACE|pygame.DOUBLEBUF)
-        screen_width = screen.get_width()
-        screen_height = screen.get_height()
-
-        global CENTERW, CENTERH
-        CENTERW = screen_width/2
-        CENTERH = screen_height/2
-
-        BGCENTER = (CENTERW - bg_width/2 ,CENTERH - bg_height/1.5)
-        TITLEPOS = (CENTERW - title_width/2, screen_height - 2*title_height)
-
-        player_surface = player_font.render(str(self.player[0]), 1, (50,50,50))
-        player_width = player_surface.get_width()
-
-        while True :
-            clock.tick(60)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == pygame.QUIT :
                     pygame.quit()
-                    break
 
-                if event.type == pygame.MOUSEBUTTONUP and account_and_back_rect.collidepoint((pygame.mouse.get_pos())):
-                    action = self.account_menu()
-                    if action == "deconnexion" :
-                        pygame.quit()
-                        return"deconnexion"
+                if self.account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.screen.blit(self.hovered_back, self.BACK_POS)
+                    if event.type == pygame.MOUSEBUTTONUP:
+                        pos_list = self.account_menu_transition(1, pos_list)
+                        return True
 
-                    elif action == "quit":
-                        pygame.quit()
-                        return "quit"
-
-                if event.type == pygame.MOUSEBUTTONUP and croix_rect.collidepoint(pygame.mouse.get_pos()):
-                    pygame.quit()
-                    return "quit"
-
+                else :
+                    self.screen.blit(self.back, self.BACK_POS)
                 
-
+                if self.disconnect_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.screen.blit(self.hovered_disconnect_surface, self.DISCONNECT_POS)
+                    if event.type == pygame.MOUSEBUTTONUP :
+                        pygame.quit()
+                        return "deconnexion"
                 else :
-                    screen.fill(BG_COLOR)
-                    screen.blit(bg, BGCENTER)
-                    screen.blit(player_surface, (30+75+10, 30+75/4))
-                    screen.blit(title, TITLEPOS)
-                    title_rect.center = TITLEPOS[0] + title.get_width()/2, TITLEPOS[1] + title.get_height()/2
+                    self.screen.blit(self.disconnect_surface, self.DISCONNECT_POS)
+            
+            self.screen.blit(pos_list[0], pos_list[1])
+            self.screen.blit(self.title, pos_list[2])
+            self.screen.blit(self.main_player_wins_surface, pos_list[6])
+            self.screen.blit(self.main_player_loses_surface, pos_list[7])
 
-                    if account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
-                        screen.blit(hovered_account, (30,30))
-                    else :
-                        screen.blit(account, (30,30))
-
-                    if title_rect.collidepoint(pygame.mouse.get_pos()):
-                        screen.blit(title, TITLEPOS)
-                    else :
-                        screen.blit(hovered_title, TITLEPOS)
-
-                    global CROIX_POS
-                    CROIX_POS = (screen_width - 50 - 10, 10)
-                    croix_rect.center = CROIX_POS[0] + 25, CROIX_POS[1]+25
-
-                    if croix_rect.collidepoint(pygame.mouse.get_pos()):
-                        screen.blit(hovered_croix, CROIX_POS)
-                    else :
-                        screen.blit(croix, CROIX_POS)
+            self.affichage_constant()
 
             pygame.display.flip()
+
+    def account_menu_transition(self, switch, pos_list):
+        #Duree de l'animation en secondes
+        global ANIMATION_DURATION
+        ANIMATION_DURATION = 1
+
+        bg_size = pos_list[0].get_size()
+                                                 #\/ je ne sais pas pourquoi si je ne mets pas ce "+2" au retour l'animation ne se fait pas pleinement
+        for i in range (FPS * ANIMATION_DURATION):
+            self.clock.tick(FPS)
+
+            #J'en ai bave a faire les animations, a la base je comptais partir sur la vitesse : 
+            #J'avais ease_in_and_out_animation(i, POWER, STRENGTH, START, switch) = ((-1)**switch * POWER * exp(-(ANIMATION_STRENGTH/(FPS * ANIMATION_DURATION) * (i - (START - (2*abs(START-(FPS*ANIMATION_DURATION)/2) * switch))))**2))
+            #Sauf que c'etait trop approximatif
+            """bg_rescale = self.ease_in_and_out_animation(i, 10, 3, 0, switch)
+            diff_bg_translation = (0, self.ease_in_and_out_animation(i, 7, 4, 30, switch))
+            diff_title_translation = (0, self.ease_in_and_out_animation(i, -50, 3, 0, switch))
+            diff_play_translation = (self.ease_in_and_out_animation(i, 15, 2, 0, switch))
+            diff_stats_translation = (0, self.ease_in_and_out_animation(i, 30, 8, 40, switch))"""
+            
+
+            #donc j'ai mis au point un truc toujours un peu approximatif mais au moins on peut faire machine arriere facilement : j'ai integre les fonctions a l'aide de wolframalpha et j'ai adapte le truc pour etre compatible avec n'importe quel framerate
+            diff_bg_resize = (60 / FPS) * ((-1) ** switch * ((5*sqrt(pi)*FPS)/4) * erf((4/FPS) * (i - (FPS * switch))) - 2.22 * FPS * switch)
+            diff_bg_translation = (0, (-1) * (60/FPS) * ((-1)**switch * -7/8 * sqrt(pi) * erf(2 * (FPS - 2*i) / FPS) * FPS)) #idem ici etc...
+            diff_title_translation = (0, (-1)**switch * 50*FPS/3 * sqrt(pi)/2 * erf(i/20))
+            diff_play_translation = ((60/FPS)*((-1) * (-1)**switch * 15/2 * sqrt(pi) * FPS * erf(2*i/FPS) - switch * ( 15/2 * sqrt(pi) * erf(2))), 0)
+            diff_stats_translation = (0, (60/FPS) *(-(-1)**switch * 35/8 * sqrt(pi) * FPS * erf((8*(i-(2*FPS/3)+FPS/3*switch))/FPS) + 35/16 * sqrt(pi) * (erf(8/3)+erf(16/3))* FPS * switch))
+
+
+            bg_scaled_size = (bg_size[0] - int(self.BG_RATIO * diff_bg_resize), bg_size[1] - int(diff_bg_resize))
+            bg_scaled_array = cv2.resize(self.bg_array, bg_scaled_size[::-1], interpolation = cv2.INTER_CUBIC)
+            scaled_bg = pygame.surfarray.make_surface(bg_scaled_array)
+            
+            #pos_list = [bg, bg_pos, title_pos, play_solo_pos, play_split_pos, settings_pos, main_player_wins_pos, main_player_loses_pos]
+
+            bg_pos = self.translation((self.CENTERX - bg_scaled_size[0] / 2, self.CENTERY - bg_scaled_size[1] / 1.23333), diff_bg_translation)   #J'ignore pourquoi le 1.5 de base devient 1.23333 mais ca fonctionne on garde comme ca
+            title_pos = self.translation(pos_list[2], diff_title_translation)
+            play_solo_pos = self.translation(pos_list[3], diff_play_translation)
+            play_split_pos = self.translation(pos_list[4], diff_play_translation)
+            settings_pos = self.translation(pos_list[5], diff_play_translation)
+            main_player_wins_pos = self.translation(pos_list[6], diff_stats_translation)
+            main_player_loses_pos = self.translation(pos_list[7], diff_stats_translation)
+
+            for event in pygame.event.get():
+                self.affichage_constant_avec_interaction(event)
+            self.screen.blit(scaled_bg, bg_pos)
+            self.screen.blit(self.title, title_pos)
+            self.screen.blit(self.play_solo_surface, play_solo_pos)
+            self.screen.blit(self.play_split_surface, play_split_pos)
+            self.screen.blit(self.main_player_wins_surface, main_player_wins_pos)
+            self.screen.blit(self.main_player_loses_surface, main_player_loses_pos)
+            self.screen.blit(self.settings_surface, settings_pos)
+
+            if self.account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
+                self.screen.blit(self.hovered_back, self.BACK_POS)
+            else :
+                self.screen.blit(self.back, self.BACK_POS)
+
+            self.affichage_constant()
+            pygame.display.flip()
+
+        return [scaled_bg, bg_pos, title_pos, play_solo_pos, play_split_pos, settings_pos, main_player_wins_pos, main_player_loses_pos]
+    
+    def translation (self, pos, diff_pos):
+        return (pos[0] + diff_pos[0], pos[1] + diff_pos[1])
