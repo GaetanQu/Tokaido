@@ -92,14 +92,14 @@ class Menu():
         self.MAIN_PLAYER_NAME_SURFACE_POS = (self.ACCOUNT_POS[0] + ACCOUNT_AND_BACK_WIDTH + ACCOUNT_NAME_MARGIN, self.ACCOUNT_POS[1] + ACCOUNT_AND_BACK_HEIGHT /4)
 
         main_player_name_font = pygame.font.Font(JAPON, 40)
-        self.main_player_name_surface = main_player_name_font.render(str(main_player[0]), 1, (50,50,50))
+        self.main_player_name_surface = main_player_name_font.render(str(self.main_player[0]), 1, (50,50,50))
 
 
         STATS_COLOR = (50,50,50)
         
         main_player_stats_font = pygame.font.Font(JAPON, 100)
-        self.main_player_wins_surface = main_player_stats_font.render("Victoires : " + str(main_player[1]), 1, STATS_COLOR)
-        self.main_player_loses_surface = main_player_stats_font.render("Defaites : " + str(main_player[2]), 1, STATS_COLOR)
+        self.main_player_wins_surface = main_player_stats_font.render("Victoires : " + str(self.main_player[1]), 1, STATS_COLOR)
+        self.main_player_loses_surface = main_player_stats_font.render("Defaites : " + str(self.main_player[2]), 1, STATS_COLOR)
 
         self.MAIN_PLAYER_WINS_SURFACE_WIDTH = self.main_player_wins_surface.get_width()
         self.MAIN_PLAYER_LOSES_SURFACE_WIDTH = self.main_player_loses_surface.get_width()
@@ -259,7 +259,9 @@ class Menu():
                 if self.account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
                     self.screen.blit(self.hovered_back, self.BACK_POS)
                     if event.type == pygame.MOUSEBUTTONUP:
-                        self.account_menu_transition(1, pos_list)
+                        pos_list = self.account_menu_transition(1, pos_list)
+                        return True
+
                 else :
                     self.screen.blit(self.back, self.BACK_POS)
                 

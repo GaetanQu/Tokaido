@@ -32,3 +32,6 @@ while menu_event != "quit" :
 
     if menu_event == "deconnexion":
         account = Class.Authenticator.auth()
+        player = []
+        player.append(account)
+        menu_event = None

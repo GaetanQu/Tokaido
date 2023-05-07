@@ -21,7 +21,7 @@ class Settings():
         settings_window = sg.Window("Parametres", [[lcol, rcol], save_and_quit_row], finalize = True)
         settings_window.un_hide()
         while True :
-            event, values = settings_window.read()
+            window, event, values = sg.read_all_windows()
 
             if event == sg.WINDOW_CLOSED or event == "Quitter" :
                 break
@@ -35,5 +35,5 @@ class Settings():
                     for key in self.keys_list :
                         filewriter.writerow([key, self.setting[key]])
                     file.close()
-
+            
         settings_window.hide()
