@@ -79,7 +79,7 @@ class Cartes :
             else : 
                 joueur.ordre_famille_echoppe.append('eventail')
                 joueur.points+=2*len(joueur.ordre_famille_echoppe)+1
-        elif carte_tiree 
+        elif carte_tiree
 
 
 
