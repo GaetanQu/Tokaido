@@ -2,12 +2,13 @@ from math import *
 import cv2
 import pygame
 from Class.Settings import *
+import Class.Authenticator
 
 settings = Settings()
 
 ##########################################################################################################
 ##                                                                                                      ##
-##C'est encore largement ameliorable, mais j'en peux plus de ce menu de mort j'y retournerais plus tard ##
+## C'est encore largement ameliorable, mais j'en peux plus de ce menu j'y retournerais plus tard (non)  ##
 ##                                                                                                      ##
 ##########################################################################################################
 
@@ -15,8 +16,9 @@ settings = Settings()
 class Menu():
 
     #main player = [Pseudo, Victoires, Defaites]
-    def __init__(self, main_player):
-        self.main_player = main_player
+    def __init__(self, players_list):
+        self.players_list = players_list
+        self.main_player = self.players_list[0]
 
         """Initialisation de pygme"""
         pygame.init()
@@ -128,14 +130,14 @@ class Menu():
         PLAY_MARGIN_BOTTOM = 50
 
         play_font = pygame.font.Font(JAPON, 50)
-        PLAY_COLOR = (70,70,70)
-        HOVERED_PLAY_COLOR = (150,150,150)
+        FONT_COLOR = (70,70,70)
+        HOVERED_FONT_COLOR = (150,150,150)
 
 
         SETTINGS_TEXT = "Parametres"
 
-        self.settings_surface = play_font.render(SETTINGS_TEXT, 1, PLAY_COLOR)
-        self.hovered_settings_surface = play_font.render(SETTINGS_TEXT, 1, HOVERED_PLAY_COLOR)
+        self.settings_surface = play_font.render(SETTINGS_TEXT, 1, FONT_COLOR)
+        self.hovered_settings_surface = play_font.render(SETTINGS_TEXT, 1, HOVERED_FONT_COLOR)
 
         SETTINGS_WIDTH, SETTINGS_HEIGHT = self.settings_surface.get_size()
         self.SETTINGS_POS = PLAY_MARGIN_LEFT, self.screen_height - SETTINGS_HEIGHT - PLAY_MARGIN_BOTTOM
@@ -146,8 +148,8 @@ class Menu():
 
         PLAY_SPLIT_TEXT = "Jouer a plusieurs sur le meme ecran"
 
-        self.play_split_surface = play_font.render(PLAY_SPLIT_TEXT, 1, PLAY_COLOR)
-        self.hovered_play_split_surface = play_font.render(PLAY_SPLIT_TEXT, 1, HOVERED_PLAY_COLOR)
+        self.play_split_surface = play_font.render(PLAY_SPLIT_TEXT, 1, FONT_COLOR)
+        self.hovered_play_split_surface = play_font.render(PLAY_SPLIT_TEXT, 1, HOVERED_FONT_COLOR)
 
         PLAY_SPLIT_WIDTH, PLAY_SPLIT_HEIGHT = self.play_split_surface.get_size()
         self.PLAY_SPLIT_POS = PLAY_MARGIN_LEFT, self.SETTINGS_POS[1] - PLAY_SPLIT_HEIGHT - PLAY_MARGIN_BETWEEN
@@ -158,8 +160,8 @@ class Menu():
 
         PLAY_SOLO_TEXT = "Jouer seul"
         
-        self.play_solo_surface = play_font.render(PLAY_SOLO_TEXT, 1, PLAY_COLOR)
-        self.hovered_play_solo_surface = play_font.render(PLAY_SOLO_TEXT, 1, HOVERED_PLAY_COLOR)
+        self.play_solo_surface = play_font.render(PLAY_SOLO_TEXT, 1, FONT_COLOR)
+        self.hovered_play_solo_surface = play_font.render(PLAY_SOLO_TEXT, 1, HOVERED_FONT_COLOR)
 
         PLAY_SOLO_WIDTH, PLAY_SOLO_HEIGHT = self.play_solo_surface.get_size()
         self.PLAY_SOLO_POS = PLAY_MARGIN_LEFT, self.PLAY_SPLIT_POS[1] - PLAY_SOLO_HEIGHT - PLAY_MARGIN_BETWEEN
@@ -167,24 +169,42 @@ class Menu():
         self.play_solo_rect = self.play_solo_surface.get_rect()
         self.play_solo_rect.center = self.PLAY_SOLO_POS[0] + PLAY_SOLO_WIDTH/2, self.PLAY_SOLO_POS[1] + PLAY_SOLO_HEIGHT / 2
 
-    def affichage_constant(self) : #Ca parait inutile mais ca permet une meilleure evolutivite du programme
-        #Affichage du pseudo du joueur connecte
-        self.screen.blit(self.main_player_name_surface, self.MAIN_PLAYER_NAME_SURFACE_POS)
 
-    def affichage_constant_avec_interaction(self, event):
-        fake_event = pygame.event.Event(pygame.MOUSEMOTION, {'pos' : (0,0)})
-        pygame.time.set_timer(fake_event, int(1000/FPS))
+        SPLIT_PLAYER_NUMBER_HEIGHT = 50
+        SPLIT_PLAYER_NUMBER_WIDTH = 50
 
-        self.screen.fill(self.BG_COLOR) #Oui il n'y a pas d'interaction avec le BG mais c'est plus pratique de le mettre la
+        PLAY_SPLIT_MARGIN = 30
+        SPLIT_PLAYER_NUMBER_MARGIN = 10
+        self.SPLIT_PLAYER_2_POS = self.PLAY_SPLIT_POS[0] + PLAY_SPLIT_WIDTH + PLAY_SPLIT_MARGIN, self.PLAY_SPLIT_POS[1] + PLAY_SPLIT_HEIGHT/2 - SPLIT_PLAYER_NUMBER_HEIGHT/2
+        self.SPLIT_PLAYER_3_POS = self.SPLIT_PLAYER_2_POS[0] + SPLIT_PLAYER_NUMBER_WIDTH + SPLIT_PLAYER_NUMBER_MARGIN, self.SPLIT_PLAYER_2_POS[1]
+        self.SPLIT_PLAYER_4_POS = self.SPLIT_PLAYER_3_POS[0] + SPLIT_PLAYER_NUMBER_WIDTH + SPLIT_PLAYER_NUMBER_MARGIN, self.SPLIT_PLAYER_3_POS[1]
+        self.SPLIT_PLAYER_5_POS = self.SPLIT_PLAYER_4_POS[0] + SPLIT_PLAYER_NUMBER_WIDTH + SPLIT_PLAYER_NUMBER_MARGIN, self.SPLIT_PLAYER_4_POS[1]
 
+        split_player_number_font = pygame.font.Font(JAPON, SPLIT_PLAYER_NUMBER_HEIGHT)
+        
+        self.split_player_2 = split_player_number_font.render("2", 1, FONT_COLOR)
+        self.split_player_3 = split_player_number_font.render("3", 1,  FONT_COLOR)
+        self.split_player_4 = split_player_number_font.render("4", 1, FONT_COLOR)
+        self.split_player_5 = split_player_number_font.render("5", 1, FONT_COLOR)
 
-        #Affichage de la croix, on doit pourvoir fermer le jeu a tout instant
-        if self.croix_rect.collidepoint(pygame.mouse.get_pos()) :
-            self.screen.blit(self.hovered_croix, self.CROIX_POS)
-            if event.type == pygame.MOUSEBUTTONUP :
-                return("quit")
-        else :
-            self.screen.blit(self.croix, self.CROIX_POS)
+        self.hovered_split_player_2 = split_player_number_font.render("2", 1, HOVERED_FONT_COLOR)
+        self.hovered_split_player_3 = split_player_number_font.render("3", 1, HOVERED_FONT_COLOR)
+        self.hovered_split_player_4 = split_player_number_font.render("4", 1, HOVERED_FONT_COLOR)
+        self.hovered_split_player_5 = split_player_number_font.render("5", 1, HOVERED_FONT_COLOR)
+
+        split_player_width, split_player_height = (1/4 * self.screen_width, SPLIT_PLAYER_NUMBER_HEIGHT)
+
+        self.split_player_2_rectangle = pygame.Rect(0,0,SPLIT_PLAYER_NUMBER_WIDTH, SPLIT_PLAYER_NUMBER_HEIGHT)
+        self.split_player_2_rectangle.center = self.SPLIT_PLAYER_2_POS[0] + SPLIT_PLAYER_NUMBER_WIDTH / 2, self.SPLIT_PLAYER_2_POS[1] + SPLIT_PLAYER_NUMBER_HEIGHT / 2
+
+        self.split_player_3_rectangle = pygame.Rect(0,0,SPLIT_PLAYER_NUMBER_WIDTH, SPLIT_PLAYER_NUMBER_HEIGHT)
+        self.split_player_3_rectangle.center = self.SPLIT_PLAYER_3_POS[0] + SPLIT_PLAYER_NUMBER_WIDTH / 2, self.SPLIT_PLAYER_3_POS[1] + SPLIT_PLAYER_NUMBER_HEIGHT / 2
+
+        self.split_player_4_rectangle = pygame.Rect(0,0,SPLIT_PLAYER_NUMBER_WIDTH, SPLIT_PLAYER_NUMBER_HEIGHT)
+        self.split_player_4_rectangle.center = self.SPLIT_PLAYER_4_POS[0] + SPLIT_PLAYER_NUMBER_WIDTH / 2, self.SPLIT_PLAYER_4_POS[1] + SPLIT_PLAYER_NUMBER_HEIGHT / 2
+
+        self.split_player_5_rectangle = pygame.Rect(0,0,SPLIT_PLAYER_NUMBER_WIDTH, SPLIT_PLAYER_NUMBER_HEIGHT)
+        self.split_player_5_rectangle.center = self.SPLIT_PLAYER_5_POS[0] + SPLIT_PLAYER_NUMBER_WIDTH / 2, self.SPLIT_PLAYER_5_POS[1] + SPLIT_PLAYER_NUMBER_HEIGHT / 2
 
     def launch(self) :
         global FPS
@@ -193,7 +213,7 @@ class Menu():
             self.clock.tick(FPS)
             for event in pygame.event.get():
                 if self.affichage_constant_avec_interaction(event) == "quit":
-                    return "quit"
+                    return "Quit"
 
                 if event.type == pygame.QUIT :
                     pygame.quit()
@@ -203,13 +223,25 @@ class Menu():
                     if self.account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
                         action = self.account_menu()
                         if action == "deconnexion" :
-                            return "deconnexion"
+                            return "Deconnexion"
                     
                         elif action == "quit" :
-                            return "quit"
+                            return "Quit"
                     elif self.settings_rect.collidepoint(pygame.mouse.get_pos()):
                         settings.menu()
                         FPS = int(settings.setting["FPS"])
+
+                    elif self.play_solo_rect.collidepoint(pygame.mouse.get_pos()):
+                        return"Solo"
+
+                    elif self.play_split_rect.collidepoint(pygame.mouse.get_pos()):
+                        nb_joueurs = self.play_split_menu()
+                        if nb_joueurs == "quit":
+                            return "Quit"
+                        elif nb_joueurs == "account":
+                            action = self.account_menu()
+                            if action == "deconnexion": #<<< Je sais c'est moche mais ca fonctionne, et puis de toute facon j'ai deja perdu trop de temps a vouloir faire un truc prorpe qui au final est pas si propre
+                                return"Deconnexion"
 
                 #Affichage du background
                 self.screen.blit(self.bg, self.BG_POS)
@@ -343,6 +375,129 @@ class Menu():
             pygame.display.flip()
 
         return [scaled_bg, bg_pos, title_pos, play_solo_pos, play_split_pos, settings_pos, main_player_wins_pos, main_player_loses_pos]
-    
+
+    def play_split_menu(self):
+        while True :
+            FPS = int(settings.setting["FPS"])
+            self.clock.tick(FPS)
+            for event in pygame.event.get() :
+
+                if self.affichage_constant_avec_interaction(event) == "quit":
+                    return "quit"
+
+                if event.type == pygame.MOUSEBUTTONUP :
+                    if self.account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
+                        return "account"
+                    #On teste le nombre de joueurs
+                    elif self.split_player_2_rectangle.collidepoint(pygame.mouse.get_pos()):
+                        new_id = self.players_list.append(Class.Authenticator.auth())
+                        if new_id[0] not in self.players_list():
+                            self.players_list.append(new_id)
+                        return ("Split", self.players_list)
+
+                    elif self.split_player_3_rectangle.collidepoint(pygame.mouse.get_pos()):
+                        for i in range (2):
+                            new_id = self.players_list.append(Class.Authenticator.auth())
+                            if new_id[0] not in self.players_list():
+                                self.players_list.append(new_id)
+                        return ("Split", self.players_list)
+
+                    elif self.split_player_4_rectangle.collidepoint(pygame.mouse.get_pos()):
+                        for i in range (3):
+                            new_id = self.players_list.append(Class.Authenticator.auth())
+                            if new_id[0] not in self.players_list():
+                                self.players_list.append(new_id)
+                        return ("Split", self.players_list)
+
+                    elif self.split_player_5_rectangle.collidepoint(pygame.mouse.get_pos()):
+                        for i in range (4):
+                            new_id = self.players_list.append(Class.Authenticator.auth())
+                            if new_id[0] not in self.players_list():
+                                self.players_list.append(new_id)
+                        return ("Split", self.players_list)
+
+                    elif self.settings_rect.collidepoint(pygame.mouse.get_pos()):
+                        settings.menu()
+                        FPS = int(settings.setting["FPS"])
+
+                    else :
+                        return None
+            
+            #Affichage des differents choix possible pour le nombre de joueurs
+            if self.split_player_2_rectangle.collidepoint(pygame.mouse.get_pos()):
+                self.screen.blit(self.hovered_split_player_2, self.SPLIT_PLAYER_2_POS)
+            else:
+                self.screen.blit(self.split_player_2, self.SPLIT_PLAYER_2_POS)
+
+            if self.split_player_3_rectangle.collidepoint(pygame.mouse.get_pos()):
+                self.screen.blit(self.hovered_split_player_3, self.SPLIT_PLAYER_3_POS)
+            else:
+                self.screen.blit(self.split_player_3, self.SPLIT_PLAYER_3_POS)
+
+            if self.split_player_4_rectangle.collidepoint(pygame.mouse.get_pos()):
+                self.screen.blit(self.hovered_split_player_4, self.SPLIT_PLAYER_4_POS)
+            else:
+                self.screen.blit(self.split_player_4, self.SPLIT_PLAYER_4_POS)
+
+            if self.split_player_5_rectangle.collidepoint(pygame.mouse.get_pos()):
+                self.screen.blit(self.hovered_split_player_5, self.SPLIT_PLAYER_5_POS)
+            else:
+                self.screen.blit(self.split_player_5, self.SPLIT_PLAYER_5_POS)
+
+            #Affichage du background
+            self.screen.blit(self.bg, self.BG_POS)
+
+            #Affichage du titre
+            if self.title_rect.collidepoint(pygame.mouse.get_pos()):
+                self.screen.blit(self.hovered_title, self.TITLE_POS)
+            else :
+                self.screen.blit(self.title, self.TITLE_POS)
+
+            #Affichage du bouton de menu de compte
+            if self.account_and_back_rect.collidepoint(pygame.mouse.get_pos()) :
+                self.screen.blit(self.hovered_account, self.ACCOUNT_POS)
+            else :
+                self.screen.blit(self.account, self.ACCOUNT_POS)
+
+            #Affichage des boutons pour jouer
+            if self.play_solo_rect.collidepoint(pygame.mouse.get_pos()) :
+                self.screen.blit(self.hovered_play_solo_surface, self.PLAY_SOLO_POS)
+            else :
+                self.screen.blit(self.play_solo_surface, self.PLAY_SOLO_POS)
+
+            if self.play_split_rect.collidepoint(pygame.mouse.get_pos()):
+                self.screen.blit(self.hovered_play_split_surface, self.PLAY_SPLIT_POS)
+            else :
+                self.screen.blit(self.play_split_surface, self.PLAY_SPLIT_POS)
+
+            if self.settings_rect.collidepoint(pygame.mouse.get_pos()):
+                self.screen.blit(self.hovered_settings_surface, self.SETTINGS_POS)
+            else :
+                self.screen.blit(self.settings_surface, self.SETTINGS_POS)
+
+            self.affichage_constant()
+            #Actualisation de l'ecran
+            pygame.display.flip()
+
     def translation (self, pos, diff_pos):
         return (pos[0] + diff_pos[0], pos[1] + diff_pos[1])
+
+    def affichage_constant(self) : #Ca parait inutile mais ca permet une meilleure evolutivite du programme
+        #Affichage du pseudo du joueur connecte
+        self.screen.blit(self.main_player_name_surface, self.MAIN_PLAYER_NAME_SURFACE_POS)
+
+    def affichage_constant_avec_interaction(self, event):
+        fake_event = pygame.event.Event(pygame.MOUSEMOTION, {'pos' : (0,0)})
+        pygame.time.set_timer(fake_event, int(1000/FPS))
+
+        self.screen.fill(self.BG_COLOR) #Oui il n'y a pas d'interaction avec le BG mais c'est plus pratique de le mettre la
+
+
+        #Affichage de la croix, on doit pourvoir fermer le jeu a tout instant
+        if self.croix_rect.collidepoint(pygame.mouse.get_pos()) :
+            self.screen.blit(self.hovered_croix, self.CROIX_POS)
+            if event.type == pygame.MOUSEBUTTONUP :
+                pygame.quit()
+                return("quit")
+        else :
+            self.screen.blit(self.croix, self.CROIX_POS)
