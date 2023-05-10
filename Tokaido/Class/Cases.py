@@ -194,4 +194,4 @@ class Cartes :
     def achievments (self, joueur, indice_achievment):
         if self.achievments[indice_achievment]==1:
             joueur.achievments[indice_achievment]=1
-            self.achievments[indice_achievment]=0
+            self.achievments[indice_achievment]=0 
