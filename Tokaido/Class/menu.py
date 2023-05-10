@@ -391,38 +391,23 @@ class Menu():
                         return "account"
                     #On teste le nombre de joueurs
                     elif self.split_player_2_rectangle.collidepoint(pygame.mouse.get_pos()):
-                        new_id = Class.Authenticator.auth()
-                        while new_id in self.players_list:
-                            sg.popup("Cet utilisateur est deja connecte !")
-                            new_id = Class.Authenticator.auth()
-                        self.players_list.append(new_id)
+                        self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
                         return ("Split", self.players_list)
 
                     elif self.split_player_3_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (2):
-                            new_id = (Class.Authenticator.auth())
-                            while new_id in self.players_list:
-                                sg.popup("Cet utilisateur est deja connecte !")
-                                new_id = Class.Authenticator.auth()
-                            self.players_list.append(new_id)
+                            self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
+                        print(self.players_list)
                         return ("Split", self.players_list)
 
                     elif self.split_player_4_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (3):
-                            new_id = Class.Authenticator.auth()
-                            while new_id in self.players_list:
-                                sg.popup("Cet utilisateur est deja connecte !")
-                                new_id = Class.Authenticator.auth()
-                            self.players_list.append(new_id)
+                            self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
                         return ("Split", self.players_list)
 
                     elif self.split_player_5_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (4):
-                            new_id = Class.Authenticator.auth()
-                            while new_id in self.players_list:
-                                sg.popup("Cet utilisateur est deja connecte !")
-                                new_id = Class.Authenticator.auth()
-                            self.players_list.append(new_id)
+                            self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
                         return ("Split", self.players_list)
 
                     elif self.settings_rect.collidepoint(pygame.mouse.get_pos()):
@@ -487,6 +472,14 @@ class Menu():
             self.affichage_constant()
             #Actualisation de l'ecran
             pygame.display.flip()
+
+    def is_connected(self, ID, ID_list):
+        while ID in ID_list and ID[0] != "Invite":
+            sg.popup("Cet utilisateur est deja connecte !")
+            ID = Class.Authenticator.auth()
+        ID_list.append(ID)
+        return ID_list
+
 
     def translation (self, pos, diff_pos):
         return (pos[0] + diff_pos[0], pos[1] + diff_pos[1])

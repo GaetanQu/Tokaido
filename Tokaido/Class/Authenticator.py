@@ -20,10 +20,10 @@ login_lcol = sg.Column([[sg.Text("Nom d'utilisateur")],
                         [sg.Text("Mot de passe")]])
 login_rcol = sg.Column([[sg.InputText(key="-ID-")],
                         [sg.InputText(key="-MDP-", password_char="*")]])
-login_buttons = [[sg.Button("Connexion", bind_return_key = True), sg.Button("Creer un compte"), sg.Text("", key="-WRONG-")]]
+login_buttons = [[sg.Button("Jouer en tant qu'invite"), sg.Button("Connexion", bind_return_key = True), sg.Button("Creer un compte")]]
 
 #Creation de la fenetre de connexion
-login_window = sg.Window("Connectez-vous", [[login_title],[login_lcol, login_rcol], login_buttons], finalize=True)
+login_window = sg.Window("Connectez-vous", [[login_title],[login_lcol, login_rcol], [sg.Text("Saisissez vos identifiants", key="-WRONG-")], login_buttons], finalize=True)
 
 #Creation du layout de la fenetre d'inscription
 register_title = [[sg.Text("S'inscrire", font = ("Arial", 20))]]
@@ -56,7 +56,7 @@ def auth() :
     login_window.un_hide()
     login_window["-MDP-"].update("")
     login_window["-ID-"].update("")
-    login_window["-WRONG-"].update("")
+    login_window["-WRONG-"].update("Saisissez vos identifiants")
 
     register_window["-NEWID-"].update("")
     register_window["-NEWMDP-"].update("")
@@ -69,6 +69,11 @@ def auth() :
         #L'utilisateur ne se connecte pas
         if event == sg.WINDOW_CLOSED:
             player = ["Closed", None, None]
+            break
+
+        #Jouer en tant qu'invite
+        if window == login_window and event == "Jouer en tant qu'invite":
+            player = ["Invite", 0, 0]
             break
 
         #Connexion

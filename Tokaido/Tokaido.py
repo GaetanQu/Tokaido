@@ -11,7 +11,7 @@ Puis on s'est rappeles qu'on etait en prepa
 
 #Importation de tous les modules et classes nécessaires au bon fonctionnement du programme
 import Class.Authenticator
-import Class.Menu
+import Class.Menu #<- ca arrive que le fichier se renomme en "menu.py", sans doute a cause de Git, il faut le renommer en "Menu.py"
 import Class.Play_split
 import pygame
 import PySimpleGUI as sg
