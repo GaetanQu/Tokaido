@@ -1,6 +1,7 @@
 from math import *
 import cv2
 import pygame
+import PySimpleGUI as sg
 from Class.Settings import *
 import Class.Authenticator
 
@@ -175,7 +176,8 @@ class Menu():
 
         PLAY_SPLIT_MARGIN = 30
         SPLIT_PLAYER_NUMBER_MARGIN = 10
-        self.SPLIT_PLAYER_2_POS = self.PLAY_SPLIT_POS[0] + PLAY_SPLIT_WIDTH + PLAY_SPLIT_MARGIN, self.PLAY_SPLIT_POS[1] + PLAY_SPLIT_HEIGHT/2 - SPLIT_PLAYER_NUMBER_HEIGHT/2
+
+        self.SPLIT_PLAYER_2_POS = self.PLAY_SPLIT_POS[0] + PLAY_SPLIT_WIDTH + PLAY_SPLIT_MARGIN, self.PLAY_SPLIT_POS[1] + PLAY_SPLIT_HEIGHT/2 - SPLIT_PLAYER_NUMBER_HEIGHT/3
         self.SPLIT_PLAYER_3_POS = self.SPLIT_PLAYER_2_POS[0] + SPLIT_PLAYER_NUMBER_WIDTH + SPLIT_PLAYER_NUMBER_MARGIN, self.SPLIT_PLAYER_2_POS[1]
         self.SPLIT_PLAYER_4_POS = self.SPLIT_PLAYER_3_POS[0] + SPLIT_PLAYER_NUMBER_WIDTH + SPLIT_PLAYER_NUMBER_MARGIN, self.SPLIT_PLAYER_3_POS[1]
         self.SPLIT_PLAYER_5_POS = self.SPLIT_PLAYER_4_POS[0] + SPLIT_PLAYER_NUMBER_WIDTH + SPLIT_PLAYER_NUMBER_MARGIN, self.SPLIT_PLAYER_4_POS[1]
@@ -192,7 +194,6 @@ class Menu():
         self.hovered_split_player_4 = split_player_number_font.render("4", 1, HOVERED_FONT_COLOR)
         self.hovered_split_player_5 = split_player_number_font.render("5", 1, HOVERED_FONT_COLOR)
 
-        split_player_width, split_player_height = (1/4 * self.screen_width, SPLIT_PLAYER_NUMBER_HEIGHT)
 
         self.split_player_2_rectangle = pygame.Rect(0,0,SPLIT_PLAYER_NUMBER_WIDTH, SPLIT_PLAYER_NUMBER_HEIGHT)
         self.split_player_2_rectangle.center = self.SPLIT_PLAYER_2_POS[0] + SPLIT_PLAYER_NUMBER_WIDTH / 2, self.SPLIT_PLAYER_2_POS[1] + SPLIT_PLAYER_NUMBER_HEIGHT / 2
@@ -390,30 +391,38 @@ class Menu():
                         return "account"
                     #On teste le nombre de joueurs
                     elif self.split_player_2_rectangle.collidepoint(pygame.mouse.get_pos()):
-                        new_id = self.players_list.append(Class.Authenticator.auth())
-                        if new_id[0] not in self.players_list():
-                            self.players_list.append(new_id)
+                        new_id = Class.Authenticator.auth()
+                        while new_id in self.players_list:
+                            sg.popup("Cet utilisateur est deja connecte !")
+                            new_id = Class.Authenticator.auth()
+                        self.players_list.append(new_id)
                         return ("Split", self.players_list)
 
                     elif self.split_player_3_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (2):
-                            new_id = self.players_list.append(Class.Authenticator.auth())
-                            if new_id[0] not in self.players_list():
-                                self.players_list.append(new_id)
+                            new_id = (Class.Authenticator.auth())
+                            while new_id in self.players_list:
+                                sg.popup("Cet utilisateur est deja connecte !")
+                                new_id = Class.Authenticator.auth()
+                            self.players_list.append(new_id)
                         return ("Split", self.players_list)
 
                     elif self.split_player_4_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (3):
-                            new_id = self.players_list.append(Class.Authenticator.auth())
-                            if new_id[0] not in self.players_list():
-                                self.players_list.append(new_id)
+                            new_id = Class.Authenticator.auth()
+                            while new_id in self.players_list:
+                                sg.popup("Cet utilisateur est deja connecte !")
+                                new_id = Class.Authenticator.auth()
+                            self.players_list.append(new_id)
                         return ("Split", self.players_list)
 
                     elif self.split_player_5_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (4):
-                            new_id = self.players_list.append(Class.Authenticator.auth())
-                            if new_id[0] not in self.players_list():
-                                self.players_list.append(new_id)
+                            new_id = Class.Authenticator.auth()
+                            while new_id in self.players_list:
+                                sg.popup("Cet utilisateur est deja connecte !")
+                                new_id = Class.Authenticator.auth()
+                            self.players_list.append(new_id)
                         return ("Split", self.players_list)
 
                     elif self.settings_rect.collidepoint(pygame.mouse.get_pos()):
