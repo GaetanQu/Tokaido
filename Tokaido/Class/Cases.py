@@ -23,7 +23,7 @@ class Cartes :
 
         self.ferme_cases=[7,17,26,31,37,47]
 
-        self.accomplissements_recuperes=[1,1,1,1,1,1,1,1]
+        self.achievments=[1,1,1,1,1,1,1,1]
 
         #trop bg
         
@@ -47,7 +47,7 @@ class Cartes :
 
 
     def effet (self, carte_tiree, joueur):
-        if carte_tiree in self.echoppe_cartes[0].keys():
+        if carte_tiree in list(self.echoppe_cartes[0].keys()):
             if 'sushi' in joueur.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
                 for i in range(len(joueur.ordre_famille_echoppe)):
                     if joueur.ordre_famille_echoppe[i]=='sushi':
@@ -55,7 +55,7 @@ class Cartes :
             else : 
                 joueur.ordre_famille_echoppe.append('sushi')
                 joueur.points+=2*len(joueur.ordre_famille_echoppe)+1
-        elif carte_tiree in self.echoppe_cartes[1].keys():
+        elif carte_tiree in list(self.echoppe_cartes[1].keys()):
             if 'kimono' in joueur.ordre_famille_echoppe:     
                 for i in range(len(joueur.ordre_famille_echoppe)):
                     if joueur.ordre_famille_echoppe[i]=='kimono':
@@ -63,7 +63,7 @@ class Cartes :
             else : 
                 joueur.ordre_famille_echoppe.append('kimono')
                 joueur.points+=2*len(joueur.ordre_famille_echoppe)+1
-        elif carte_tiree in self.echoppe_cartes[2].keys():
+        elif carte_tiree in list(self.echoppe_cartes[2].keys()):
             if 'statue' in joueur.ordre_famille_echoppe:     
                 for i in range(len(joueur.ordre_famille_echoppe)):
                     if joueur.ordre_famille_echoppe[i]=='statue':
@@ -71,15 +71,54 @@ class Cartes :
             else : 
                 joueur.ordre_famille_echoppe.append('statue')
                 joueur.points+=2*len(joueur.ordre_famille_echoppe)+1
-        elif carte_tiree in self.echoppe_cartes[3].keys():
+        elif carte_tiree in list(self.echoppe_cartes[3].keys()):
             if 'eventail' in joueur.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
                 for i in range(len(joueur.ordre_famille_echoppe)):
                     if joueur.ordre_famille_echoppe[i]=='eventail':
                         joueur.points+=2*i+1
             else : 
                 joueur.ordre_famille_echoppe.append('eventail')
-                joueur.points+=2*len(joueur.ordre_famille_echoppe)+1
-        elif carte_tiree
+                joueur.points+=2*len(joueur.ordre_famille_echoppe)+1    
+        elif carte_tiree in list(self.):
+            None 
+        
+            
+        elif joueur.case in self.pano_cases[0]:                                               #SI CASE = PANO MER
+            indice=0
+            while liste_cartes_possibles[indice] in joueur.cartes_pano[0] :
+                indice+=1
+            if indice<=len(liste_cartes_possibles):                                     #on ajoute la carte pano ssi le joueur ne la pas encore
+                joueur.cartes_pano[0].append(liste_cartes_possibles[indice])            #(car les cartes pano se recoivent dans lordre)
+                joueur.points+=self.pano_cartes[0][liste_cartes_possibles[indice]][0]
+        elif joueur.case in self.pano_cases[1]:                                             #SI CASE = PANO MONTAGNE
+            indice=0
+            while liste_cartes_possibles[indice] in joueur.cartes_pano[1] :
+                indice+=1
+            if indice<=len(liste_cartes_possibles):                                     
+                joueur.cartes_pano[1].append(liste_cartes_possibles[indice])            
+                joueur.points+=self.pano_cartes[1][liste_cartes_possibles[indice]][0]   #[0] car les points sont stock�s en 1er rang dans le dico.
+        elif joueur.case in self.pano_cases[2]:                                             #SI CASE = PANO RIZIERE
+            indice=0
+            while liste_cartes_possibles[indice] in joueur.cartes_pano[2] :
+                indice+=1
+            if indice<=len(liste_cartes_possibles):                                     
+                joueur.cartes_pano[2].append(liste_cartes_possibles[indice])            
+                joueur.points+=self.pano_cartes[2][liste_cartes_possibles[indice]][0]
+
+
+
+        elif joueur.case in self.echoppe_cases :    
+            joueur.cartes_echoppe=self.carte_random (3,liste_cartes_possibles, joueur.cartes_echoppe)
+            return 
+
+
+        elif joueur.case in self.rencontre_cases:
+            i=0
+            for carte in liste_cartes_possibles:    
+                if carte in joueur.cartes_rencontre:
+                    del(liste_cartes_possibles[i])
+                i+=1   
+            joueur.cartes_rencontre=self.carte_random (1,  liste_cartes_possibles, joueur.cartes_rencontre)
 
 
 
@@ -150,5 +189,9 @@ class Cartes :
                 if carte in joueur.cartes_rencontre:
                     del(liste_cartes_possibles[i])
                 i+=1   
-            joueur.cartes_rencontre=self.carte_random (1,  liste_cartes_possibles, joueur.cartes_rencontre)
+            joueur.cartes_rencontre=self.carte_random (1,  liste_cartes_possibles, joueur.cartes_rencontre)             #fonction potentiellement a tej car copiee dans effet, faut juste vérifier 
                 
+    def achievments (self, joueur, indice_achievment):
+        if self.achievments[indice_achievment]==1:
+            joueur.achievments[indice_achievment]=1
+            self.achievments[indice_achievment]=0
