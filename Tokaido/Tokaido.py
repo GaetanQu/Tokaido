@@ -14,6 +14,7 @@ import Class.Authenticator
 import Class.Menu
 import Class.Play_split
 import pygame
+import PySimpleGUI as sg
 
 #Creation du plateau
 case = []
@@ -43,6 +44,9 @@ while menu_event != "Quit" :
         players_list = []
         players_list.append(account)
         menu_event = None
+
+    elif menu_event == "Solo":
+        sg.Popup("Coming Soon")
 
     elif menu_event[0] == "Split":
         players_list = menu_event[1]
