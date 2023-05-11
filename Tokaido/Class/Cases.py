@@ -148,18 +148,18 @@ def afficher ( cartes_a_proposer):
     if len(cartes_a_proposer)==3:
         print('adapter la taille')
 
-def carte_random( nb_cartes_a_tirer, liste_cartes_possibles, liste_cartes_du_current_player):
+def carte_random( nb_cartes_a_tirer, liste_cartes_possibles, current_player):
     cartes_a_proposer=[]                                                            #liste des cartes qui seront proposees au current_player                       
     for i in range (nb_cartes_a_tirer):                                             #constitution de la liste des cartes � proposer
-        indice_carte=Random.randint(1,len(liste_cartes_possibles)-i)
+        indice_carte=Random.randint(1,len(liste_cartes_possibles)-i-1)
         cartes_a_proposer.append(liste_cartes_possibles[indice_carte])              #il faudra ajouter la partie pygame en prenant en compte le nombre de cartes a tirer
         del(cartes_a_proposer[indice_carte])
     afficher (cartes_a_proposer)
     if 'le current_player clique sur la carte'==True:
-        liste_cartes_du_current_player.append('carte a ajt')
+        current_player.append('carte a ajt')
         effet(current_player, )
     elif 'le current_player clique sur valider'==True:   #car dans lechoppe le current_player peut choisir plusieurs cartes
-        return liste_cartes_du_current_player
+        return current_player
 
 
 
