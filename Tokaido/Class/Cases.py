@@ -201,18 +201,23 @@ def effet_source_chaude (current_player):
 
 
 
-def effet ( carte_tiree, current_player):      #carte tiree a resoudre, peut etre a enlever des parametres 
-    liste_cartes_case=test_case(current_player)
+def effet (current_player):     
     if current_player.case in echoppe_cases:
         effet_echoppe (current_player)
     elif current_player.case in pano_cases[0]+pano_cases[1]+pano_cases[2]: 
-        effet_panorama (current_player, liste_cartes_case)
+        effet_panorama (current_player)
 
     elif current_player.case in rencontre_cases:
         effet_rencontre(current_player)
 
+    elif current_player.case in ferme_cases:
+        effet_ferme(current_player)
 
-        current_player.cartes_rencontre=cartes_a_proposer (1,  liste_cartes_case, current_player.cartes_rencontre)
+    elif current_player.case in temple_cases:
+        effet_temple(current_player)
+
+    elif current_player.case in source_cases:
+        effet_source_chaude(current_player)
 
 
 
