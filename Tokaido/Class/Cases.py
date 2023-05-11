@@ -148,69 +148,23 @@ def afficher ( cartes_a_proposer):
     if len(cartes_a_proposer)==3:
         print('adapter la taille')
 
-def carte_random( nb_cartes_a_tirer, liste_cartes_possibles, current_player):
+def cartes_a_proposer( nb_cartes_a_tirer, liste_cartes_possibles, current_player):
     cartes_a_proposer=[]                                                            #liste des cartes qui seront proposees au current_player                       
     for i in range (nb_cartes_a_tirer):                                             #constitution de la liste des cartes � proposer
         indice_carte=Random.randint(1,len(liste_cartes_possibles)-i-1)
         cartes_a_proposer.append(liste_cartes_possibles[indice_carte])              #il faudra ajouter la partie pygame en prenant en compte le nombre de cartes a tirer
-        del(cartes_a_proposer[indice_carte])
-    afficher (cartes_a_proposer)
-    if 'le current_player clique sur la carte'==True:
-        current_player.append('carte a ajt')
-        effet(current_player, )
-    elif 'le current_player clique sur valider'==True:   #car dans lechoppe le current_player peut choisir plusieurs cartes
-        return current_player
+        del(liste_cartes_possibles[indice_carte])
+    return cartes_a_proposer
 
 
 
 
 
-def action_en_fct_case( current_player): 
-
-    liste_cartes_possibles=test_case(current_player)                                   #afin de ne pas editer la liste initiale 
-            
-    if current_player.case in pano_cases[0]:                                               #SI CASE = PANO MER
-        indice=0
-        while liste_cartes_possibles[indice] in current_player.cartes_pano[0] :
-            indice+=1
-        if indice<=len(liste_cartes_possibles):                                     #on ajoute la carte pano ssi le current_player ne la pas encore
-            current_player.cartes_pano[0].append(liste_cartes_possibles[indice])            #(car les cartes pano se recoivent dans lordre)
-            current_player.points+=pano_cartes[0][liste_cartes_possibles[indice]][0]
-
-
-    elif current_player.case in pano_cases[1]:                                             #SI CASE = PANO MONTAGNE
-        indice=0
-        while liste_cartes_possibles[indice] in current_player.cartes_pano[1] :
-            indice+=1
-        if indice<=len(liste_cartes_possibles):                                     
-            current_player.cartes_pano[1].append(liste_cartes_possibles[indice])            
-            current_player.points+=pano_cartes[1][liste_cartes_possibles[indice]][0]   #[0] car les points sont stock�s en 1er rang dans le dico.
-
-
-    elif current_player.case in pano_cases[2]:                                             #SI CASE = PANO RIZIERE
-        indice=0
-        while liste_cartes_possibles[indice] in current_player.cartes_pano[2] :
-            indice+=1
-        if indice<=len(liste_cartes_possibles):                                     
-            current_player.cartes_pano[2].append(liste_cartes_possibles[indice])            
-            current_player.points+=pano_cartes[2][liste_cartes_possibles[indice]][0]
-
-
-
-    elif current_player.case in echoppe_cases :    
-        current_player.cartes_echoppe=carte_random (3,liste_cartes_possibles, current_player.cartes_echoppe)
-        return 
-
-
-    elif current_player.case in rencontre_cases:
-        i=0
-        for carte in liste_cartes_possibles:    
-            if carte in current_player.cartes_rencontre:
-                del(liste_cartes_possibles[i])
-            i+=1   
-        current_player.cartes_rencontre=carte_random (1,  liste_cartes_possibles, current_player.cartes_rencontre)             #fonction potentiellement a tej car copiee dans effet, faut juste vérifier 
-                
+    
 def achievments ( current_player, indice_achievment):
     if achievments[indice_achievment]==1:
         current_player.achievments[indice_achievment]=1
         achievments[indice_achievment]=0  
+
+
+def choix_carte (current_player, liste_)
