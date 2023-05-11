@@ -12,8 +12,8 @@ import random
 
 csv_directory = "Tokaido/Class/users.csv"
 
-invite_adj_list = ["Big", "Little", "Dark", "Evil", "Emo", "Invincible", "Weird", "Stinky"] #On voulait rire un peu 
-invite_name_list = ["Kid", "Cat", "Boy", "Girl", "Combat_Helicopter", "Dog", "Tree", "Table", "Weirdo", "Gangsta", "Grandmother"]
+invite_adj_list = ["Big", "Little", "Dark", "Evil", "Emo", "Invincible", "Weird", "Stinky", "Short"] #On voulait rire un peu 
+invite_name_list = ["Kid", "Cat", "Boy", "Girl", "Combat_Helicopter", "Dog", "Tree", "Table", "Weirdo", "Gangsta", "Grandmother", "Midget"]
 
 #Defnition du theme de PySimpleGUI
 sg.theme('GrayGrayGray')

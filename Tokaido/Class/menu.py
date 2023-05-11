@@ -212,6 +212,8 @@ class Menu():
         FPS = int(settings.setting["FPS"])
         while True :
             self.clock.tick(FPS)
+            #Affichage du background
+            self.screen.blit(self.bg, self.BG_POS)
             for event in pygame.event.get():
                 if self.affichage_constant_avec_interaction(event) == "quit":
                     return "Quit"
@@ -244,43 +246,40 @@ class Menu():
                             if action == "deconnexion": #<<< Je sais c'est moche mais ca fonctionne, et puis de toute facon j'ai deja perdu trop de temps a vouloir faire un truc prorpe qui au final est pas si propre
                                 return"Deconnexion"
 
-                #Affichage du background
-                self.screen.blit(self.bg, self.BG_POS)
+            #Affichage du titre
+            if self.title_rect.collidepoint(pygame.mouse.get_pos()):
+                self.screen.blit(self.hovered_title, self.TITLE_POS)
+            else :
+                self.screen.blit(self.title, self.TITLE_POS)
 
-                #Affichage du titre
-                if self.title_rect.collidepoint(pygame.mouse.get_pos()):
-                    self.screen.blit(self.hovered_title, self.TITLE_POS)
-                else :
-                    self.screen.blit(self.title, self.TITLE_POS)
+            #Affichage du bouton de menu de compte
+            if self.account_and_back_rect.collidepoint(pygame.mouse.get_pos()) :
+                self.screen.blit(self.hovered_account, self.ACCOUNT_POS)
+            else :
+                self.screen.blit(self.account, self.ACCOUNT_POS)
 
-                #Affichage du bouton de menu de compte
-                if self.account_and_back_rect.collidepoint(pygame.mouse.get_pos()) :
-                    self.screen.blit(self.hovered_account, self.ACCOUNT_POS)
-                else :
-                    self.screen.blit(self.account, self.ACCOUNT_POS)
+            #Affichage des boutons pour jouer
+            if self.play_solo_rect.collidepoint(pygame.mouse.get_pos()) :
+                self.screen.blit(self.hovered_play_solo_surface, self.PLAY_SOLO_POS)
+            else :
+                self.screen.blit(self.play_solo_surface, self.PLAY_SOLO_POS)
 
-                #Affichage des boutons pour jouer
-                if self.play_solo_rect.collidepoint(pygame.mouse.get_pos()) :
-                    self.screen.blit(self.hovered_play_solo_surface, self.PLAY_SOLO_POS)
-                else :
-                    self.screen.blit(self.play_solo_surface, self.PLAY_SOLO_POS)
+            if self.play_split_rect.collidepoint(pygame.mouse.get_pos()):
+                self.screen.blit(self.hovered_play_split_surface, self.PLAY_SPLIT_POS)
+            else :
+                self.screen.blit(self.play_split_surface, self.PLAY_SPLIT_POS)
 
-                if self.play_split_rect.collidepoint(pygame.mouse.get_pos()):
-                    self.screen.blit(self.hovered_play_split_surface, self.PLAY_SPLIT_POS)
-                else :
-                    self.screen.blit(self.play_split_surface, self.PLAY_SPLIT_POS)
+            if self.settings_rect.collidepoint(pygame.mouse.get_pos()):
+                self.screen.blit(self.hovered_settings_surface, self.SETTINGS_POS)
+            else :
+                self.screen.blit(self.settings_surface, self.SETTINGS_POS)
 
-                if self.settings_rect.collidepoint(pygame.mouse.get_pos()):
-                    self.screen.blit(self.hovered_settings_surface, self.SETTINGS_POS)
-                else :
-                    self.screen.blit(self.settings_surface, self.SETTINGS_POS)
-
-                self.affichage_constant()
-                #Actualisation de l'ecran
-                pygame.display.flip()
+            self.affichage_constant()
+            #Actualisation de l'ecran
+            pygame.display.flip()
 
     def account_menu(self):
-        pos_list = self.account_menu_transition(0, [self.bg, self.BG_POS, self.TITLE_POS, self.PLAY_SOLO_POS, self.PLAY_SPLIT_POS, self.SETTINGS_POS, (1/3 * self.screen_width - self.MAIN_PLAYER_WINS_SURFACE_WIDTH, self.screen_height), (3/4 * self.screen_width - self.MAIN_PLAYER_LOSES_SURFACE_WIDTH/2, self.screen_height)])                   #pos_list = [bg, bg_pos, title_pos, play_solo_pos, play_split_pos, main_player_wins_pos, main_player_loses_pos]
+        pos_list = self.account_menu_transition(0, [self.bg, self.BG_POS, self.TITLE_POS, self.PLAY_SOLO_POS, self.PLAY_SPLIT_POS, self.SETTINGS_POS, (self.MAIN_PLAYER_WINS_POS_X, self.screen_height), (self.MAIN_PLAYER_LOSES_POS_X, self.screen_height)])                   #pos_list = [bg, bg_pos, title_pos, play_solo_pos, play_split_pos, main_player_wins_pos, main_player_loses_pos]
             
         while True:
             for event in pygame.event.get() :

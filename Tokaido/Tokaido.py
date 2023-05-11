@@ -52,4 +52,6 @@ while menu_event != "Quit" :
         joueur = []
         for player in players_list:
             joueur.append(Class.Joueur.Joueur(player[0]))
-        Class.Play_split(players_list)
+
+            for element in joueur :
+                element.choix_perso()
