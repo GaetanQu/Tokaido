@@ -1,7 +1,7 @@
 class Joueur:
     def __init__(self, couleur, personnage):
         self.couleur=couleur
-        self.personnage=personnage
+        self.personnage=None
         self.pieces=personnage.pieces
         self.cartes_pano=[[],[],[]]             #mer, montagne, riziere
         self.cartes_repas=[]
