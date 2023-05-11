@@ -54,36 +54,39 @@ def test_case(current_player):
         return []
 
 def effet_echoppe (current_player):
-    carte_tiree=carte_random(3, )
-    if carte_tiree in list(echoppe_cartes[0].keys()):
-        if 'sushi' in current_player.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
-            for i in range(len(current_player.ordre_famille_echoppe)):
-                if current_player.ordre_famille_echoppe[i]=='sushi':
-                    current_player.points+=2*i+1
-        else : 
-            current_player.ordre_famille_echoppe.append('sushi')
-            current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
-    elif carte_tiree in list(echoppe_cartes[1].keys()):
-        if 'kimono' in current_player.ordre_famille_echoppe:     
-            for i in range(len(current_player.ordre_famille_echoppe)):
-                if current_player.ordre_famille_echoppe[i]=='kimono':
-                    current_player.points+=2*i+1
-        else : 
-            current_player.ordre_famille_echoppe.append('kimono')
-            current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
-    elif carte_tiree in list(echoppe_cartes[2].keys()):
-        if 'statue' in current_player.ordre_famille_echoppe:     
-            for i in range(len(current_player.ordre_famille_echoppe)):
-                if current_player.ordre_famille_echoppe[i]=='statue':
-                    current_player.points+=2*i+1
-        else : 
-            current_player.ordre_famille_echoppe.append('statue')
-            current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
-    elif carte_tiree in list(echoppe_cartes[3].keys()):
-        if 'eventail' in current_player.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
-            for i in range(len(current_player.ordre_famille_echoppe)):
-                if current_player.ordre_famille_echoppe[i]=='eventail':
-                    current_player.points+=2*i+1
+    liste_cartes_possibles=test_case(current_player)
+    possible_cards=cartes_a_proposer(3, liste_cartes_possibles, current_player)
+    cartes_choisies=choix(current_player, possible_cards)
+    for carte_choisie in cartes_choisies : 
+        if carte_choisie in list(echoppe_cartes[0].keys()):
+            if 'sushi' in current_player.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
+                for i in range(len(current_player.ordre_famille_echoppe)):
+                    if current_player.ordre_famille_echoppe[i]=='sushi':
+                        current_player.points+=2*i+1
+            else : 
+                current_player.ordre_famille_echoppe.append('sushi')
+                current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
+        elif carte_choisie in list(echoppe_cartes[1].keys()):
+            if 'kimono' in current_player.ordre_famille_echoppe:     
+                for i in range(len(current_player.ordre_famille_echoppe)):
+                    if current_player.ordre_famille_echoppe[i]=='kimono':
+                        current_player.points+=2*i+1
+            else : 
+                current_player.ordre_famille_echoppe.append('kimono')
+                current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
+        elif carte_choisie in list(echoppe_cartes[2].keys()):
+            if 'statue' in current_player.ordre_famille_echoppe:     
+                for i in range(len(current_player.ordre_famille_echoppe)):
+                    if current_player.ordre_famille_echoppe[i]=='statue':
+                        current_player.points+=2*i+1
+            else : 
+                current_player.ordre_famille_echoppe.append('statue')
+                current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
+        elif carte_choisie in list(echoppe_cartes[3].keys()):
+            if 'eventail' in current_player.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
+                for i in range(len(current_player.ordre_famille_echoppe)):
+                    if current_player.ordre_famille_echoppe[i]=='eventail':
+                        current_player.points+=2*i+1
         else : 
             current_player.ordre_famille_echoppe.append('eventail')
             current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
@@ -104,29 +107,30 @@ def effet_panorama (current_player, liste_cartes_possibles):
             current_player.cartes_pano[1].append(liste_cartes_possibles[indice])            
             current_player.points+=pano_cartes[1][liste_cartes_possibles[indice]][0]   #[0] car les points sont stock�s en 1er rang dans le dico.
     elif current_player.case in pano_cases[2]:                                             #SI CASE = PANO RIZIERE
+
         indice=0
         while liste_cartes_possibles[indice] in current_player.cartes_pano[2] :
             indice+=1
         if indice<=len(liste_cartes_possibles):                                     
             current_player.cartes_pano[2].append(liste_cartes_possibles[indice])            
             current_player.points+=pano_cartes[2][liste_cartes_possibles[indice]][0]
+    choix(current_player, )
 
 
 
 
 def effet ( carte_tiree, current_player):      #carte tiree a resoudre, peut etre a enlever des parametres 
-    liste_cartes_possibles=test_case(current_player)
+    liste_cartes_case=test_case(current_player)
     if current_player.case in echoppe_cases:
         effet_echoppe (current_player)
     elif current_player.case in pano_cases[0]+pano_cases[1]+pano_cases[2]: 
-        effet_panorama (current_player)
-    elif carte_tiree in list(current_player, liste_cartes_possibles):
-        None 
+        effet_panorama (current_player, liste_cartes_case)
+
 
 
 
     elif current_player.case in echoppe_cases :    
-        current_player.cartes_echoppe=carte_random (3,liste_cartes_possibles, current_player.cartes_echoppe)
+        current_player.cartes_echoppe=cartes_a_proposer (3,liste_cartes_possibles, current_player.cartes_echoppe)
         return 
 
 
@@ -136,7 +140,7 @@ def effet ( carte_tiree, current_player):      #carte tiree a resoudre, peut etr
             if carte in current_player.cartes_rencontre:
                 del(liste_cartes_possibles[i])
             i+=1   
-        current_player.cartes_rencontre=carte_random (1,  liste_cartes_possibles, current_player.cartes_rencontre)
+        current_player.cartes_rencontre=cartes_a_proposer (1,  liste_cartes_possibles, current_player.cartes_rencontre)
 
 
 
@@ -148,13 +152,13 @@ def afficher ( cartes_a_proposer):
     if len(cartes_a_proposer)==3:
         print('adapter la taille')
 
-def cartes_a_proposer( nb_cartes_a_tirer, liste_cartes_possibles, current_player):
-    cartes_a_proposer=[]                                                            #liste des cartes qui seront proposees au current_player                       
+def cartes_a_proposer( nb_cartes_a_tirer, liste_cartes_case, current_player):
+    possible_cards=[]                                                            #liste des cartes qui seront proposees au current_player                       
     for i in range (nb_cartes_a_tirer):                                             #constitution de la liste des cartes � proposer
-        indice_carte=Random.randint(1,len(liste_cartes_possibles)-i-1)
-        cartes_a_proposer.append(liste_cartes_possibles[indice_carte])              #il faudra ajouter la partie pygame en prenant en compte le nombre de cartes a tirer
-        del(liste_cartes_possibles[indice_carte])
-    return cartes_a_proposer
+        indice_carte=Random.randint(1,len(liste_cartes_case)-i-1)
+        possible_cards.append(liste_cartes_case[indice_carte])              #il faudra ajouter la partie pygame en prenant en compte le nombre de cartes a tirer
+        del(liste_cartes_case[indice_carte])
+    return possible_cards
 
 
 
@@ -167,4 +171,8 @@ def achievments ( current_player, indice_achievment):
         achievments[indice_achievment]=0  
 
 
-def choix_carte (current_player, liste_)
+
+def choix (current_player, possible_cards):             #PYGAME!!!! cette fonction doit me return une liste comportant la ou 
+    while 'le joueur ne clique pas sur valider'==True:  #les cartes choisies par le joueur (même si la carte est imposee)
+        if 'le joueur clique'==True:
+            pass
