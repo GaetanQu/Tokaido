@@ -1,4 +1,4 @@
-import Random
+import random
 import Class.Joueur
 
 
@@ -53,14 +53,18 @@ def test_case(current_player):
     else :
         return []
 
-def effet_echoppe (current_player):
-    liste_cartes_possibles=test_case(current_player)
-    possible_cards=cartes_a_proposer(3, liste_cartes_possibles, current_player)
-    cartes_choisies=choix(current_player, possible_cards)
+def effet_echoppe (current_player, shokunin=False):
+    liste_cartes_case=test_case(current_player)
+    if shokunin==True:
+        nouvel_objet=liste_cartes_case[random.randint(0, len(liste_cartes_case)-1)]
+        current_player                      #a finir, ajouter la carte dans la bonne liste.
+        return
+    possible_cards=cartes_a_proposer(3, liste_cartes_case, current_player)
+    cartes_choisies=choix(current_player, possible_cards)           #il faudra aussi suppr les cartes choisies par le joueur de la liste generale
     for carte_choisie in cartes_choisies : 
         if carte_choisie in list(echoppe_cartes[0].keys()):
             if 'sushi' in current_player.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
-                for i in range(len(current_player.ordre_famille_echoppe)):
+                for i in range(len(current_player.ordre_famille_echoppe)):  #ne pas oublier d'enlever des pieces
                     if current_player.ordre_famille_echoppe[i]=='sushi':
                         current_player.points+=2*i+1
             else : 
@@ -91,32 +95,50 @@ def effet_echoppe (current_player):
             current_player.ordre_famille_echoppe.append('eventail')
             current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
 
-def effet_panorama (current_player, liste_cartes_possibles):
+def effet_panorama (current_player):
+    liste_cartes_case=test_case(current_player)
     if current_player.case in pano_cases[0]:                                               #SI CASE = PANO MER
         indice=0
-        while liste_cartes_possibles[indice] in current_player.cartes_pano[0] :
+        while liste_cartes_case[indice] in current_player.cartes_pano[0] :
             indice+=1
-        if indice<=len(liste_cartes_possibles):                                     #on ajoute la carte pano ssi le current_player ne la pas encore
-            current_player.cartes_pano[0].append(liste_cartes_possibles[indice])            #(car les cartes pano se recoivent dans lordre)
-            current_player.points+=pano_cartes[0][liste_cartes_possibles[indice]][0]
+        if indice<=len(liste_cartes_case):                                     #on ajoute la carte pano ssi le current_player ne la pas encore
+            current_player.cartes_pano[0].append(liste_cartes_case[indice])            #(car les cartes pano se recoivent dans lordre)
+            current_player.points+=pano_cartes[0][liste_cartes_case[indice]][0]
     elif current_player.case in pano_cases[1]:                                             #SI CASE = PANO MONTAGNE
         indice=0
-        while liste_cartes_possibles[indice] in current_player.cartes_pano[1] :
+        while liste_cartes_case[indice] in current_player.cartes_pano[1] :
             indice+=1
-        if indice<=len(liste_cartes_possibles):                                     
-            current_player.cartes_pano[1].append(liste_cartes_possibles[indice])            
-            current_player.points+=pano_cartes[1][liste_cartes_possibles[indice]][0]   #[0] car les points sont stock�s en 1er rang dans le dico.
+        if indice<=len(liste_cartes_case):                                     
+            current_player.cartes_pano[1].append(liste_cartes_case[indice])            
+            current_player.points+=pano_cartes[1][liste_cartes_case[indice]][0]   #[0] car les points sont stock�s en 1er rang dans le dico.
     elif current_player.case in pano_cases[2]:                                             #SI CASE = PANO RIZIERE
 
         indice=0
-        while liste_cartes_possibles[indice] in current_player.cartes_pano[2] :
+        while liste_cartes_case[indice] in current_player.cartes_pano[2] :
             indice+=1
-        if indice<=len(liste_cartes_possibles):                                     
-            current_player.cartes_pano[2].append(liste_cartes_possibles[indice])            
-            current_player.points+=pano_cartes[2][liste_cartes_possibles[indice]][0]
-    choix(current_player, )
+        if indice<=len(liste_cartes_case):                                     
+            current_player.cartes_pano[2].append(liste_cartes_case[indice])            
+            current_player.points+=pano_cartes[2][liste_cartes_case[indice]][0]
+    choix(current_player, [liste_cartes_case[indice]][0])
 
-
+def effet_rencontre(current_player):
+    liste_cartes_case=test_case(current_player)
+    i=0
+    for carte in liste_cartes_case:    
+        if carte in current_player.cartes_rencontre:
+            del(liste_cartes_case[i])
+        i+=1   
+    nouvelle_rencontre=cartes_a_proposer (1,  liste_cartes_case, current_player.cartes_rencontre)
+    current_player.cartes_rencontre.append(nouvelle_rencontre)
+    if nouvelle_rencontre=='Kuge':
+        current_player.pieces+=3
+    elif nouvelle_rencontre=='Samurai':
+        current_player.points+=3
+    elif nouvelle_rencontre=='Miko':
+        current_player.points+=1
+        current_player.pieces_donnees_temple+=1
+    elif nouvelle_rencontre=='Shokunin':
+        effet_echoppe(current_player, shokunin=True)
 
 
 def effet ( carte_tiree, current_player):      #carte tiree a resoudre, peut etre a enlever des parametres 
@@ -126,31 +148,18 @@ def effet ( carte_tiree, current_player):      #carte tiree a resoudre, peut etr
     elif current_player.case in pano_cases[0]+pano_cases[1]+pano_cases[2]: 
         effet_panorama (current_player, liste_cartes_case)
 
-
-
-
-    elif current_player.case in echoppe_cases :    
-        current_player.cartes_echoppe=cartes_a_proposer (3,liste_cartes_possibles, current_player.cartes_echoppe)
-        return 
-
-
     elif current_player.case in rencontre_cases:
+        effet_rencontre(current_player)
         i=0
-        for carte in liste_cartes_possibles:    
+        for carte in liste_cartes_case:    
             if carte in current_player.cartes_rencontre:
-                del(liste_cartes_possibles[i])
+                del(liste_cartes_case[i])
             i+=1   
-        current_player.cartes_rencontre=cartes_a_proposer (1,  liste_cartes_possibles, current_player.cartes_rencontre)
+        current_player.cartes_rencontre=cartes_a_proposer (1,  liste_cartes_case, current_player.cartes_rencontre)
 
 
 
-def afficher ( cartes_a_proposer):
-    if len(cartes_a_proposer)==1:
-        print('adapter la taille')
-    if len(cartes_a_proposer)==2:
-        print('adapter la taille')
-    if len(cartes_a_proposer)==3:
-        print('adapter la taille')
+
 
 def cartes_a_proposer( nb_cartes_a_tirer, liste_cartes_case, current_player):
     possible_cards=[]                                                            #liste des cartes qui seront proposees au current_player                       
