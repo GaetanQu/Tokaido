@@ -44,17 +44,18 @@ class Menu():
         self.BG_COLOR = (251,253,248)
         self.bg = pygame.image.load('Tokaido/class/images/menu/bg.png')
 
-        self.BG_WIDTH, self.BG_HEIGHT = self.bg.get_size()
-        self.BG_RATIO = int(self.BG_WIDTH / self.BG_HEIGHT)
-        
-        bg_size = 2* self.screen_height / self.screen_height / self.BG_RATIO
-        self.bg = pygame.transform.smoothscale(self.bg, (bg_size * self.BG_WIDTH, bg_size * self.BG_HEIGHT))
-        self.BG_WIDTH, self.BG_HEIGHT = self.bg.get_size()
-
         self.bg_array = pygame.surfarray.array3d(self.bg.convert_alpha())
 
 
-        self.BG_COLOR = (251,253,248)
+        self.BG_WIDTH, self.BG_HEIGHT = self.bg.get_size()
+        self.BG_RATIO = int(self.BG_WIDTH / self.BG_HEIGHT)
+        
+        bg_scaled_size = (int(self.BG_WIDTH * 1920 / (1.3 *self.screen_width)), int(self.BG_HEIGHT * 1080 /(1.3* self.screen_height)))
+        bg_scaled_array = cv2.resize(self.bg_array, bg_scaled_size[::-1], interpolation = cv2.INTER_CUBIC)
+        self.bg = pygame.surfarray.make_surface(bg_scaled_array)
+
+        self.BG_WIDTH, self.BG_HEIGHT = self.bg.get_size()
+
         self.BG_POS = (self.CENTERX - self.BG_WIDTH/2 ,self.CENTERY - self.BG_HEIGHT/1.5)
 
 
