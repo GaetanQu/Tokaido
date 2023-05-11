@@ -47,8 +47,10 @@ class Menu():
         self.BG_WIDTH, self.BG_HEIGHT = self.bg.get_size()
         self.BG_RATIO = int(self.BG_WIDTH / self.BG_HEIGHT)
         
-        bg_size = 1920/1080 * self.BG_RATIO
-        pygame.transform.smoothscale(self.bg, (bg_size * self.BG_WIDTH, bg_size * self.BG_HEIGHT))
+        bg_size = 2* self.screen_height / self.screen_height / self.BG_RATIO
+        self.bg = pygame.transform.smoothscale(self.bg, (bg_size * self.BG_WIDTH, bg_size * self.BG_HEIGHT))
+        self.BG_WIDTH, self.BG_HEIGHT = self.bg.get_size()
+
         self.bg_array = pygame.surfarray.array3d(self.bg.convert_alpha())
 
 
@@ -501,8 +503,7 @@ class Menu():
         self.screen.fill(self.BG_COLOR)  #Oui il n'y a pas d'interaction avec le BG mais c'est plus pratique de le mettre la
         
         #Affichage de la croix, on doit pourvoir fermer le jeu a tout instant
-        #Affichage du background
-        self.screen.blit(self.bg, self.BG_POS)
+
         if self.croix_rect.collidepoint(pygame.mouse.get_pos()) :
             self.screen.blit(self.hovered_croix, self.CROIX_POS)
             if event.type == pygame.MOUSEBUTTONUP :
