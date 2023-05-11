@@ -212,8 +212,6 @@ class Menu():
         FPS = int(settings.setting["FPS"])
         while True :
             self.clock.tick(FPS)
-            #Affichage du background
-            self.screen.blit(self.bg, self.BG_POS)
             for event in pygame.event.get():
                 if self.affichage_constant_avec_interaction(event) == "quit":
                     return "Quit"
@@ -498,6 +496,8 @@ class Menu():
 
 
         #Affichage de la croix, on doit pourvoir fermer le jeu a tout instant
+        #Affichage du background
+        self.screen.blit(self.bg, self.BG_POS)
         if self.croix_rect.collidepoint(pygame.mouse.get_pos()) :
             self.screen.blit(self.hovered_croix, self.CROIX_POS)
             if event.type == pygame.MOUSEBUTTONUP :
