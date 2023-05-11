@@ -1,8 +1,8 @@
 import Random
+import Class.Joueur
 
 
-
-cases_doubles=[]               #a completer
+cases_doubles=[1, 5,6,7,9,11,17,18,19,20,22,24,30,32,34,36,37,40,43,45,47,48,51,52]               #a completer
 
 pano_cases=[[11,15,24,34,39,46,52],[6,12,19,23,32,50],[4,18,28,35,51]]    #mer, montagne, riziere
 pano_cartes=[{},{},{}]         #oblige de faire une liste de dictionnaires pour uniformiser, sinon une des methodes fonctionnera pas
