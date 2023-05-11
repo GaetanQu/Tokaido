@@ -49,6 +49,7 @@ while menu_event != "Quit" :
 
     elif menu_event[0] == "Split":
         players_list = menu_event[1]
+        joueur = []
         for player in players_list:
-            player = Class.Joueur.Joueur
+            joueur.append(Class.Joueur.Joueur(player[0]))
         Class.Play_split(players_list)

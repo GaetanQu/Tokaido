@@ -1,8 +1,9 @@
 class Joueur:
-    def __init__(self, couleur, personnage):
-        self.couleur=couleur
+    def __init__(self, nom):
+        self.nom = nom
+        self.couleur=None
         self.personnage=None
-        self.pieces=personnage.pieces
+        self.pieces=0
         self.cartes_pano=[[],[],[]]             #mer, montagne, riziere
         self.cartes_repas=[]
         self.cartes_echoppe[[],[],[],[]]        #4 familles de cartes, faudrait les mettre dans l'ordre 
@@ -17,3 +18,5 @@ class Joueur:
 
     def avancer (self):
         self.case+=int(input('Combien de cases?'))
+
+    def choix_perso(self):
