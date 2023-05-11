@@ -47,11 +47,11 @@ def test_case(current_player):
     elif current_player.case in source_cases:
         return list(source_cartes.keys())
     elif current_player.case in rencontre_cases:
-        return listrencontre_cartes.keys())
+        return list(rencontre_cartes.keys())
     elif current_player.case in relais_cases
         return list(relais_cartes.keys())
     else :
-        return 
+        return []
 
 def effet_echoppe (current_player):
     carte_tiree=carte_random(3, )
@@ -88,7 +88,7 @@ def effet_echoppe (current_player):
             current_player.ordre_famille_echoppe.append('eventail')
             current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
 
-def effet_panorama ():
+def effet_panorama (current_player, liste_cartes_possibles):
     if current_player.case in pano_cases[0]:                                               #SI CASE = PANO MER
         indice=0
         while liste_cartes_possibles[indice] in current_player.cartes_pano[0] :
@@ -118,9 +118,9 @@ def effet ( carte_tiree, current_player):      #carte tiree a resoudre, peut etr
     liste_cartes_possibles=test_case(current_player)
     if current_player.case in echoppe_cases:
         effet_echoppe (current_player)
-    elif current_player.case in pano_cases[0]+pano_case[1]+pano_cases[2]: 
-        effet_pano (current_player)
-    elif carte_tiree in list(current_player):
+    elif current_player.case in pano_cases[0]+pano_cases[1]+pano_cases[2]: 
+        effet_panorama (current_player)
+    elif carte_tiree in list(current_player, liste_cartes_possibles):
         None 
 
 
