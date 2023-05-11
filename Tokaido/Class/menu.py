@@ -42,12 +42,15 @@ class Menu():
         #Les images
         
         self.BG_COLOR = (251,253,248)
-
         self.bg = pygame.image.load('Tokaido/class/images/menu/bg.png')
-        self.bg_array = pygame.surfarray.array3d(self.bg.convert_alpha())
 
         self.BG_WIDTH, self.BG_HEIGHT = self.bg.get_size()
         self.BG_RATIO = int(self.BG_WIDTH / self.BG_HEIGHT)
+        
+        bg_size = 1920/1080 * self.BG_RATIO
+        pygame.transform.smoothscale(self.bg, (bg_size * self.BG_WIDTH, bg_size * self.BG_HEIGHT))
+        self.bg_array = pygame.surfarray.array3d(self.bg.convert_alpha())
+
 
         self.BG_COLOR = (251,253,248)
         self.BG_POS = (self.CENTERX - self.BG_WIDTH/2 ,self.CENTERY - self.BG_HEIGHT/1.5)
@@ -243,6 +246,9 @@ class Menu():
                             action = self.account_menu()
                             if action == "deconnexion": #<<< Je sais c'est moche mais ca fonctionne, et puis de toute facon j'ai deja perdu trop de temps a vouloir faire un truc prorpe qui au final est pas si propre
                                 return"Deconnexion"
+
+            #Affichage du background
+            self.screen.blit(self.bg, self.BG_POS)
 
             #Affichage du titre
             if self.title_rect.collidepoint(pygame.mouse.get_pos()):
@@ -492,9 +498,8 @@ class Menu():
         fake_event = pygame.event.Event(pygame.MOUSEMOTION, {'pos' : (0,0)})
         pygame.time.set_timer(fake_event, int(1000/FPS))
 
-        self.screen.fill(self.BG_COLOR) #Oui il n'y a pas d'interaction avec le BG mais c'est plus pratique de le mettre la
-
-
+        self.screen.fill(self.BG_COLOR)  #Oui il n'y a pas d'interaction avec le BG mais c'est plus pratique de le mettre la
+        
         #Affichage de la croix, on doit pourvoir fermer le jeu a tout instant
         #Affichage du background
         self.screen.blit(self.bg, self.BG_POS)
