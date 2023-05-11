@@ -2,7 +2,8 @@ import Random
 import Class.Joueur
 
 
-cases_doubles=[1, 5,6,7,9,11,17,18,19,20,22,24,30,32,34,36,37,40,43,45,47,48,51,52]               #a completer
+cases_doubles=[1,5,6,7,9,11,17,18,19,20,22,24,30,32,34,36,37,40,43,45,47,48,51,52]
+
 
 pano_cases=[[11,15,24,34,39,46,52],[6,12,19,23,32,50],[4,18,28,35,51]]    #mer, montagne, riziere
 pano_cartes=[{},{},{}]         #oblige de faire une liste de dictionnaires pour uniformiser, sinon une des methodes fonctionnera pas
@@ -36,19 +37,21 @@ achievments=[1,1,1,1,1,1,1,1]
 
 def test_case(current_player):             
     if current_player.case in pano_cases[1]:
-        return pano_cartes[1].keys()
+        return list(pano_cartes[1].keys())
     elif current_player.case in pano_cases[2]:
-        return pano_cartes[2].keys()
+        return list(pano_cartes[2].keys())
     elif current_player.case in pano_cases[3]:
-        return pano_cartes[3].keys()
+        return list(pano_cartes[3].keys())
     elif current_player.case in echoppe_cases:
-        return echoppe_cartes[1].keys()+echoppe_cartes[2].keys()+echoppe_cartes[3].keys()+echoppe_cartes[4].keys()
+        return list(echoppe_cartes[1].keys())+list(echoppe_cartes[2].keys())+list(echoppe_cartes[3].keys())+list(echoppe_cartes[4].keys())
     elif current_player.case in source_cases:
-        return source_cartes.keys()
+        return list(source_cartes.keys())
     elif current_player.case in rencontre_cases:
-        return rencontre_cartes.keys()
-    elif current_player.case in relais_cases:    
-        return relais_cartes.keys()
+        return listrencontre_cartes.keys())
+    elif current_player.case in relais_cases
+        return list(relais_cartes.keys())
+    else :
+        return 
 
 def effet_echoppe (current_player):
     carte_tiree=carte_random(3, )
@@ -112,7 +115,7 @@ def effet_panorama ():
 
 
 def effet ( carte_tiree, current_player):      #carte tiree a resoudre, peut etre a enlever des parametres 
-
+    liste_cartes_possibles=test_case(current_player)
     if current_player.case in echoppe_cases:
         effet_echoppe (current_player)
     elif current_player.case in pano_cases[0]+pano_case[1]+pano_cases[2]: 

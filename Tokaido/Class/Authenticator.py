@@ -8,8 +8,12 @@ On vous l'accorde, il faudrait une cle de cryptage du mot de passe
 
 import PySimpleGUI as sg
 import csv
+import random
 
 csv_directory = "Tokaido/Class/users.csv"
+
+invite_adj_list = ["Big", "Little", "Dark", "Evil", "Emo", "Invincible", "Weird", "Stinky", "Short"] #On voulait rire un peu 
+invite_name_list = ["Kid", "Cat", "Boy", "Girl", "Combat_Helicopter", "Dog", "Tree", "Table", "Weirdo", "Gangsta", "Grandmother", "Midget"]
 
 #Defnition du theme de PySimpleGUI
 sg.theme('GrayGrayGray')
@@ -73,7 +77,9 @@ def auth() :
 
         #Jouer en tant qu'invite
         if window == login_window and event == "Jouer en tant qu'invite":
-            player = ["Invite", 0, 0]
+            invite_adj = invite_adj_list[random.randint(0, len(invite_adj_list)-1)]
+            invite_name = invite_name_list[random.randint(0, len(invite_name_list)-1)]
+            player = [invite_adj + "_" + invite_name + " " + str(random.randint(0,100)), 0, 0]
             break
 
         #Connexion
