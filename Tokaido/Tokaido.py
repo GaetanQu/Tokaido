@@ -13,6 +13,7 @@ Puis on s'est rappeles qu'on etait en prepa
 import Class.Authenticator
 import Class.Menu #<- ca arrive que le fichier se renomme en "menu.py", sans doute a cause de Git, il faut le renommer en "Menu.py"
 import Class.Play_split
+import Class.Joueur
 import pygame
 import PySimpleGUI as sg
 
@@ -20,7 +21,6 @@ import PySimpleGUI as sg
 case = []
 for i in range (54):
     case.append(i)
-    0
 
 #En premier lieu, l'utilisateur doit s'identifier
 players_list = []
@@ -50,4 +50,6 @@ while menu_event != "Quit" :
 
     elif menu_event[0] == "Split":
         players_list = menu_event[1]
+        for player in players_list:
+            player = Class.Player.Player
         Class.Play_split(players_list)

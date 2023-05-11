@@ -383,6 +383,10 @@ class Menu():
             self.clock.tick(FPS)
             for event in pygame.event.get() :
 
+                #On verifie si l'utilisateur a deja ferme le programme
+                if ["Closed", None, None] in self.players_list:
+                    self.players_list = [self.main_player]
+
                 if self.affichage_constant_avec_interaction(event) == "quit":
                     return "quit"
 
@@ -480,14 +484,13 @@ class Menu():
         ID_list.append(ID)
         return ID_list
 
-
     def translation (self, pos, diff_pos):
         return (pos[0] + diff_pos[0], pos[1] + diff_pos[1])
 
     def affichage_constant(self) : #Ca parait inutile mais ca permet une meilleure evolutivite du programme
         #Affichage du pseudo du joueur connecte
         self.screen.blit(self.main_player_name_surface, self.MAIN_PLAYER_NAME_SURFACE_POS)
-
+        
     def affichage_constant_avec_interaction(self, event):
         fake_event = pygame.event.Event(pygame.MOUSEMOTION, {'pos' : (0,0)})
         pygame.time.set_timer(fake_event, int(1000/FPS))
