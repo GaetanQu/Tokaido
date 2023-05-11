@@ -11,6 +11,7 @@ class Joueur:
         self.cartes_repas=[]
         self.cartes_echoppe[[],[],[],[]]        #4 familles de cartes, faudrait les mettre dans l'ordre 
         self.ordre_famille_echoppe=[]           #car l'ordre dans lequel le joueur prend les cartes est important. liste prendra en paramètre sushi, kimono, statue, eventail.
+        self.cartes_source=[]
         self.pieces_donnees_temple=0
         self.pieces_depensees_repas=0
         self.case=0
