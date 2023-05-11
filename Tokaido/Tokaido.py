@@ -14,7 +14,6 @@ import Class.Authenticator
 import Class.Menu #<- ca arrive que le fichier se renomme en "menu.py", sans doute a cause de Git, il faut le renommer en "Menu.py"
 import Class.Play_split
 import Class.Joueur
-import pygame
 import PySimpleGUI as sg
 
 #Creation du plateau
@@ -51,5 +50,5 @@ while menu_event != "Quit" :
     elif menu_event[0] == "Split":
         players_list = menu_event[1]
         for player in players_list:
-            player = Class.Player.Player
+            player = Class.Joueur.Joueur
         Class.Play_split(players_list)
