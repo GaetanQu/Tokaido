@@ -50,7 +50,7 @@ def test_case(current_player):
         return list(source_cartes.keys())
     elif current_player.case in rencontre_cases:
         return list(rencontre_cartes.keys())
-    elif current_player.case in relais_cases
+    elif current_player.case in relais_cases:
         return list(relais_cartes.keys())
     else :
         return []
@@ -75,8 +75,10 @@ def effet_echoppe (current_player, shokunin=False):
             else : 
                 current_player.ordre_famille_echoppe.append('sushi')
                 current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
-            current_player.pieces-=echoppe_cartes[0][carte_choisie][1]
             current_player.cartes_echoppe[0].append(carte_choisie)
+            #on retire des pieces ssi cest pas le shokunin (rencontre) qui donne la carte
+            if shokunin==False :
+                current_player.pieces-=echoppe_cartes[0][carte_choisie][1]
         elif carte_choisie in list(echoppe_cartes[1].keys()):
             if 'kimono' in current_player.ordre_famille_echoppe:     
                 for i in range(len(current_player.ordre_famille_echoppe)):
@@ -86,8 +88,9 @@ def effet_echoppe (current_player, shokunin=False):
             else : 
                 current_player.ordre_famille_echoppe.append('kimono')
                 current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
-            current_player.pieces-=echoppe_cartes[1][carte_choisie][1]
             current_player.cartes_echoppe[1].append(carte_choisie)
+            if shokunin==False :
+                current_player.pieces-=echoppe_cartes[1][carte_choisie][1]
         elif carte_choisie in list(echoppe_cartes[2].keys()):
             if 'statue' in current_player.ordre_famille_echoppe:     
                 for i in range(len(current_player.ordre_famille_echoppe)):
@@ -96,18 +99,20 @@ def effet_echoppe (current_player, shokunin=False):
             else : 
                 current_player.ordre_famille_echoppe.append('statue')
                 current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
-            current_player.pieces-=echoppe_cartes[2][carte_choisie][1]
             current_player.cartes_echoppe[2].append(carte_choisie)
+            if shokunin==False:
+                current_player.pieces-=echoppe_cartes[2][carte_choisie][1]
         elif carte_choisie in list(echoppe_cartes[3].keys()):
-            if 'eventail' in current_player.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
+            if 'eventail' in current_player.ordre_famille_echoppe:     
                 for i in range(len(current_player.ordre_famille_echoppe)):
                     if current_player.ordre_famille_echoppe[i]=='eventail':
                         current_player.points+=2*i+1
             else : 
                 current_player.ordre_famille_echoppe.append('eventail')
                 current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
-            current_player.pieces-=echoppe_cartes[3][carte_choisie][1]
             current_player.cartes_echoppe[3].append(carte_choisie)
+            if shokunin==False : 
+                current_player.pieces-=echoppe_cartes[3][carte_choisie][1]
 
 #il faut ajouter le fait que si le joueur a deja toute une collection de pano, pas le droit de sarreter sur la case
 def effet_panorama (current_player, mer=False, montagne=False, riziere=False): 
@@ -222,6 +227,11 @@ def effet (current_player):
 
 
 
+
+
+
+
+
 #constitution de la liste des cartes qu'on proposera au joueur selon le nbr de cartes a tirer
 def cartes_a_proposer( nb_cartes_a_tirer, liste_cartes_case, current_player):
     possible_cards=[]                      
@@ -230,7 +240,6 @@ def cartes_a_proposer( nb_cartes_a_tirer, liste_cartes_case, current_player):
         possible_cards.append(liste_cartes_case[indice_carte])              
         del(liste_cartes_case[indice_carte])
     return possible_cards
-
 
 
 #simple test si lachievment est deja recupere    
