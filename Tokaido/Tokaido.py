@@ -27,10 +27,9 @@ players_list = []
 account = Class.Authenticator.auth()
 players_list.append(account)
 
-menu_event = ""
+menu_event = None
 
 while menu_event != "Quit" :
-
     if account[0] != "Closed":
         menu = Class.menu.Menu(players_list)
         menu_event = menu.launch()
@@ -52,6 +51,5 @@ while menu_event != "Quit" :
         joueur = []
         for player in players_list:
             joueur.append(Class.Joueur.Joueur(player[0]))
-
-            for element in joueur :
-                element.choix_perso()
+        for element in joueur :
+            element.choix_perso(joueur)

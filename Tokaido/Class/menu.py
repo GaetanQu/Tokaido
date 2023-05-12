@@ -18,6 +18,7 @@ class Menu():
 
     #main player = [Pseudo, Victoires, Defaites]
     def __init__(self, players_list):
+        self.first_players_list = players_list
         self.players_list = players_list
         self.main_player = self.players_list[0]
 
@@ -239,13 +240,17 @@ class Menu():
                         return"Solo"
 
                     elif self.play_split_rect.collidepoint(pygame.mouse.get_pos()):
-                        nb_joueurs = self.play_split_menu()
-                        if nb_joueurs == "quit":
+                        self.players_list = self.play_split_menu()
+                        if self.players_list == "quit":
                             return "Quit"
-                        elif nb_joueurs == "account":
+                        elif self.players_list == "account":
                             action = self.account_menu()
                             if action == "deconnexion": #<<< Je sais c'est moche mais ca fonctionne, et puis de toute facon j'ai deja perdu trop de temps a vouloir faire un truc prorpe qui au final est pas si propre
                                 return"Deconnexion"
+                        elif self.players_list == None :
+                            self.players_list = [self.first_players_list]
+                        else :
+                            return("Split", self.players_list)
 
             #Affichage du background
             self.screen.blit(self.bg, self.BG_POS)
@@ -399,23 +404,22 @@ class Menu():
                     #On teste le nombre de joueurs
                     elif self.split_player_2_rectangle.collidepoint(pygame.mouse.get_pos()):
                         self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
-                        return ("Split", self.players_list)
+                        return (self.players_list)
 
                     elif self.split_player_3_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (2):
                             self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
-                        print(self.players_list)
-                        return ("Split", self.players_list)
+                        return (self.players_list)
 
                     elif self.split_player_4_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (3):
                             self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
-                        return ("Split", self.players_list)
+                        return (self.players_list)
 
                     elif self.split_player_5_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (4):
                             self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
-                        return ("Split", self.players_list)
+                        return (self.players_list)
 
                     elif self.settings_rect.collidepoint(pygame.mouse.get_pos()):
                         settings.menu()
