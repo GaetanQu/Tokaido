@@ -48,8 +48,10 @@ while menu_event != "Quit" :
 
     elif menu_event[0] == "Split":
         players_list = menu_event[1]
+        print (players_list)
         joueur = []
         for player in players_list:
             joueur.append(Class.Joueur.Joueur(player[0]))
         for element in joueur :
-            element.choix_perso(joueur)
+            element.choix_couleur(joueur)
+            #element.choix_perso(joueur)
