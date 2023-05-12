@@ -11,7 +11,7 @@ Puis on s'est rappeles qu'on etait en prepa
 
 #Importation de tous les modules et classes nécessaires au bon fonctionnement du programme
 import Class.Authenticator
-import Class.Menu #<- ca arrive que le fichier se renomme en "menu.py", sans doute a cause de Git, il faut le renommer en "Menu.py"
+import Class.menu #<- ca arrive que le fichier se renomme en "menu.py", sans doute a cause de Git, il faut le renommer en "Menu.py"
 import Class.Play_split
 import Class.Joueur
 import PySimpleGUI as sg
@@ -32,7 +32,7 @@ menu_event = ""
 while menu_event != "Quit" :
 
     if account[0] != "Closed":
-        menu = Class.Menu.Menu(players_list)
+        menu = Class.menu.Menu(players_list)
         menu_event = menu.launch()
 
     elif account[0] == "Closed":
