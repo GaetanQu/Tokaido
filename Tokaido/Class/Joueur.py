@@ -98,9 +98,6 @@ class Joueur:
                     pass
 
     def choix_couleur(self, liste_joueurs) :
-        pygame.init()
-        pygame.display.init()
-        pygame.font.init()
         pygame.display.set_caption("Tokaido - Choisissez votre couleur")
 
         screen = pygame.display.set_mode((0,0))
@@ -109,7 +106,7 @@ class Joueur:
 
 
         title_font = pygame.font.Font(JAPON, 100)
-        title = title_font.render(self.nom + ", choisissez votre couleur", 1, (0,0,0))
+        title = title_font.render(str(self.nom) + ", choisissez votre couleur", 1, (0,0,0))
         title_width, title_height = title.get_size()
 
         TITLEPOS = (CENTERX - title_width/2, 2/3 * screen_height-title_height/2)
@@ -141,14 +138,15 @@ class Joueur:
         for joueur in liste_joueurs:
             taken_colors.append(joueur.couleur)
 
+        i=0
         while True :
             clock.tick(FPS)
             screen.fill(BG_COLOR)
             screen.blit(bg, (CENTERX - bg.get_size()[0]/2, CENTERY - bg.get_size()[1]/1.5))
-            s = pygame.Surface(screen.get_size())  # the size of your rect
-            s.set_alpha(128)                # alpha level
-            s.fill((253,251,248))           # this fills the entire surface
-            screen.blit(s, (0,0))    # (0,0) are the top-left coordinates
+            bg_filter = pygame.Surface(screen.get_size())
+            bg_filter.set_alpha(128)
+            bg_filter.fill((253,251,248))
+            screen.blit(bg_filter, (0,0))
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -217,7 +215,18 @@ class Joueur:
                 screen.blit(jeton["violet"], VIOLET_POS)
 
             screen.blit(title, TITLEPOS)
+
+            ANIMATION_DURATION = 0.5
+            animation_filter = pygame.Surface(screen.get_size())
+            animation_filter.fill(BG_COLOR)
+
+            if i <= ANIMATION_DURATION * FPS and self == liste_joueurs[0]:
+                animation_filter.set_alpha(255-i*255/(ANIMATION_DURATION*FPS))
+                screen.blit(animation_filter, (0,0))
+                i+=1
+
             pygame.display.flip()
+
 
 def centrage_rect(surface, pos):
     return pos[0] + surface.get_size()[0]/2, pos[1] + surface.get_size()[1]/2

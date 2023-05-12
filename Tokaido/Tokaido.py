@@ -15,6 +15,12 @@ import Class.menu #<- ca arrive que le fichier se renomme en "menu.py", sans dou
 import Class.Play_split
 import Class.Joueur
 import PySimpleGUI as sg
+import pygame
+
+pygame.init()
+pygame.display.init()
+pygame.font.init()
+
 
 #Creation du plateau
 case = []
@@ -48,7 +54,6 @@ while menu_event != "Quit" :
 
     elif menu_event[0] == "Split":
         players_list = menu_event[1]
-        print (players_list)
         joueur = []
         for player in players_list:
             joueur.append(Class.Joueur.Joueur(player[0]))
