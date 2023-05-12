@@ -1,6 +1,9 @@
 import random
-import Class.Joueur
+import Joueur
 
+
+images_source_chaude=['liste chemins dacces', 'test']
+images_objets_echoppe=[]
 
 cases_doubles=[1,5,6,7,9,11,17,18,19,20,22,24,30,32,34,36,37,40,43,45,47,48,51,52]
 
@@ -16,7 +19,7 @@ echoppe_cartes=[{},{},{},{}]
 #Tu pars du principe que dico[nom_carte] = [points_rapportes, prix carte, chemin dacces]
 
 source_cases=[5,13,22,33,42,48]
-source_cartes= {'carte 2':[2, 0, 'images.cartes_source_chaude.2'], 'carte 3':[3, 0, 'images.cartes_source_chaude.3']}           #{'Bureau/pygame/images/nom_image'[[3, 2]]}
+source_cartes= {'carte 2':[2, 0, images_source_chaude[0]], 'carte 3':[3, 0, images_source_chaude[1]]}           #{'Bureau/pygame/images/nom_image'[[3, 2]]}
 
 rencontre_cases=[3,10,20,30,38,44,49]
 rencontre_cartes={} 
@@ -59,60 +62,52 @@ def effet_echoppe (current_player, shokunin=False):
     if shokunin==True:
         objet_shokunin=liste_cartes_case[random.randint(0, len(liste_cartes_case)-1)]
         cartes_choisies=[objet_shokunin]       
-        choix(current_player, [objet_shokunin])
+        #affichage de la carte tiree au sort
+        carte_imposee(current_player, [objet_shokunin])
     else : 
         liste_cartes_case=test_case(current_player)
-        possible_cards=cartes_a_proposer(3, liste_cartes_case, current_player)
+        #creation de la liste des cartes correspondant a la case
+        possible_cards=cartes_a_proposer(3, liste_cartes_case)
         #il faudra aussi suppr les cartes choisies par le joueur de la liste generale
-        cartes_choisies=choix(current_player, possible_cards)           
+        cartes_choisies=choix(current_player, possible_cards)
 
+    carte_moins_cher=cartes_choisies[0]
     for carte_choisie in cartes_choisies : 
+    #determiner la carte qui sera gratuite
+        if current_player.personnage=='Sasayakko' and shokunin==False and len(cartes_choisies)>=2:
+            if carte_moins_cher.prix>carte_choisie.prix:    #a resoudre car metrode .prix nexiste pas
+                carte_moins_cher=carte_choisie
+
+
         if carte_choisie in list(echoppe_cartes[0].keys()):
-            if 'sushi' in current_player.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
-                for i in range(len(current_player.ordre_famille_echoppe)):  #ne pas oublier d'enlever des pieces
-                    if current_player.ordre_famille_echoppe[i]=='sushi':
-                        current_player.points+=2*i+1
-            else : 
-                current_player.ordre_famille_echoppe.append('sushi')
-                current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
-            current_player.cartes_echoppe[0].append(carte_choisie)
-            #on retire des pieces ssi cest pas le shokunin (rencontre) qui donne la carte
-            if shokunin==False :
-                current_player.pieces-=echoppe_cartes[0][carte_choisie][1]
+            annexe_echoppe (current_player, carte_choisie, 'sushi', 0, shokunin)
+
         elif carte_choisie in list(echoppe_cartes[1].keys()):
-            if 'kimono' in current_player.ordre_famille_echoppe:     
-                for i in range(len(current_player.ordre_famille_echoppe)):
-                    if current_player.ordre_famille_echoppe[i]=='kimono':
-                        current_player.points+=2*i+1
-                        current_player.pieces-=echoppe_cartes[1][carte_choisie][1]
-            else : 
-                current_player.ordre_famille_echoppe.append('kimono')
-                current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
-            current_player.cartes_echoppe[1].append(carte_choisie)
-            if shokunin==False :
-                current_player.pieces-=echoppe_cartes[1][carte_choisie][1]
+            annexe_echoppe (current_player, carte_choisie, 'kimono', 1, shokunin)
+
         elif carte_choisie in list(echoppe_cartes[2].keys()):
-            if 'statue' in current_player.ordre_famille_echoppe:     
-                for i in range(len(current_player.ordre_famille_echoppe)):
-                    if current_player.ordre_famille_echoppe[i]=='statue':
-                        current_player.points+=2*i+1
-            else : 
-                current_player.ordre_famille_echoppe.append('statue')
-                current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
-            current_player.cartes_echoppe[2].append(carte_choisie)
-            if shokunin==False:
-                current_player.pieces-=echoppe_cartes[2][carte_choisie][1]
+            annexe_echoppe (current_player, carte_choisie , 'statue', 2, shokunin)
+
         elif carte_choisie in list(echoppe_cartes[3].keys()):
-            if 'eventail' in current_player.ordre_famille_echoppe:     
-                for i in range(len(current_player.ordre_famille_echoppe)):
-                    if current_player.ordre_famille_echoppe[i]=='eventail':
-                        current_player.points+=2*i+1
-            else : 
-                current_player.ordre_famille_echoppe.append('eventail')
-                current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
-            current_player.cartes_echoppe[3].append(carte_choisie)
-            if shokunin==False : 
-                current_player.pieces-=echoppe_cartes[3][carte_choisie][1]
+            annexe_echoppe (current_player, carte_choisie, 'eventail', 3, shokunin)
+
+
+def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin):
+    if mot_cle in current_player.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
+        for i in range(len(current_player.ordre_famille_echoppe)):  #ne pas oublier d'enlever des pieces
+            if current_player.ordre_famille_echoppe[i]==mot_cle:
+                current_player.points+=2*i+1
+                current_player.pieces-=echoppe_cartes[indice_cle][carte_choisie][1]
+    else : 
+        current_player.ordre_famille_echoppe.append(mot_cle)
+        current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
+    current_player.cartes_echoppe[indice_cle].append(carte_choisie)
+    #on retire des pieces ssi cest pas le shokunin (rencontre) qui donne la carte
+    if shokunin==False :
+        current_player.pieces-=echoppe_cartes[indice_cle][carte_choisie][1]
+
+    
+
 
 #il faut ajouter le fait que si le joueur a deja toute une collection de pano, pas le droit de sarreter sur la case
 def effet_panorama (current_player, mer=False, montagne=False, riziere=False): 
@@ -161,13 +156,14 @@ def effet_panorama (current_player, mer=False, montagne=False, riziere=False):
             achievments(current_player, 0)
     #choix en fin de code ici car cest ces tests qui determineront la carte a append
     #choix sert ici juste a afficher nouvelle carte
-    choix(current_player, [liste_cartes_case[indice]])
+    carte_imposee(current_player, [liste_cartes_case[indice]])
+    
 
 def effet_rencontre(current_player):
     liste_cartes_case=test_case(current_player)
-    nouvelle_rencontre=cartes_a_proposer (1,  liste_cartes_case, current_player.cartes_rencontre)
+    nouvelle_rencontre=cartes_a_proposer (1,  liste_cartes_case)
     current_player.cartes_rencontre.append(nouvelle_rencontre)
-    choix(current_player, [nouvelle_rencontre])
+    carte_imposee(current_player, [nouvelle_rencontre])
     if nouvelle_rencontre=='Kuge':
         current_player.pieces+=3
     elif nouvelle_rencontre=='Samurai':
@@ -189,6 +185,9 @@ def effet_ferme (current_player):
 
 #le joueur ne peut s'arreter que s'il a argent car DOIT donner 1, 2, ou 3 pièces.
 def effet_temple (current_player):
+    if current_player.personnage=='Hirotata':
+        current_player.pieces_donnees_temple+=1
+        current_player.points+=1
     money_given=int(input('Combien dargent donnez-vous?'))
     while money_given<1 or money_given>3 or money_given>current_player.pieces:
         money_given=int(input('Mauvais montant, reesayez : '))
@@ -197,13 +196,20 @@ def effet_temple (current_player):
 
 def effet_source_chaude (current_player):
     carte=random.randint(2,3)
+    if current_player.personnage=='Mitsukuni':
+        current_player.points+=1
     if carte==2:
         current_player.points+=2
         current_player.cartes_source.append('carte 2')
+        carte_imposee(current_player, )
     elif carte==3:
         current_player.points+=3
         current_player.cartes_source_chaude.append('carte 3')
 
+def effet_relais (current_player):
+    liste_cartes_case=test_case(current_player.case)
+    possible_cards=cartes_a_proposer(nbr_joueurs+1, liste_cartes_case, current_player)
+    pass            #a finir
 
 
 def effet (current_player):     
@@ -224,6 +230,10 @@ def effet (current_player):
     elif current_player.case in source_cases:
         effet_source_chaude(current_player)
 
+    elif current_player.case in relais_cases:
+        effet_relais (current_player, nbr_joueurs)
+        #galere car le tirage depend du nombre de joueurs
+
 
 
 
@@ -233,7 +243,7 @@ def effet (current_player):
 
 
 #constitution de la liste des cartes qu'on proposera au joueur selon le nbr de cartes a tirer
-def cartes_a_proposer( nb_cartes_a_tirer, liste_cartes_case, current_player):
+def cartes_a_proposer( nb_cartes_a_tirer, liste_cartes_case, current_player=None, Rencontre=False):
     possible_cards=[]                      
     for i in range (nb_cartes_a_tirer):
         indice_carte=random.randint(1,len(liste_cartes_case)-i-1)
@@ -247,6 +257,8 @@ def achievments ( current_player, indice_achievment):
     if achievments[indice_achievment]==1:
         current_player.achievments[indice_achievment]=1
         achievments[indice_achievment]=0  
+        if current_player.personnage=='Mitsukuni':
+            current_player.points+=1
 
 
 
@@ -255,3 +267,10 @@ def choix (current_player, possible_cards):             #PYGAME!!!! cette foncti
     while 'le joueur ne clique pas sur valider'==True:  #les cartes choisies par le joueur (même si la carte est imposee)
         if 'le joueur clique sur carte'==True:          #Je lappelle regulierement simplement pour montrer au joueur 
             pass                                        #la carte qu'il a obtenue, ce nest pas tjrs un choix a proprement parler
+
+
+
+#carte_imposee ici n'est pas une liste, on veut juste 'nom_carte'
+#la fonction ne doit rien renvoyer, ni append, juste montrer au joueur sa nouvelle carte.
+def carte_imposee (current_player, carte_imposee):
+    pass

@@ -1,6 +1,6 @@
 import pygame
 import random
-from Class.Settings import *
+from Settings import *
 
 BG_COLOR = (251,253,248)
 liste_perso = [("Chuubei", "Chuubei le messager pioche une carte Rencontre lorsqu'il arrive dans chacun des trois Relais intermediaires", 4),
