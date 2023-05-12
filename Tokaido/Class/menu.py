@@ -50,9 +50,9 @@ class Menu():
         self.BG_WIDTH, self.BG_HEIGHT = self.bg.get_size()
         self.BG_RATIO = int(self.BG_WIDTH / self.BG_HEIGHT)
         
-        bg_scaled_size = (int(self.BG_WIDTH * 1920 / ((1.5) *self.screen_width)), int(self.BG_HEIGHT * 1080 / ((1.5) * self.screen_height)))
+        """bg_scaled_size = (int(self.BG_WIDTH * 1920 / ((1.5) *self.screen_width)), int(self.BG_HEIGHT * 1080 / ((1.5) * self.screen_height)))
         bg_scaled_array = cv2.resize(self.bg_array, bg_scaled_size[::-1], interpolation = cv2.INTER_CUBIC)
-        self.bg = pygame.surfarray.make_surface(bg_scaled_array)
+        self.bg = pygame.surfarray.make_surface(bg_scaled_array)"""
 
         self.BG_WIDTH, self.BG_HEIGHT = self.bg.get_size()
 
