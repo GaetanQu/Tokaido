@@ -32,9 +32,9 @@ class Joueur:
 
         for i in range (3) :
             perso_envisageable = liste_perso[random.randint(len(liste_perso)-1)]
-            while perso_envisageable in self.liste_perso_joueurs:
+            while perso_envisageable in self.liste_perso_joueurs or perso_envisageable in liste_choix_perso:
                 perso_envisageable = liste_perso[random.randint(len(liste_perso)-1)]
-
+            
             liste_choix_perso.append()
 
 
