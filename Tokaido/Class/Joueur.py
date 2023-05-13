@@ -37,7 +37,7 @@ jeton = { "bleu" : pygame.transform.smoothscale(pygame.image.load('Tokaido/Class
 #perso = [nom : [desc, image, pieces]]
 
 dico_perso = { "Chuubei" : ["Chuubei le messager\npioche une carte Rencontre lorsqu'il arrive\ndans chacun des trois Relais intermediaires", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/chuubei.png"), CARDSIZE), 4],
-               "Hiroshige" : ["Hiroshige l'artiste\nprend une carte Panorama de son choix\nlorsqu'il arrive dans chacun des trois Relais intermediaires", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/hiroshige.png"), CARDSIZE), 3], 
+               "Hiroshige" : ["Hiroshige l'artiste\nprend une carte Panorama de son choix\nlorsqu'il arrive dans chacun\ndes trois Relais intermediaires", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/hiroshige.png"), CARDSIZE), 3], 
                "Hirotada" : ["A chaque arret au temple,\nHirotada le pretre se verra beni\nd'une piece offerte gratuitement au temple.", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/hirotada.png"), CARDSIZE), 8], 
                "Kinko" : ["Les cartes repas achetees par Kinko le ronin\nlui coutent une piece de moins,\nun repas coutant une piece devient gratuit", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/kinko.png"), CARDSIZE), 7], 
                "Mitsukuni" : ["Chaque carte Source Chaude\net chaque carte Accomplissement\nrapporte un point summplementaire a\nMitsukuni le vieillard", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/mitsukuni.png"), CARDSIZE), 6], 
@@ -51,7 +51,8 @@ dico_perso = { "Chuubei" : ["Chuubei le messager\npioche une carte Rencontre lor
 liste_perso = list(dico_perso.keys())
 
 class Joueur:
-    def __init__(self, nom):
+    def __init__(self, nom, screen):
+        self.screen = screen
         self.nom = nom
         self.couleur=None
         self.personnage=None
@@ -77,10 +78,6 @@ class Joueur:
         for joueur in liste_joueurs :
             liste_perso_joueurs.append(joueur.personnage)
 
-        pygame.init()
-        pygame.display.init()
-        pygame.font.init()
-
         liste_choix_perso = []
         liste_keys_perso = []
         for i in range (3) :
@@ -94,9 +91,8 @@ class Joueur:
 
             liste_choix_perso.append(perso_envisageable)
 
-        screen = pygame.display.set_mode((0,0))
-        screen_width, screen_height = screen.get_size()
-        CENTERX, CENTERY = screen_width/2, screen_height/2
+        self.screen_width, self.screen_height = self.screen.get_size()
+        CENTERX, CENTERY = self.screen_width/2, self.screen_height/2
 
         pygame.display.set_caption("Tokaido - " + self.nom + ", choisissez votre personnage")
         card_1 = liste_choix_perso[0]
@@ -109,12 +105,12 @@ class Joueur:
 
         card_desc_font = pygame.font.Font(JAPON, 30)
 
-        CARDPOSY = 1/2*screen_height - 3/4*CARDSIZE[1]
+        CARDPOSY = 1/2*self.screen_height - 3/4*CARDSIZE[1]
         DESCPOSY = CARDPOSY + CARDSIZE[1] + DESC_MARGIN
 
-        CARD1_POS = (2/9*screen_width - CARDSIZE[0]/2, CARDPOSY)
-        CARD2_POS = (1/2*screen_width - CARDSIZE[0]/2, CARDPOSY)
-        CARD3_POS = (7/9*screen_width - CARDSIZE[0]/2, CARDPOSY)
+        CARD1_POS = (2/9*self.screen_width - CARDSIZE[0]/2, CARDPOSY)
+        CARD2_POS = (1/2*self.screen_width - CARDSIZE[0]/2, CARDPOSY)
+        CARD3_POS = (7/9*self.screen_width - CARDSIZE[0]/2, CARDPOSY)
 
         card1_rect.center = centrage_rect(card_1[1], CARD1_POS)
         card2_rect.center = centrage_rect(card_2[1], CARD2_POS)
@@ -130,40 +126,40 @@ class Joueur:
 
         while True:
             clock.tick(FPS)
-            screen.fill(BG_COLOR)
+            self.screen.fill(BG_COLOR)
             
-            screen.blit(bg, (CENTERX - bg.get_size()[0]/2, CENTERY - bg.get_size()[1]/1.5))
+            self.screen.blit(bg, (CENTERX - bg.get_size()[0]/2, CENTERY - bg.get_size()[1]/1.5))
             
-            bg_filter = pygame.Surface(screen.get_size())
+            bg_filter = pygame.Surface(self.screen.get_size())
             bg_filter.set_alpha(128)
             bg_filter.fill(BG_COLOR)
-            screen.blit(bg_filter, (0,0))
+            self.screen.blit(bg_filter, (0,0))
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     break
+                else :
+                    event = event
 
-            event == pygame.event.get()
-
-            screen.blit(card_1[1], CARD1_POS)
-            screen.blit(card_2[1], CARD2_POS)
-            screen.blit(card_3[1], CARD3_POS)
+            self.screen.blit(card_1[1], CARD1_POS)
+            self.screen.blit(card_2[1], CARD2_POS)
+            self.screen.blit(card_3[1], CARD3_POS)
 
             if card1_rect.collidepoint(pygame.mouse.get_pos()):
-                screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD1JETON_POS)
-                if event.type == pygame.MOUSEBUTTONUP:
+                self.screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD1JETON_POS)
+                if event.type == pygame.MOUSEBUTTONUP:  #des fois ca bug, des fois non, je comprends pas
                     self.personnage = liste_keys_perso[0]
                     break
 
             if card2_rect.collidepoint(pygame.mouse.get_pos()):
-                screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD2JETON_POS)
+                self.screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD2JETON_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.personnage = liste_keys_perso[1]
                     break
 
             if card3_rect.collidepoint(pygame.mouse.get_pos()):
-                screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD3JETON_POS)
+                self.screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD3JETON_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.personnage = liste_keys_perso[2]
                     break
@@ -174,45 +170,40 @@ class Joueur:
                 for ligne in liste_choix_perso[i][0].splitlines():
                     ligne_text = card_desc_font.render(ligne,1,(0,0,0))
                     ligne_text_size = ligne_text.get_size()
-                    x,y = screen.blit(ligne_text, (x - ligne_text_size[0]/2,y)).midbottom
+                    x,y = self.screen.blit(ligne_text, (x - ligne_text_size[0]/2,y)).midbottom
                 i+=1
+
+            self.aff_titre("personnage")
 
             pygame.display.flip()
 
     def choix_couleur(self, liste_joueurs) :
-        pygame.display.set_caption("Tokaido -" + self.nom + ", choisissez votre couleur") #Le soucis du detail
+        pygame.display.set_caption("Tokaido -" + self.nom + ", choisissez votre couleur") #Le soucis du detail, meme si des fois ca bug je comprends pas pourquoi
 
-        screen = pygame.display.set_mode((0,0))
-        screen_width, screen_height = screen.get_size()
-        CENTERX, CENTERY = screen_width/2, screen_height/2
+        self.screen_width, self.screen_height = self.screen.get_size()
+        CENTERX, CENTERY = self.screen_width/2, self.screen_height/2
 
-
-        title_font = pygame.font.Font(JAPON, 100)
-        title = title_font.render(str(self.nom) + ", choisissez votre couleur", 1, (0,0,0))
-        title_width, title_height = title.get_size()
-
-        TITLEPOS = (CENTERX - title_width/2, 2/3 * screen_height-title_height/2)
         JETONPOSY = CENTERY - 300
         JETON_RADIUS = jeton["bleu"].get_width()/2
 
         bleu_rect = jeton["bleu"].get_rect()
-        BLEU_POS = (1/6*screen_width - JETON_RADIUS, JETONPOSY)
+        BLEU_POS = (1/6*self.screen_width - JETON_RADIUS, JETONPOSY)
         bleu_rect.center = centrage_rect(jeton["bleu"], BLEU_POS)
 
         jaune_rect = jeton["jaune"].get_rect()
-        JAUNE_POS = (2/6*screen_width - JETON_RADIUS, JETONPOSY)
+        JAUNE_POS = (2/6*self.screen_width - JETON_RADIUS, JETONPOSY)
         jaune_rect.center = centrage_rect(jeton["jaune"], JAUNE_POS)
 
         rouge_rect = jeton["rouge"].get_rect()
-        ROUGE_POS = (3/6*screen_width - JETON_RADIUS, JETONPOSY)
+        ROUGE_POS = (3/6*self.screen_width - JETON_RADIUS, JETONPOSY)
         rouge_rect.center = centrage_rect(jeton["rouge"], ROUGE_POS)
 
         vert_rect = jeton["vert"].get_rect()
-        VERT_POS = (4/6*screen_width - JETON_RADIUS, JETONPOSY)
+        VERT_POS = (4/6*self.screen_width - JETON_RADIUS, JETONPOSY)
         vert_rect.center = centrage_rect(jeton["vert"], VERT_POS)
 
         violet_rect = jeton["violet"].get_rect()
-        VIOLET_POS = (5/6*screen_width - JETON_RADIUS, JETONPOSY)
+        VIOLET_POS = (5/6*self.screen_width - JETON_RADIUS, JETONPOSY)
         violet_rect.center = centrage_rect(jeton["violet"], VIOLET_POS)
 
         taken_colors = []
@@ -223,91 +214,104 @@ class Joueur:
         i=0
         while True :
             clock.tick(FPS)
-            screen.fill(BG_COLOR)
-            screen.blit(bg, (CENTERX - bg.get_size()[0]/2, CENTERY - bg.get_size()[1]/1.5))
-            bg_filter = pygame.Surface(screen.get_size())
+            self.screen.fill(BG_COLOR)
+            self.screen.blit(bg, (CENTERX - bg.get_size()[0]/2, CENTERY - bg.get_size()[1]/1.5))
+            bg_filter = pygame.Surface(self.screen.get_size())
             bg_filter.set_alpha(128)
             bg_filter.fill((253,251,248))
-            screen.blit(bg_filter, (0,0))
+            self.screen.blit(bg_filter, (0,0))
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     break
 
             if bleu_rect.collidepoint(pygame.mouse.get_pos()) and "bleu" not in taken_colors:
-                screen.blit(jeton["hovered_bleu"], BLEU_POS)
+                self.screen.blit(jeton["hovered_bleu"], BLEU_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.couleur = "bleu"
                     break
 
             elif "bleu" in taken_colors:
-                screen.blit(jeton["taken_color"], BLEU_POS)
+                self.screen.blit(jeton["taken_color"], BLEU_POS)
 
             else :
-                screen.blit(jeton["bleu"], BLEU_POS)
+                self.screen.blit(jeton["bleu"], BLEU_POS)
 
             if jaune_rect.collidepoint(pygame.mouse.get_pos()) and "jaune" not in taken_colors:
-                screen.blit(jeton["hovered_jaune"], JAUNE_POS)
+                self.screen.blit(jeton["hovered_jaune"], JAUNE_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.couleur = "jaune"
                     break
 
             elif "jaune" in taken_colors:
-                screen.blit(jeton["taken_color"], JAUNE_POS)
+                self.screen.blit(jeton["taken_color"], JAUNE_POS)
 
             else:
-                screen.blit(jeton["jaune"], JAUNE_POS)
+                self.screen.blit(jeton["jaune"], JAUNE_POS)
 
 
             if rouge_rect.collidepoint(pygame.mouse.get_pos()) and "rouge" not in taken_colors:
-                screen.blit(jeton["hovered_rouge"], ROUGE_POS)
+                self.screen.blit(jeton["hovered_rouge"], ROUGE_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.couleur = "rouge"
                     break
 
             elif "rouge" in taken_colors:
-                screen.blit(jeton["taken_color"], ROUGE_POS)
+                self.screen.blit(jeton["taken_color"], ROUGE_POS)
 
             else:
-                screen.blit(jeton["rouge"], ROUGE_POS)
+                self.screen.blit(jeton["rouge"], ROUGE_POS)
 
 
             if vert_rect.collidepoint(pygame.mouse.get_pos()) and "vert" not in taken_colors:
-                screen.blit(jeton["hovered_vert"], VERT_POS)
+                self.screen.blit(jeton["hovered_vert"], VERT_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.couleur = "vert"
                     break
 
             elif "vert" in taken_colors:
-                screen.blit(jeton["taken_color"], VERT_POS)
+                self.screen.blit(jeton["taken_color"], VERT_POS)
 
             else:
-                screen.blit(jeton["vert"], VERT_POS)
+                self.screen.blit(jeton["vert"], VERT_POS)
 
             if violet_rect.collidepoint(pygame.mouse.get_pos()) and "violet" not in taken_colors:
-                screen.blit(jeton["hovered_violet"], VIOLET_POS)
+                self.screen.blit(jeton["hovered_violet"], VIOLET_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.couleur = "violet"
                     break
 
             elif "violet" in taken_colors:
-                screen.blit(jeton["taken_color"], VIOLET_POS)
+                self.screen.blit(jeton["taken_color"], VIOLET_POS)
 
             else:
-                screen.blit(jeton["violet"], VIOLET_POS)
-
-            screen.blit(title, TITLEPOS)
+                self.screen.blit(jeton["violet"], VIOLET_POS)
 
             ANIMATION_DURATION = 0.5
-            animation_filter = pygame.Surface(screen.get_size())
+            animation_filter = pygame.Surface(self.screen.get_size())
             animation_filter.fill(BG_COLOR)
 
             if i <= ANIMATION_DURATION * FPS and self == liste_joueurs[0]:
                 animation_filter.set_alpha(255-i*255/(ANIMATION_DURATION*FPS))
-                screen.blit(animation_filter, (0,0))
+                self.screen.blit(animation_filter, (0,0))
                 i+=1
 
+            self.aff_titre("couleur")
+
             pygame.display.flip()
+
+    def aff_titre(self, title):
+        title_font = pygame.font.Font(JAPON, 100)
+        
+        account = title_font.render(self.nom, 1, (200,30,30))
+        account_size = account.get_size()
+
+        title = title_font.render("choisissez votre " + title, 1, (30,30,30))
+        title_width, title_height = title.get_size()
+        TITLEPOS = (self.screen_width/2 - title_width/2, 4/5 * self.screen_height-title_height/2)
+    
+        self.screen.blit(account, (self.screen_width / 2 - account_size[0]/2, TITLEPOS[1]))
+        self.screen.blit(title, (TITLEPOS[0], TITLEPOS[1] + 100))
 
 
 def centrage_rect(surface, pos):

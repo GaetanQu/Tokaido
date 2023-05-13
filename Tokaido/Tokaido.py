@@ -22,6 +22,7 @@ pygame.display.init()
 pygame.font.init()
 
 
+
 #Creation du plateau
 case = []
 for i in range (54):
@@ -31,13 +32,14 @@ for i in range (54):
 players_list = []
 
 account = Class.Authenticator.auth()
+screen = pygame.display.set_mode((0,0))
 players_list.append(account)
 
 menu_event = None
 
 while menu_event != "Quit" :
     if account[0] != "Closed":
-        menu = Class.menu.Menu(players_list)
+        menu = Class.menu.Menu(players_list, screen)
         menu_event = menu.launch()
 
     elif account[0] == "Closed":
@@ -56,7 +58,7 @@ while menu_event != "Quit" :
         players_list = menu_event[1]
         joueur = []
         for player in players_list:
-            joueur.append(Class.Joueur.Joueur(player[0]))
+            joueur.append(Class.Joueur.Joueur(player[0], screen))
         for element in joueur :
             element.choix_couleur(joueur)
             element.choix_perso(joueur)

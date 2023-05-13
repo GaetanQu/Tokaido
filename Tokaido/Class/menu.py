@@ -18,14 +18,13 @@ settings = Settings()
 class Menu():
 
     #main player = [Pseudo, Victoires, Defaites]
-    def __init__(self, players_list):
+    def __init__(self, players_list, screen):
+        self.screen = screen
         self.first_players_list = players_list
         self.players_list = players_list
         self.main_player = self.players_list[0]
 
         pygame.display.set_caption("Tokaido")
-
-        self.screen = pygame.display.set_mode((0,0))
 
         #Les dimensions de l'ecran ainsi que les coordonnes du centre
         self.screen_width, self.screen_height = self.screen.get_size()
