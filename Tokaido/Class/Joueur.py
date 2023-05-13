@@ -82,10 +82,16 @@ class Joueur:
         pygame.font.init()
 
         liste_choix_perso = []
+        liste_keys_perso = []
         for i in range (3) :
             perso_envisageable = dico_perso[liste_perso[random.randint(0,len(liste_perso)-1)]]
-            while perso_envisageable in liste_perso_joueurs or perso_envisageable in liste_choix_perso:
+            while [key for key, value in dico_perso.items() if value == perso_envisageable][0] in liste_perso_joueurs or perso_envisageable in liste_choix_perso:
                 perso_envisageable = dico_perso[liste_perso[random.randint(0,len(liste_perso)-1)]]
+            
+            for key, value in dico_perso.items():
+                if value == perso_envisageable:
+                    liste_keys_perso.append(key)
+
             liste_choix_perso.append(perso_envisageable)
 
         screen = pygame.display.set_mode((0,0))
@@ -122,17 +128,23 @@ class Joueur:
                      pygame.Rect(CARD2_POS[0],DESCPOSY,CARDSIZE[0],70),
                      pygame.Rect(CARD3_POS[0],DESCPOSY,CARDSIZE[0],70)]
 
-        perso_choisi = None
-        while perso_choisi == None :
+        while True:
+            clock.tick(FPS)
             screen.fill(BG_COLOR)
+            
             screen.blit(bg, (CENTERX - bg.get_size()[0]/2, CENTERY - bg.get_size()[1]/1.5))
+            
             bg_filter = pygame.Surface(screen.get_size())
             bg_filter.set_alpha(128)
-            bg_filter.fill((253,251,248))
+            bg_filter.fill(BG_COLOR)
             screen.blit(bg_filter, (0,0))
+
             for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONUP:
-                    pass
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    break
+
+            event == pygame.event.get()
 
             screen.blit(card_1[1], CARD1_POS)
             screen.blit(card_2[1], CARD2_POS)
@@ -140,12 +152,21 @@ class Joueur:
 
             if card1_rect.collidepoint(pygame.mouse.get_pos()):
                 screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD1JETON_POS)
+                if event.type == pygame.MOUSEBUTTONUP:
+                    self.personnage = liste_keys_perso[0]
+                    break
 
             if card2_rect.collidepoint(pygame.mouse.get_pos()):
                 screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD2JETON_POS)
+                if event.type == pygame.MOUSEBUTTONUP:
+                    self.personnage = liste_keys_perso[1]
+                    break
 
             if card3_rect.collidepoint(pygame.mouse.get_pos()):
                 screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD3JETON_POS)
+                if event.type == pygame.MOUSEBUTTONUP:
+                    self.personnage = liste_keys_perso[2]
+                    break
 
             i=0
             for textzone in text_zone:
