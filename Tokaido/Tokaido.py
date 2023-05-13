@@ -59,4 +59,4 @@ while menu_event != "Quit" :
             joueur.append(Class.Joueur.Joueur(player[0]))
         for element in joueur :
             element.choix_couleur(joueur)
-            #element.choix_perso(joueur)
+            element.choix_perso(joueur)

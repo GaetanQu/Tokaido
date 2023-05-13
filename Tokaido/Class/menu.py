@@ -10,6 +10,7 @@ settings = Settings()
 ##########################################################################################################
 ##                                                                                                      ##
 ## C'est encore largement ameliorable, mais j'en peux plus de ce menu j'y retournerais plus tard (non)  ##
+##                 Par exemple je me souviens plus pourquoi j'en ai fait une classe                     ##
 ##                                                                                                      ##
 ##########################################################################################################
 

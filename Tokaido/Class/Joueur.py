@@ -11,6 +11,11 @@ JAPON = "Tokaido/Fonts/Japon.ttf"
 
 JETONSIZE = (175, 175)
 
+dims_card_de_base = 1144, 1533
+div_dim_card = 3
+CARDSIZE = dims_card_de_base[0]/div_dim_card, dims_card_de_base[1]/div_dim_card
+DESC_MARGIN = 10
+
 clock = pygame.time.Clock()
 
 bg = pygame.image.load("Tokaido/Class/images/menu/bg.png")
@@ -30,16 +35,16 @@ jeton = {"bleu" : pygame.transform.smoothscale(pygame.image.load('Tokaido/Class/
 
 #perso = [nom : [desc, image, pieces]]
 
-dico_perso = { "Chuubei" : ["Chuubei le messager pioche une carte Rencontre lorsqu'il arrive dans chacun des trois Relais intermediaires", pygame.image.load("Tokaido/Class/images/personnages/chuubei.png"), 4],
-               "Hiroshige" : ["Hiroshige l'artiste prend une carte Panorama de son choix lorsqu'il arrive dans chacun des trois Relais intermediaires", pygame.image.load("Tokaido/Class/images/personnages/hiroshige.png"), 3], 
-               "Hirotada" : ["A chaque arret au temple, Hirotada le pretre se verra beni d'une piece offerte gratuitement au temple.", pygame.image.load("Tokaido/Class/images/personnages/hirotada.png"), 8], 
-               "Kinko" : ["Les cartes repas achetees par Kinko le ronin lui coutent une piece de moins", pygame.image.load("Tokaido/Class/images/personnages/kinko.png"), 7], 
-               "Mitsukuni" : ["Chaque carte Source Chaude et chaque carte Accomplissement rapporte un point summplementaire a Mitsukuni le vieillard", pygame.image.load("Tokaido/Class/images/personnages/mitsukuni.png"), 6], 
-               "Sasayakko" : ["Dans les villages, si Sasayakko la geisha achete au moins deux Souvenirs, le moins cher des deux lui est offert", pygame.image.load("Tokaido/Class/images/personnages/sasayakko.png"), 5], 
-               "Satsuki" : ["Lors de son arrivee au Relais, Satsuki l'orpheline recoit aleatoirement et gratuitement pour une carte repas", pygame.image.load("Tokaido/Class/images/personnages/satsuki.png"), 2], 
-               "Umegae" : ["Umegae la saltimbanque gagne un point et une piece lors de chaque rencontre", pygame.image.load("Tokaido/Class/images/personnages/umegae.png"), 5], 
-               "Yoshiyasu" : ["Lors de chaque rencontre, Yoshiyasu le fonctionnaire choisi une carte Rencontre parmi deux au choix", pygame.image.load("Tokaido/Class/images/personnages/yoshiyasu.png"), 9], 
-               "Zen-Emon" : ["Zen-Emon le marchand peur acheter l'un des Souvenirs pour une seule piece au lieu du prix indique, une fois par Echoppe", pygame.image.load("Tokaido/Class/images/personnages/zen-emon.png"), 6]}
+dico_perso = { "Chuubei" : ["Chuubei le messager\npioche une carte Rencontre lorsqu'il arrive\ndans chacun des trois Relais intermediaires", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/chuubei.png"), CARDSIZE), 4],
+               "Hiroshige" : ["Hiroshige l'artiste\nprend une carte Panorama de son choix\nlorsqu'il arrive dans chacun des trois Relais intermediaires", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/hiroshige.png"), CARDSIZE), 3], 
+               "Hirotada" : ["A chaque arret au temple,\nHirotada le pretre se verra beni\nd'une piece offerte gratuitement au temple.", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/hirotada.png"), CARDSIZE), 8], 
+               "Kinko" : ["Les cartes repas achetees par Kinko le ronin\nlui coutent une piece de moins,\nun repas coutant une piece devient gratuit", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/kinko.png"), CARDSIZE), 7], 
+               "Mitsukuni" : ["Chaque carte Source Chaude\net chaque carte Accomplissement\nrapporte un point summplementaire a\nMitsukuni le vieillard", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/mitsukuni.png"), CARDSIZE), 6], 
+               "Sasayakko" : ["Dans les villages,\nsi Sasayakko la geisha achete au moins deux Souvenirs,\nle moins cher des deux lui est offert", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/sasayakko.png"), CARDSIZE), 5], 
+               "Satsuki" : ["Lors de son arrivee au Relais,\nSatsuki l'orpheline recoit aleatoirement\net gratuitement pour une carte repas", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/satsuki.png"), CARDSIZE), 2], 
+               "Umegae" : ["Umegae la saltimbanque\ngagne un point et une piece\nlors de chaque rencontre", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/umegae.png"), CARDSIZE), 5], 
+               "Yoshiyasu" : ["Lors de chaque rencontre,\nYoshiyasu le fonctionnaire choisi\nune carte Rencontre parmi deux au choix", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/yoshiyasu.png"), CARDSIZE), 9], 
+               "Zen-Emon" : ["Zen-Emon le marchand\npeut acheter l'un des Souvenirs\npour une seule piece au lieu du prix indique,\nune fois par Echoppe", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/zen-emon.png"), CARDSIZE), 6]}
 
 liste_perso = list(dico_perso.keys())
 
@@ -84,21 +89,54 @@ class Joueur:
             liste_choix_perso.append(perso_envisageable)
 
         screen = pygame.display.set_mode((0,0))
+        pygame.display.set_caption("Tokaido - " + self.nom + ", choisissez votre personnage")
         screen_width, screen_height = screen.get_size()
-        CENTERX = screen_width / 2
-        CENTERY =  screen_height/2
         card_1 = liste_choix_perso[0]
         card_2 = liste_choix_perso[1]
         card_3 = liste_choix_perso[2]
 
+        card_desc_font = pygame.font.Font(JAPON, 30)
+
+        card1_desc = card_desc_font.render(card_1[0], 1, (0,0,0))
+        card2_desc = card_desc_font.render(card_2[0], 1, (0,0,0))
+        card3_desc = card_desc_font.render(card_3[0], 1, (0,0,0))
+
+        CARDPOSY = 1/2*screen_height - 3/4*CARDSIZE[1]
+        DESCPOSY = CARDPOSY + CARDSIZE[1] + DESC_MARGIN
+
+        CARD1_POS = (2/9*screen_width - CARDSIZE[0]/2, CARDPOSY)
+        CARD2_POS = (1/2*screen_width - CARDSIZE[0]/2, CARDPOSY)
+        CARD3_POS = (7/9*screen_width - CARDSIZE[0]/2, CARDPOSY)
+
         perso_choisi = None
         while perso_choisi == None :
+            screen.fill(BG_COLOR)
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONUP:
                     pass
 
+            screen.blit(card_1[1], CARD1_POS)
+            screen.blit(card_2[1], CARD2_POS)
+            screen.blit(card_3[1], CARD3_POS)
+            
+
+            text_zone = [pygame.Rect(CARD1_POS[0],DESCPOSY,CARDSIZE[0],70),
+                         pygame.Rect(CARD2_POS[0],DESCPOSY,CARDSIZE[0],70),
+                         pygame.Rect(CARD3_POS[0],DESCPOSY,CARDSIZE[0],70)]
+
+            i=0
+            for textzone in text_zone:
+                x,y = textzone.midtop
+                for ligne in liste_choix_perso[i][0].splitlines():
+                    ligne_text = card_desc_font.render(ligne,1,(0,0,0))
+                    ligne_text_size = ligne_text.get_size()
+                    x,y = screen.blit(ligne_text, (x - ligne_text_size[0]/2,y)).midbottom
+                i+=1
+
+            pygame.display.flip()
+
     def choix_couleur(self, liste_joueurs) :
-        pygame.display.set_caption("Tokaido - Choisissez votre couleur")
+        pygame.display.set_caption("Tokaido -" + self.nom + ", choisissez votre couleur") #Le soucis du detail
 
         screen = pygame.display.set_mode((0,0))
         screen_width, screen_height = screen.get_size()
