@@ -111,7 +111,7 @@ class Menu():
         self.MAIN_PLAYER_LOSES_POS_X = 7/10 * self.screen_width - self.MAIN_PLAYER_LOSES_SURFACE_WIDTH / 2
 
 
-        DISCONNECT_TEXT = "Changer de compte"
+        DISCONNECT_TEXT = "Changer de compte principal"
         DISCONNECT_MARGIN = 10
         DISCONNECT_COLOR = (70,70,70)
         HOVERED_DISCONNECT_COLOR = (0,0,0)

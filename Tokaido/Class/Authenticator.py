@@ -80,6 +80,7 @@ def auth() :
             invite_adj = invite_adj_list[random.randint(0, len(invite_adj_list)-1)]
             invite_name = invite_name_list[random.randint(0, len(invite_name_list)-1)]
             player = [invite_adj + "_" + invite_name + " " + str(random.randint(0,100)), 0, 0]
+            sg.popup("Votre pseudo sera " + player[0])
             break
 
         #Connexion

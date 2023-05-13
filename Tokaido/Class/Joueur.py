@@ -9,29 +9,30 @@ FPS = int(settings.setting["FPS"])
 
 JAPON = "Tokaido/Fonts/Japon.ttf"
 
-JETONSIZE = (175, 175)
+BIGJETONSIZE = (175, 175)
+LITTLEJETONSIZE = (125,125)
 
 dims_card_de_base = 1144, 1533
 div_dim_card = 3
 CARDSIZE = dims_card_de_base[0]/div_dim_card, dims_card_de_base[1]/div_dim_card
-DESC_MARGIN = 10
+DESC_MARGIN = 30
 
 clock = pygame.time.Clock()
 
 bg = pygame.image.load("Tokaido/Class/images/menu/bg.png")
 bg = pygame.transform.scale(bg, (2*bg.get_size()[0], 2*bg.get_size()[1]))
 
-jeton = {"bleu" : pygame.transform.smoothscale(pygame.image.load('Tokaido/Class/images/jetons/bleu.png'), JETONSIZE),
-          "hovered_bleu" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/hovered_bleu.png"), JETONSIZE),
-          "jaune" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/jaune.png"), JETONSIZE),
-          "hovered_jaune" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/hovered_jaune.png"), JETONSIZE),
-          "rouge" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/rouge.png"), JETONSIZE),
-          "hovered_rouge" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/hovered_rouge.png"), JETONSIZE),
-          "vert" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/vert.png"), JETONSIZE),
-          "hovered_vert" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/hovered_vert.png"), JETONSIZE),
-          "violet" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/violet.png"), JETONSIZE),
-          "hovered_violet" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/hovered_violet.png"), JETONSIZE),
-          "taken_color" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/taken_color.png"), JETONSIZE)}
+jeton = { "bleu" : pygame.transform.smoothscale(pygame.image.load('Tokaido/Class/images/jetons/bleu.png'), BIGJETONSIZE),
+          "hovered_bleu" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/hovered_bleu.png"), BIGJETONSIZE),
+          "jaune" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/jaune.png"), BIGJETONSIZE),
+          "hovered_jaune" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/hovered_jaune.png"), BIGJETONSIZE),
+          "rouge" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/rouge.png"), BIGJETONSIZE),
+          "hovered_rouge" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/hovered_rouge.png"), BIGJETONSIZE),
+          "vert" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/vert.png"), BIGJETONSIZE),
+          "hovered_vert" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/hovered_vert.png"), BIGJETONSIZE),
+          "violet" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/violet.png"), BIGJETONSIZE),
+          "hovered_violet" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/hovered_violet.png"), BIGJETONSIZE),
+          "taken_color" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/jetons/taken_color.png"), BIGJETONSIZE)}
 
 #perso = [nom : [desc, image, pieces]]
 
@@ -43,8 +44,9 @@ dico_perso = { "Chuubei" : ["Chuubei le messager\npioche une carte Rencontre lor
                "Sasayakko" : ["Dans les villages,\nsi Sasayakko la geisha achete au moins deux Souvenirs,\nle moins cher des deux lui est offert", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/sasayakko.png"), CARDSIZE), 5], 
                "Satsuki" : ["Lors de son arrivee au Relais,\nSatsuki l'orpheline recoit aleatoirement\net gratuitement pour une carte repas", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/satsuki.png"), CARDSIZE), 2], 
                "Umegae" : ["Umegae la saltimbanque\ngagne un point et une piece\nlors de chaque rencontre", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/umegae.png"), CARDSIZE), 5], 
-               "Yoshiyasu" : ["Lors de chaque rencontre,\nYoshiyasu le fonctionnaire choisi\nune carte Rencontre parmi deux au choix", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/yoshiyasu.png"), CARDSIZE), 9], 
+               "Yoshiyasu" : ["Lors de chaque rencontre,\nYoshiyasu le fonctionnaire choisit\nune carte Rencontre parmi deux au choix", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/yoshiyasu.png"), CARDSIZE), 9], 
                "Zen-Emon" : ["Zen-Emon le marchand\npeut acheter l'un des Souvenirs\npour une seule piece au lieu du prix indique,\nune fois par Echoppe", pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/zen-emon.png"), CARDSIZE), 6]}
+
 
 liste_perso = list(dico_perso.keys())
 
@@ -65,14 +67,12 @@ class Joueur:
         self.points=0
         self.achievements=[0,0,0,0,0,0,0,0]     #pano_mer, pano_montagne, pano_riziere, temples, repas, source chaude, rencontre, souvenir 
                                                 #on remplace pas 1 si le mec a l'achievment.
-    
 
     def avancer (self):
         self.case+=int(input('Combien de cases?'))
 
     def choix_perso(self, liste_joueurs):
-        self.liste_joueurs = liste_joueurs
-        
+        self.liste_joueurs = liste_joueurs        
         liste_perso_joueurs = []
         for joueur in liste_joueurs :
             liste_perso_joueurs.append(joueur.personnage)
@@ -89,17 +89,19 @@ class Joueur:
             liste_choix_perso.append(perso_envisageable)
 
         screen = pygame.display.set_mode((0,0))
-        pygame.display.set_caption("Tokaido - " + self.nom + ", choisissez votre personnage")
         screen_width, screen_height = screen.get_size()
+        CENTERX, CENTERY = screen_width/2, screen_height/2
+
+        pygame.display.set_caption("Tokaido - " + self.nom + ", choisissez votre personnage")
         card_1 = liste_choix_perso[0]
         card_2 = liste_choix_perso[1]
         card_3 = liste_choix_perso[2]
 
-        card_desc_font = pygame.font.Font(JAPON, 30)
+        card1_rect = card_1[1].get_rect()
+        card2_rect = card_2[1].get_rect()
+        card3_rect = card_3[1].get_rect()
 
-        card1_desc = card_desc_font.render(card_1[0], 1, (0,0,0))
-        card2_desc = card_desc_font.render(card_2[0], 1, (0,0,0))
-        card3_desc = card_desc_font.render(card_3[0], 1, (0,0,0))
+        card_desc_font = pygame.font.Font(JAPON, 30)
 
         CARDPOSY = 1/2*screen_height - 3/4*CARDSIZE[1]
         DESCPOSY = CARDPOSY + CARDSIZE[1] + DESC_MARGIN
@@ -108,9 +110,26 @@ class Joueur:
         CARD2_POS = (1/2*screen_width - CARDSIZE[0]/2, CARDPOSY)
         CARD3_POS = (7/9*screen_width - CARDSIZE[0]/2, CARDPOSY)
 
+        card1_rect.center = centrage_rect(card_1[1], CARD1_POS)
+        card2_rect.center = centrage_rect(card_2[1], CARD2_POS)
+        card3_rect.center = centrage_rect(card_3[1], CARD3_POS)
+
+        CARD1JETON_POS = jeton_pos(CARD1_POS)
+        CARD2JETON_POS = jeton_pos(CARD2_POS)
+        CARD3JETON_POS = jeton_pos(CARD3_POS)
+
+        text_zone = [pygame.Rect(CARD1_POS[0],DESCPOSY,CARDSIZE[0],70),
+                     pygame.Rect(CARD2_POS[0],DESCPOSY,CARDSIZE[0],70),
+                     pygame.Rect(CARD3_POS[0],DESCPOSY,CARDSIZE[0],70)]
+
         perso_choisi = None
         while perso_choisi == None :
             screen.fill(BG_COLOR)
+            screen.blit(bg, (CENTERX - bg.get_size()[0]/2, CENTERY - bg.get_size()[1]/1.5))
+            bg_filter = pygame.Surface(screen.get_size())
+            bg_filter.set_alpha(128)
+            bg_filter.fill((253,251,248))
+            screen.blit(bg_filter, (0,0))
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONUP:
                     pass
@@ -118,11 +137,15 @@ class Joueur:
             screen.blit(card_1[1], CARD1_POS)
             screen.blit(card_2[1], CARD2_POS)
             screen.blit(card_3[1], CARD3_POS)
-            
 
-            text_zone = [pygame.Rect(CARD1_POS[0],DESCPOSY,CARDSIZE[0],70),
-                         pygame.Rect(CARD2_POS[0],DESCPOSY,CARDSIZE[0],70),
-                         pygame.Rect(CARD3_POS[0],DESCPOSY,CARDSIZE[0],70)]
+            if card1_rect.collidepoint(pygame.mouse.get_pos()):
+                screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD1JETON_POS)
+
+            if card2_rect.collidepoint(pygame.mouse.get_pos()):
+                screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD2JETON_POS)
+
+            if card3_rect.collidepoint(pygame.mouse.get_pos()):
+                screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD3JETON_POS)
 
             i=0
             for textzone in text_zone:
@@ -268,3 +291,6 @@ class Joueur:
 
 def centrage_rect(surface, pos):
     return pos[0] + surface.get_size()[0]/2, pos[1] + surface.get_size()[1]/2
+
+def jeton_pos(carte_pos):
+    return carte_pos[0] + 5, carte_pos[1] + 5

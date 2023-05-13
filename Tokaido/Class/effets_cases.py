@@ -8,7 +8,13 @@ images_objets_echoppe=[]
 cases_doubles=[1,5,6,7,9,11,17,18,19,20,22,24,30,32,34,36,37,40,43,45,47,48,51,52]
 
 #mer, montagne, riziere
-pano_cases=[[11,15,24,34,39,46,52],[6,12,19,23,32,50],[4,18,28,35,51]]    
+pano_cases={"mer":[11,15,24,34,39,46,52],
+            "riziere":[6,12,19,23,32,50],
+            "montagne":[4,18,28,35,51]}
+
+if player.case in pano_case["mer"]:
+
+
 pano_cartes=[{},{},{}]
 
 echoppe_cases=[1,8,25,29,40,45,53]
@@ -32,6 +38,9 @@ temple_cases=[2,9,16,21,36,43]
 ferme_cases=[7,17,26,31,37,47]
 
 achievments=[1,1,1,1,1,1,1,1]
+
+carte = {"panorama":pano_cartes,
+         "echoppe":echoppe_cartes}#...
 
 #trop bg
 
