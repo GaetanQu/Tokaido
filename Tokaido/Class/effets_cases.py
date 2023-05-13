@@ -1,9 +1,55 @@
 import random
 import Joueur
+from images.cartes import *
+import pygame
 
 
-images_source_chaude=['liste chemins dacces', 'test']
-images_objets_echoppe=[]
+images_source_chaude=[pygame.image.load('Tokaido/Class/images/cartes/sources_chaudes/2_points.png'), 
+                      pygame.image.load('Tokaido/Class/images/cartes/sources_chaudes/3_points.png')]
+images_objets_echoppe=[[pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/gofu.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/accessoires/hashi.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/accessoires/koma.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/accessoires/uchiwa.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/accessoires/washi.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/accessoires/yunomi.png')], 
+                       [pygame.image.load('Tokaido/Class/images/cartes/nourriture/daifuku.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/nourriture/kamaboko.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/nourriture/konpeito.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/nourriture/manju.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/nourriture/ocha.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/nourriture/sake.png')], 
+                        [pygame.image.load('Tokaido/Class/images/cartes/objets/jubako.png'), 
+                         pygame.image.load('Tokaido/Class/images/cartes/objets/netsuke.png'), 
+                         pygame.image.load('Tokaido/Class/images/cartes/objets/shamisen.png'), 
+                         pygame.image.load('Tokaido/Class/images/cartes/objets/shikki.png'), 
+                         pygame.image.load('Tokaido/Class/images/cartes/objets/sumie.png'), 
+                         pygame.image.load('Tokaido/Class/images/cartes/objets/ukiyoe.png')], 
+                         [pygame.image.load('Tokaido/Class/images/cartes/vetements/furoshiki.png'), 
+                          pygame.image.load('Tokaido/Class/images/cartes/vetements/geta.png'), 
+                          pygame.image.load('Tokaido/Class/images/cartes/vetements/haori.png'), 
+                          pygame.image.load('Tokaido/Class/images/cartes/vetements/kanzashi.png'), 
+                          pygame.image.load('Tokaido/Class/images/cartes/vetements/sandogasa.png'), 
+                          pygame.image.load('Tokaido/Class/images/cartes/vetements/'), 
+                          pygame.image.load('Tokaido/Class/images/cartes/vetements/yukata.png')]]
+images_repas=[pygame.image.load('Tokaido/Class/images/cartes/repas/dango.png'), 
+              pygame.image.load('Tokaido/Class/images/cartes/repas/donburi.png'),
+              pygame.image.load('Tokaido/Class/images/cartes/repas/fugu.png'),
+              pygame.image.load('Tokaido/Class/images/cartes/repas/misoshiru.png'),
+              pygame.image.load('Tokaido/Class/images/cartes/repas/nigirimeshi.png'),
+              pygame.image.load('Tokaido/Class/images/cartes/repas/sashimi.png'),
+              pygame.image.load('Tokaido/Class/images/cartes/repas/soba.png'),
+              pygame.image.load('Tokaido/Class/images/cartes/repas/sushi.png'),
+              pygame.image.load('Tokaido/Class/images/cartes/repas/taimeshi.png'),
+              pygame.image.load('Tokaido/Class/images/cartes/repas/tempura.png'),
+              pygame.image.load('Tokaido/Class/images/cartes/repas/tofu.png'),
+              pygame.image.load('Tokaido/Class/images/cartes/repas/udon.png'),
+              pygame.image.load('Tokaido/Class/images/cartes/repas/unagi.png'),
+              pygame.image.load('Tokaido/Class/images/cartes/repas/yakitori.png')]
+images_rencontres=[pygame.image.load('Tokaido/Class/images/cartes/rencontres/annaibito.png'),
+                   pygame.image.load('Tokaido/Class/images/cartes/rencontres/kuge.png'),
+                   pygame.image.load('Tokaido/Class/images/cartes/rencontres/miko.png'),
+                   pygame.image.load('Tokaido/Class/images/cartes/rencontres/samurai.png'),
+                   pygame.image.load('Tokaido/Class/images/cartes/rencontres/shokunin.png')]
 
 cases_doubles=[1,5,6,7,9,11,17,18,19,20,22,24,30,32,34,36,37,40,43,45,47,48,51,52]
 
