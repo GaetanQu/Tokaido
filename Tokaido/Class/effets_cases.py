@@ -13,7 +13,7 @@ pano_cartes=[{},{},{}]
 
 echoppe_cases=[1,8,25,29,40,45,53]
 #sushi, kimono, statue, eventail
-#A noter que les points dans le dico echoppe ne servent a rien
+#A noter que les points dans le dico echoppe ne servent a rien (mettre 0)
 echoppe_cartes=[{},{},{},{}]                   
 
 #Tu pars du principe que dico[nom_carte] = [points_rapportes, prix carte, chemin dacces]
@@ -59,6 +59,7 @@ def test_case(current_player):
         return []
 
 def effet_echoppe (current_player, shokunin=False):
+
     if shokunin==True:
         objet_shokunin=liste_cartes_case[random.randint(0, len(liste_cartes_case)-1)]
         cartes_choisies=[objet_shokunin]       
@@ -68,19 +69,18 @@ def effet_echoppe (current_player, shokunin=False):
         liste_cartes_case=test_case(current_player)
         #creation de la liste des cartes correspondant a la case
         possible_cards=cartes_a_proposer(3, liste_cartes_case)
-        #il faudra aussi suppr les cartes choisies par le joueur de la liste generale
-        cartes_choisies=choix(current_player, possible_cards)
-
-    carte_moins_cher=cartes_choisies[0]
+        cartes_choisies=choix(current_player, possible_cards, multiple_choices_possibility=True)
+    for famille in echoppe_cartes:
+        if cartes_choisies[0] in list(famille.keys()):
+            carte_moins_cher=cartes_choisies[0]
     for carte_choisie in cartes_choisies : 
-    #determiner la carte qui sera gratuite
-        if current_player.personnage=='Sasayakko' and shokunin==False and len(cartes_choisies)>=2:
-            if carte_moins_cher.prix>carte_choisie.prix:    #a resoudre car metrode .prix nexiste pas
-                carte_moins_cher=carte_choisie
-
 
         if carte_choisie in list(echoppe_cartes[0].keys()):
             annexe_echoppe (current_player, carte_choisie, 'sushi', 0, shokunin)
+                #determiner la carte qui sera gratuite
+            if current_player.personnage=='Sasayakko' and shokunin==False and len(cartes_choisies)>=2:
+                if carte_moins_cher.prix>echoppe_cartes[0][carte_choisie][1]: 
+                    carte_moins_cher=carte_choisie
 
         elif carte_choisie in list(echoppe_cartes[1].keys()):
             annexe_echoppe (current_player, carte_choisie, 'kimono', 1, shokunin)
@@ -102,6 +102,7 @@ def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin
         current_player.ordre_famille_echoppe.append(mot_cle)
         current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
     current_player.cartes_echoppe[indice_cle].append(carte_choisie)
+    echoppe_cartes.remove(carte_choisie)
     #on retire des pieces ssi cest pas le shokunin (rencontre) qui donne la carte
     if shokunin==False :
         current_player.pieces-=echoppe_cartes[indice_cle][carte_choisie][1]
@@ -154,16 +155,18 @@ def effet_panorama (current_player, mer=False, montagne=False, riziere=False):
             current_player.points+=pano_cartes[2][liste_cartes_case[indice]][0]
         elif indice==len(liste_cartes_case)-1:
             achievments(current_player, 0)
-    #choix en fin de code ici car cest ces tests qui determineront la carte a append
-    #choix sert ici juste a afficher nouvelle carte
     carte_imposee(current_player, [liste_cartes_case[indice]])
     
 
 def effet_rencontre(current_player):
     liste_cartes_case=test_case(current_player)
-    nouvelle_rencontre=cartes_a_proposer (1,  liste_cartes_case)
+    if current_player.personnage!='Yoshiyasu':
+        nouvelle_rencontre=cartes_a_proposer (1,  liste_cartes_case)
+    elif current_player.personnage=='Yoshiyasu':
+        possible_cards=cartes_a_proposer (2, liste_cartes_case)
+        nouvelle_rencontre=choix (current_player, possible_cards)
     current_player.cartes_rencontre.append(nouvelle_rencontre)
-    carte_imposee(current_player, [nouvelle_rencontre])
+    carte_imposee(current_player, nouvelle_rencontre)
     if nouvelle_rencontre=='Kuge':
         current_player.pieces+=3
     elif nouvelle_rencontre=='Samurai':
@@ -184,8 +187,9 @@ def effet_ferme (current_player):
     current_player.pieces+=3
 
 #le joueur ne peut s'arreter que s'il a argent car DOIT donner 1, 2, ou 3 pièces.
+#fonction a completer par du sg pour demander le nombre de pieces a donner
 def effet_temple (current_player):
-    if current_player.personnage=='Hirotata':
+    if current_player.personnage=='Hirotada':
         current_player.pieces_donnees_temple+=1
         current_player.points+=1
     money_given=int(input('Combien dargent donnez-vous?'))
@@ -206,13 +210,26 @@ def effet_source_chaude (current_player):
         current_player.points+=3
         current_player.cartes_source_chaude.append('carte 3')
 
-def effet_relais (current_player):
+
+
+def effet_relais (current_player, players_list, possible_cards):
     liste_cartes_case=test_case(current_player.case)
-    possible_cards=cartes_a_proposer(nbr_joueurs+1, liste_cartes_case, current_player)
-    pass            #a finir
+    players_in_relais=0
+
+    for player in players_list:
+        if player.case in relais_cases:
+            players_in_relais+=1
+
+    if players_in_relais==1:
+        possible_cards=cartes_a_proposer(len(players_list)+1, liste_cartes_case, current_player)
+
+    carte_choisie=choix (current_player, possible_cards)[0]
+    possible_cards.remove(carte_choisie)
+
+    return possible_cards            
 
 
-def effet (current_player):     
+def effet (current_player, players_list):     
     if current_player.case in echoppe_cases:
         effet_echoppe (current_player)
     elif current_player.case in pano_cases[0]+pano_cases[1]+pano_cases[2]: 
@@ -220,6 +237,9 @@ def effet (current_player):
 
     elif current_player.case in rencontre_cases:
         effet_rencontre(current_player)
+        if current_player.personnage=='Umegae':
+            current_player.points+=1
+            current_player.pieces+=1
 
     elif current_player.case in ferme_cases:
         effet_ferme(current_player)
@@ -231,8 +251,9 @@ def effet (current_player):
         effet_source_chaude(current_player)
 
     elif current_player.case in relais_cases:
-        effet_relais (current_player, nbr_joueurs)
-        #galere car le tirage depend du nombre de joueurs
+        list_cartes_relais_restantes=effet_relais (current_player, players_list)
+
+        #galere car le tirage depend du nombre de joueurs 
 
 
 
@@ -243,7 +264,7 @@ def effet (current_player):
 
 
 #constitution de la liste des cartes qu'on proposera au joueur selon le nbr de cartes a tirer
-def cartes_a_proposer( nb_cartes_a_tirer, liste_cartes_case, current_player=None, Rencontre=False):
+def cartes_a_proposer( nb_cartes_a_tirer, liste_cartes_case):
     possible_cards=[]                      
     for i in range (nb_cartes_a_tirer):
         indice_carte=random.randint(1,len(liste_cartes_case)-i-1)
@@ -261,16 +282,16 @@ def achievments ( current_player, indice_achievment):
             current_player.points+=1
 
 
+#multiple_choices_possibility=True lorsque le joueur ne peut en choisir qu'une, 
+#multiple_choices_possibility=False par defaut, si le joueur peut en prendre plusieurs (echoppe)
+def choix (current_player, possible_cards, multiple_choices_possibility=False):    #PYGAME!!!! cette fonction doit me return une liste comportant la ou 
+    while 'le joueur ne clique pas sur valider'==True:          #les cartes choisies par le joueur 
+        if 'le joueur clique sur carte'==True:          
+            pass                                        
 
-def choix (current_player, possible_cards):             #PYGAME!!!! cette fonction doit me return une liste comportant la ou 
-
-    while 'le joueur ne clique pas sur valider'==True:  #les cartes choisies par le joueur (même si la carte est imposee)
-        if 'le joueur clique sur carte'==True:          #Je lappelle regulierement simplement pour montrer au joueur 
-            pass                                        #la carte qu'il a obtenue, ce nest pas tjrs un choix a proprement parler
 
 
-
-#carte_imposee ici n'est pas une liste, on veut juste 'nom_carte'
+#given_card ici n'est pas une liste, on veut juste 'nom_carte'
 #la fonction ne doit rien renvoyer, ni append, juste montrer au joueur sa nouvelle carte.
-def carte_imposee (current_player, carte_imposee):
+def carte_imposee (current_player, given_card):
     pass
