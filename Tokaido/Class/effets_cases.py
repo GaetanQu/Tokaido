@@ -7,30 +7,29 @@ import pygame
 images_source_chaude=[pygame.image.load('Tokaido/Class/images/cartes/sources_chaudes/2_points.png'), 
                       pygame.image.load('Tokaido/Class/images/cartes/sources_chaudes/3_points.png')]
 images_objets_echoppe=[[pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/gofu.png'), 
-                        pygame.image.load('Tokaido/Class/images/cartes/accessoires/hashi.png'), 
-                        pygame.image.load('Tokaido/Class/images/cartes/accessoires/koma.png'), 
-                        pygame.image.load('Tokaido/Class/images/cartes/accessoires/uchiwa.png'), 
-                        pygame.image.load('Tokaido/Class/images/cartes/accessoires/washi.png'), 
-                        pygame.image.load('Tokaido/Class/images/cartes/accessoires/yunomi.png')], 
-                       [pygame.image.load('Tokaido/Class/images/cartes/nourriture/daifuku.png'), 
-                        pygame.image.load('Tokaido/Class/images/cartes/nourriture/kamaboko.png'), 
-                        pygame.image.load('Tokaido/Class/images/cartes/nourriture/konpeito.png'), 
-                        pygame.image.load('Tokaido/Class/images/cartes/nourriture/manju.png'), 
-                        pygame.image.load('Tokaido/Class/images/cartes/nourriture/ocha.png'), 
-                        pygame.image.load('Tokaido/Class/images/cartes/nourriture/sake.png')], 
-                        [pygame.image.load('Tokaido/Class/images/cartes/objets/jubako.png'), 
-                         pygame.image.load('Tokaido/Class/images/cartes/objets/netsuke.png'), 
-                         pygame.image.load('Tokaido/Class/images/cartes/objets/shamisen.png'), 
-                         pygame.image.load('Tokaido/Class/images/cartes/objets/shikki.png'), 
-                         pygame.image.load('Tokaido/Class/images/cartes/objets/sumie.png'), 
-                         pygame.image.load('Tokaido/Class/images/cartes/objets/ukiyoe.png')], 
-                         [pygame.image.load('Tokaido/Class/images/cartes/vetements/furoshiki.png'), 
-                          pygame.image.load('Tokaido/Class/images/cartes/vetements/geta.png'), 
-                          pygame.image.load('Tokaido/Class/images/cartes/vetements/haori.png'), 
-                          pygame.image.load('Tokaido/Class/images/cartes/vetements/kanzashi.png'), 
-                          pygame.image.load('Tokaido/Class/images/cartes/vetements/sandogasa.png'), 
-                          pygame.image.load('Tokaido/Class/images/cartes/vetements/'), 
-                          pygame.image.load('Tokaido/Class/images/cartes/vetements/yukata.png')]]
+                        pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/hashi.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/koma.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/uchiwa.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/washi.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/yunomi.png')], 
+                       [pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/daifuku.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/kamaboko.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/konpeito.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/manju.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/ocha.png'), 
+                        pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/sake.png')], 
+                        [pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/jubako.png'), 
+                         pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/netsuke.png'), 
+                         pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/shamisen.png'), 
+                         pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/shikki.png'), 
+                         pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/sumie.png'), 
+                         pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/ukiyoe.png')], 
+                         [pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/furoshiki.png'), 
+                          pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/geta.png'), 
+                          pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/haori.png'), 
+                          pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/kanzashi.png'), 
+                          pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/sandogasa.png'), 
+                          pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/yukata.png')]]
 images_repas=[pygame.image.load('Tokaido/Class/images/cartes/repas/dango.png'), 
               pygame.image.load('Tokaido/Class/images/cartes/repas/donburi.png'),
               pygame.image.load('Tokaido/Class/images/cartes/repas/fugu.png'),
@@ -50,43 +49,68 @@ images_rencontres=[pygame.image.load('Tokaido/Class/images/cartes/rencontres/ann
                    pygame.image.load('Tokaido/Class/images/cartes/rencontres/miko.png'),
                    pygame.image.load('Tokaido/Class/images/cartes/rencontres/samurai.png'),
                    pygame.image.load('Tokaido/Class/images/cartes/rencontres/shokunin.png')]
+images_panorama=[[pygame.image.load('Tokaido/Class/images/cartes/panorama/mer/1.png'),
+                  pygame.image.load('Tokaido/Class/images/cartes/panorama/mer/2.png'),
+                  pygame.image.load('Tokaido/Class/images/cartes/panorama/mer/3.png'),
+                  pygame.image.load('Tokaido/Class/images/cartes/panorama/mer/4.png'),
+                  pygame.image.load('Tokaido/Class/images/cartes/panorama/mer/5.png')],
+                [pygame.image.load('Tokaido/Class/images/cartes/panorama/montagne/1.png'),
+                 pygame.image.load('Tokaido/Class/images/cartes/panorama/montagne/2.png'),
+                 pygame.image.load('Tokaido/Class/images/cartes/panorama/montagne/3.png'),
+                 pygame.image.load('Tokaido/Class/images/cartes/panorama/montagne/4.png')], 
+                 [pygame.image.load('Tokaido/Class/images/cartes/panorama/riziere/1.png'),
+                  pygame.image.load('Tokaido/Class/images/cartes/panorama/riziere/2.png'),
+                  pygame.image.load('Tokaido/Class/images/cartes/panorama/riziere/3.png')]]
+images_accomplissements=[pygame.image.load('Tokaido/Class/images/cartes/accomplissements/mer.png'),
+                         pygame.image.load('Tokaido/Class/images/cartes/accomplissements/montagne.png'),
+                         pygame.image.load('Tokaido/Class/images/cartes/accomplissements/riziere.png'),
+                         pygame.image.load('Tokaido/Class/images/cartes/accomplissements/repas.png'),
+                         pygame.image.load('Tokaido/Class/images/cartes/accomplissements/rencontres.png'),
+                         pygame.image.load('Tokaido/Class/images/cartes/accomplissements/sources_chaudes.png'),
+                         pygame.image.load('Tokaido/Class/images/cartes/accomplissements/souvenirs.png.png'),]
+
+
 
 cases_doubles=[1,5,6,7,9,11,17,18,19,20,22,24,30,32,34,36,37,40,43,45,47,48,51,52]
 
 #mer, montagne, riziere
-pano_cases={"mer":[11,15,24,34,39,46,52],
-            "riziere":[6,12,19,23,32,50],
-            "montagne":[4,18,28,35,51]}
-
-if player.case in pano_case["mer"]:
-
-
-pano_cartes=[{},{},{}]
+pano_cases=[[11,15,24,34,39,46,52],[6,12,19,23,32,50],[4,18,28,35,51]]
+pano_cartes=[{'mer_1':[1, 0, images_panorama[0][0]], 'mer_2' : [2, 0, images_panorama[0][1]], 
+              'mer_3' : [3, 0,images_panorama[0][2]] ,'mer_4' : [4, 0, images_panorama[0][3]], 
+              'mer_5' : [5, 0, images_panorama[0][4]]},
+             {'montagne_1' : [1, 0, images_panorama[1][0]], 'montagne_2' : [2, 0, images_panorama[1][1]],
+              'montagne_3' : [3, 0, images_panorama[1][2]],'montagne_4' : [4, 0, images_panorama[1][3]]},
+              {'riziere_1' : [1, 0, images_panorama[2][0]],'riziere_2' : [2, 0, images_panorama[2][1]],
+               'riziere_3' : [3, 0, images_panorama[2][2]]}]
 
 echoppe_cases=[1,8,25,29,40,45,53]
 #sushi, kimono, statue, eventail
 #A noter que les points dans le dico echoppe ne servent a rien (mettre 0)
-echoppe_cartes=[{},{},{},{}]                   
+echoppe_cartes=[{'daifuku': [0, 2, images_objets_echoppe[1][0]], 'kamaboko': [0,1 , images_objets_echoppe[1][1]], 'konpeito': [0,1 , images_objets_echoppe[1][2]], 'manju': [0,1 , images_objets_echoppe[1][3]], 'ocha': [0, 2, images_objets_echoppe[1][4]], 'sake': [0, 2, images_objets_echoppe[1][5]]},
+                {'furoshiki': [0,2 , images_objets_echoppe[3][0]], 'geta': [0, 2, images_objets_echoppe[3][1]], 'haori': [0,2 , images_objets_echoppe[3][2]], 'kanzashi': [0, 2, images_objets_echoppe[3][3]], 'sandogasa': [0,2 , images_objets_echoppe[3][4]], 'yukata': [0,2 , images_objets_echoppe[3][5]] },
+                {'jubako': [0, 2, images_objets_echoppe[2][0]], 'netsuke': [0, 2, images_objets_echoppe[2][1]], 'shamisen': [0, 3, images_objets_echoppe[2][2]], 'shikki': [0,2 , images_objets_echoppe[2][3]], 'sumie': [0, 3, images_objets_echoppe[2][4]], 'ukiyoe': [0,3 , images_objets_echoppe[2][5]]},
+                {'gofu': [0,1 , images_objets_echoppe[0][0]], 'hashi': [0,1 , images_objets_echoppe[0][1]], 'koma': [0,1 , images_objets_echoppe[0][2]], 'uchiwa': [0,1 , images_objets_echoppe[0][3]], 'washi': [0,1 , images_objets_echoppe[0][4]], 'yunomi': [0,1 , images_objets_echoppe[0][5]]}]               
+echoppe_cartes_cst=[{'daifuku': [0, 2, images_objets_echoppe[1][0]], 'kamaboko': [0,1 , images_objets_echoppe[1][1]], 'konpeito': [0,1 , images_objets_echoppe[1][2]], 'manju': [0,1 , images_objets_echoppe[1][3]], 'ocha': [0, 2, images_objets_echoppe[1][4]], 'sake': [0, 2, images_objets_echoppe[1][5]]},
+                {'furoshiki': [0,2 , images_objets_echoppe[3][0]], 'geta': [0, 2, images_objets_echoppe[3][1]], 'haori': [0,2 , images_objets_echoppe[3][2]], 'kanzashi': [0, 2, images_objets_echoppe[3][3]], 'sandogasa': [0,2 , images_objets_echoppe[3][4]], 'yukata': [0,2 , images_objets_echoppe[3][5]] },
+                {'jubako': [0, 2, images_objets_echoppe[2][0]], 'netsuke': [0, 2, images_objets_echoppe[2][1]], 'shamisen': [0, 3, images_objets_echoppe[2][2]], 'shikki': [0,2 , images_objets_echoppe[2][3]], 'sumie': [0, 3, images_objets_echoppe[2][4]], 'ukiyoe': [0,3 , images_objets_echoppe[2][5]]},
+                {'gofu': [0,1 , images_objets_echoppe[0][0]], 'hashi': [0,1 , images_objets_echoppe[0][1]], 'koma': [0,1 , images_objets_echoppe[0][2]], 'uchiwa': [0,1 , images_objets_echoppe[0][3]], 'washi': [0,1 , images_objets_echoppe[0][4]], 'yunomi': [0,1 , images_objets_echoppe[0][5]]}]               
 
 #Tu pars du principe que dico[nom_carte] = [points_rapportes, prix carte, chemin dacces]
 
 source_cases=[5,13,22,33,42,48]
-source_cartes= {'carte 2':[2, 0, images_source_chaude[0]], 'carte 3':[3, 0, images_source_chaude[1]]}           #{'Bureau/pygame/images/nom_image'[[3, 2]]}
+source_cartes= {'source 2':[2, 0, images_source_chaude[0]], 'source 3':[3, 0, images_source_chaude[1]]}           #{'Bureau/pygame/images/nom_image'[[3, 2]]}
 
 rencontre_cases=[3,10,20,30,38,44,49]
-rencontre_cartes={} 
+rencontre_cartes={'Annaibito': [0,0 , images_rencontres[0]], 'Kuge': [0,0 , images_rencontres[1]], 'Miko': [0,0 , images_rencontres[2]], 'Samurai': [0,0 , images_rencontres[3]], 'Shokunin': [0,0 , images_rencontres[4]]} 
 
 relais_cases=[14,27,41]
-relais_cartes={'nom_carte':['points_rapportes', 'prix_carte', 'chemin_dacces']}
+relais_cartes={'dango': [6, 1, images_repas[0]], 'donburi': [6, 3, images_repas[1]], 'fugu': [6,3 , images_repas[2]], 'misoshiru': [6, 1, images_repas[3]], 'nigirimeshi': [6, 1, images_repas[4]], 'sashimi': [6, 3, images_repas[5]], 'soba': [6, 2, images_repas[6]], 'sushi': [6, 2, images_repas[7]], 'taimeshi': [6, 3, images_repas[8]], 'tempura': [6,2 , images_repas[9]], 'tofu': [6, 2, images_repas[10]], 'udon': [6, 3, images_repas[11]], 'unagi': [6, 3, images_repas[12]], 'yakitori': [6,2 , images_repas[13]]}
 
 temple_cases=[2,9,16,21,36,43] 
 
 ferme_cases=[7,17,26,31,37,47]
 
 achievments=[1,1,1,1,1,1,1,1]
-
-carte = {"panorama":pano_cartes,
-         "echoppe":echoppe_cartes}#...
 
 #trop bg
 
@@ -124,30 +148,45 @@ def effet_echoppe (current_player, shokunin=False):
         liste_cartes_case=test_case(current_player)
         #creation de la liste des cartes correspondant a la case
         possible_cards=cartes_a_proposer(3, liste_cartes_case)
+        
+        retail_card_zenemon=possible_cards[random.randint(0, len(possible_cards)-1)]
         cartes_choisies=choix(current_player, possible_cards, multiple_choices_possibility=True)
     for famille in echoppe_cartes:
         if cartes_choisies[0] in list(famille.keys()):
             carte_moins_cher=cartes_choisies[0]
+            prix_carte_moins_cher=famille[carte_moins_cher][1]
     for carte_choisie in cartes_choisies : 
 
         if carte_choisie in list(echoppe_cartes[0].keys()):
-            annexe_echoppe (current_player, carte_choisie, 'sushi', 0, shokunin)
-                #determiner la carte qui sera gratuite
+            annexe_echoppe (current_player, carte_choisie, 'sushi', 0, shokunin, retail_card_zenemon)
+                #determiner la carte qui sera gratuite pour sasayakko
             if current_player.personnage=='Sasayakko' and shokunin==False and len(cartes_choisies)>=2:
-                if carte_moins_cher.prix>echoppe_cartes[0][carte_choisie][1]: 
+                if prix_carte_moins_cher>echoppe_cartes[0][carte_choisie][1]: 
                     carte_moins_cher=carte_choisie
+                    prix_carte_moins_cher=echoppe_cartes[0][carte_choisie][1]
 
         elif carte_choisie in list(echoppe_cartes[1].keys()):
-            annexe_echoppe (current_player, carte_choisie, 'kimono', 1, shokunin)
-
+            annexe_echoppe (current_player, carte_choisie, 'kimono', 1, shokunin, retail_card_zenemon)
+            if current_player.personnage=='Sasayakko' and shokunin==False and len(cartes_choisies)>=2:
+                if prix_carte_moins_cher>echoppe_cartes[1][carte_choisie][1]: 
+                    carte_moins_cher=carte_choisie
+                    prix_carte_moins_cher=echoppe_cartes[1][carte_choisie][1]
         elif carte_choisie in list(echoppe_cartes[2].keys()):
-            annexe_echoppe (current_player, carte_choisie , 'statue', 2, shokunin)
+            annexe_echoppe (current_player, carte_choisie , 'statue', 2, shokunin, retail_card_zenemon)
+            if current_player.personnage=='Sasayakko' and shokunin==False and len(cartes_choisies)>=2:
+                if prix_carte_moins_cher>echoppe_cartes[2][carte_choisie][1]: 
+                    carte_moins_cher=carte_choisie
+                    prix_carte_moins_cher=echoppe_cartes[2][carte_choisie][1]
 
         elif carte_choisie in list(echoppe_cartes[3].keys()):
-            annexe_echoppe (current_player, carte_choisie, 'eventail', 3, shokunin)
+            annexe_echoppe (current_player, carte_choisie, 'eventail', 3, shokunin, retail_card_zenemon)
+            if current_player.personnage=='Sasayakko' and shokunin==False and len(cartes_choisies)>=2:
+                if prix_carte_moins_cher>echoppe_cartes[3][carte_choisie][1]: 
+                    carte_moins_cher=carte_choisie
+                    prix_carte_moins_cher=echoppe_cartes[3][carte_choisie][1]
 
 
-def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin):
+def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin, retail_card_zenemon):
     if mot_cle in current_player.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
         for i in range(len(current_player.ordre_famille_echoppe)):  #ne pas oublier d'enlever des pieces
             if current_player.ordre_famille_echoppe[i]==mot_cle:
@@ -157,14 +196,15 @@ def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin
         current_player.ordre_famille_echoppe.append(mot_cle)
         current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
     current_player.cartes_echoppe[indice_cle].append(carte_choisie)
-    echoppe_cartes.remove(carte_choisie)
+    del (echoppe_cartes[carte_choisie])
+
     #on retire des pieces ssi cest pas le shokunin (rencontre) qui donne la carte
     if shokunin==False :
         current_player.pieces-=echoppe_cartes[indice_cle][carte_choisie][1]
+        if current_player.personnage=='Zen-Emon'and carte_choisie==retail_card_zenemon:
+            current_player.pieces+=echoppe_cartes[indice_cle][carte_choisie][1]-1
 
-    
-
-
+   
 #il faut ajouter le fait que si le joueur a deja toute une collection de pano, pas le droit de sarreter sur la case
 def effet_panorama (current_player, mer=False, montagne=False, riziere=False): 
     #mer=false ect ne servent que dans le cas ou le joueur vient de rencontrer annaibito sur case rencontre
@@ -178,41 +218,34 @@ def effet_panorama (current_player, mer=False, montagne=False, riziere=False):
         liste_cartes_case=test_case(current_player)
 
     if current_player.case in pano_cases[0] or mer==True:                                               #SI CASE = PANO MER
-        indice=0
-        while liste_cartes_case[indice] in current_player.cartes_pano[0] :
-            indice+=1
-            if indice == len(liste_cartes_case)-1:
-                break
-        if indice<len(liste_cartes_case)-1:                                     #on ajoute la carte pano ssi le current_player ne la pas encore
-            current_player.cartes_pano[0].append(liste_cartes_case[indice])            #(car les cartes pano se recoivent dans lordre)
-            current_player.points+=pano_cartes[0][liste_cartes_case[indice]][0]
-        elif indice==len(liste_cartes_case)-1:
-            achievments(current_player, 0)
+        annexe_panorama (current_player, 0, liste_cartes_case)
     elif current_player.case in pano_cases[1] or montagne==True:                                             #SI CASE = PANO MONTAGNE
-        indice=0
-        while liste_cartes_case[indice] in current_player.cartes_pano[1] :
-            indice+=1
-            if indice == len(liste_cartes_case)-1:
-                break
-        if indice<len(liste_cartes_case)-1:                                     
-            current_player.cartes_pano[1].append(liste_cartes_case[indice])            
-            current_player.points+=pano_cartes[1][liste_cartes_case[indice]][0]   #[0] car les points sont stock�s en 1er rang dans le dico.
-        elif indice==len(liste_cartes_case)-1:
-            achievments(current_player, 0)
-    elif current_player.case in pano_cases[2] or riziere==True:                                             #SI CASE = PANO RIZIERE
-        indice=0
-        while liste_cartes_case[indice] in current_player.cartes_pano[2] :
-            indice+=1
-            if indice == len(liste_cartes_case)-1:
-                break
-        if indice<len(liste_cartes_case)-1:                                     
-            current_player.cartes_pano[2].append(liste_cartes_case[indice])            
-            current_player.points+=pano_cartes[2][liste_cartes_case[indice]][0]
-        elif indice==len(liste_cartes_case)-1:
-            achievments(current_player, 0)
-    carte_imposee(current_player, [liste_cartes_case[indice]])
-    
+        annexe_panorama(current_player, 1, liste_cartes_case)
+    elif current_player.case in pano_cases[2] or riziere==True:   
+        annexe_panorama (current_player, 2, liste_cartes_case)          #SI CASE = PANO RIZIERE
 
+
+def annexe_panorama (current_player, indice_cle, liste_cartes_case, hiroshige=False):
+    indice=0
+    while liste_cartes_case[indice] in current_player.cartes_pano[indice_cle] :
+        indice+=1
+        if indice == len(liste_cartes_case)-1:
+            break
+    if indice<len(liste_cartes_case)-1:                                     #on ajoute la carte pano ssi le current_player ne la pas encore
+        nom_carte=liste_cartes_case[indice]
+        if hiroshige==False:
+            current_player.cartes_pano[indice_cle].append(nom_carte)            #(car les cartes pano se recoivent dans lordre)
+            current_player.points+=pano_cartes[indice_cle][nom_carte][0]
+            carte_imposee(current_player, [liste_cartes_case][indice])
+        else : 
+            return nom_carte
+    elif indice==len(liste_cartes_case)-1:
+        achievments(current_player, indice_cle)
+
+
+
+
+#annaibito a resoudre, car on a quune carte
 def effet_rencontre(current_player):
     liste_cartes_case=test_case(current_player)
     if current_player.personnage!='Yoshiyasu':
@@ -231,12 +264,14 @@ def effet_rencontre(current_player):
         current_player.pieces_donnees_temple+=1
     elif nouvelle_rencontre=='Shokunin':
         effet_echoppe(current_player, shokunin=True)
-    elif nouvelle_rencontre=='Annaibito_mer':    #partie bien chiante
-        effet_panorama (current_player, mer=True)
-    elif nouvelle_rencontre=='Annaibito_montagne':
-        effet_panorama (current_player, montagne=True)
-    elif nouvelle_rencontre=='Annaibito_riziere':
-        effet_panorama (current_player, riziere=True)
+    elif nouvelle_rencontre=='Annaibito':    #partie bien chiante
+        possible_cards=[]
+        for indice in range (3):
+            possible_cards.append(annexe_panorama (current_player,indice, list(pano_cartes[indice].keys()), hiroshige=True ))
+        carte_choisie=choix(current_player, possible_cards)
+        for i in range (3):
+            if carte_choisie[0] in list(pano_cartes[i].keys()):
+                current_player.cartes_pano[i].append(carte_choisie[0])
        
 def effet_ferme (current_player):
     current_player.pieces+=3
@@ -266,8 +301,9 @@ def effet_source_chaude (current_player):
         current_player.cartes_source_chaude.append('carte 3')
 
 
-
-def effet_relais (current_player, players_list, possible_cards):
+# a finir ici : si perso=hiroshige, proposer un choix pour la carte panorama si hiroshige
+#egalement gerer la variable des cartes proposables aux joueurs suivants
+def effet_relais (current_player, players_list, possible_cards_relais):
     liste_cartes_case=test_case(current_player.case)
     players_in_relais=0
 
@@ -276,12 +312,45 @@ def effet_relais (current_player, players_list, possible_cards):
             players_in_relais+=1
 
     if players_in_relais==1:
-        possible_cards=cartes_a_proposer(len(players_list)+1, liste_cartes_case, current_player)
+        possible_cards_relais=cartes_a_proposer(len(players_list)+1, liste_cartes_case, current_player)
+    if current_player.personnage=='Satsuki':
+        free_card=possible_cards_relais[random.randint(0, len(possible_cards)-1)]
+    carte_choisie=choix (current_player, possible_cards_relais)[0]
 
-    carte_choisie=choix (current_player, possible_cards)[0]
-    possible_cards.remove(carte_choisie)
+    
+    if len(carte_choisie)==1:
+        #car lachat nest pas obligatoire au relais 
+        new_card=carte_choisie[0]
+        current_player.cartes_repas.append (new_card)
+        current_player.pieces-=relais_cartes[new_card][1]
+        if current_player.personnage=='Kinko':
+            current_player.pieces+=1
+        elif current_player.personnage=='Satsuki':
+            if new_card==free_card:
+                current_player.pieces+=relais_cartes[new_card][1]
+        current_player.points+=relais_cartes[new_card][0]
+        possible_cards.remove(carte_choisie)
+
+    if current_player.personnage=='Chuubei':
+        effet_rencontre(current_player)
+    elif current_player.personnage=='Hiroshige':
+        possible_cards=[]
+        for indice in range (3):
+            possible_cards.append(annexe_panorama (current_player,indice, list(pano_cartes[indice].keys()), hiroshige=True ))
+        carte_choisie=choix(current_player, possible_cards)
+        for i in range (3):
+            if carte_choisie[0] in list(pano_cartes[i].keys()):
+                current_player.cartes_pano[i].append(carte_choisie[0])
+
+
+
+
 
     return possible_cards            
+
+#a faire, attribution des accomplissements
+def effet_fin_de_partie(current_player):
+    pass
 
 
 def effet (current_player, players_list):     
@@ -307,8 +376,6 @@ def effet (current_player, players_list):
 
     elif current_player.case in relais_cases:
         list_cartes_relais_restantes=effet_relais (current_player, players_list)
-
-        #galere car le tirage depend du nombre de joueurs 
 
 
 
@@ -350,3 +417,16 @@ def choix (current_player, possible_cards, multiple_choices_possibility=False): 
 #la fonction ne doit rien renvoyer, ni append, juste montrer au joueur sa nouvelle carte.
 def carte_imposee (current_player, given_card):
     pass
+
+
+#fonction qui return false si le joueur ne peut pas s'arreter sur la case
+def can_stop_here (current_player):
+    if current_player.case in pano_cases[0] and len(current_player.cartes_pano[0])==5:
+        return False
+    elif current_player.case in pano_cases[1] and len(current_player.cartes_pano[2])==4:
+        return False
+    elif current_player.case in pano_cases[2] and len(current_player.cartes_pano[2])==3:
+        return False
+    elif current_player.case in temple_cases and current_player.pieces==0:
+        return False
+
