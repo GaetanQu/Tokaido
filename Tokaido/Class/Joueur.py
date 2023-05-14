@@ -135,12 +135,12 @@ class Joueur:
             bg_filter.fill(BG_COLOR)
             self.screen.blit(bg_filter, (0,0))
 
+            event = pygame.event.post(pygame.event.Event(pygame.MOUSEMOTION, {'pos' : (0,0)})) #Je pense que ca peut permettre de regler les problemes
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     break
-                else :
-                    event = event
 
             self.screen.blit(card_1[1], CARD1_POS)
             self.screen.blit(card_2[1], CARD2_POS)
@@ -150,18 +150,21 @@ class Joueur:
                 self.screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD1JETON_POS)
                 if event.type == pygame.MOUSEBUTTONUP:  #des fois ca bug, des fois non, je comprends pas
                     self.personnage = liste_keys_perso[0]
+                    self.pieces = dico_perso[self.personnage][2]
                     break
 
             if card2_rect.collidepoint(pygame.mouse.get_pos()):
                 self.screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD2JETON_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.personnage = liste_keys_perso[1]
+                    self.pieces = dico_perso[self.personnage][2]
                     break
 
             if card3_rect.collidepoint(pygame.mouse.get_pos()):
                 self.screen.blit(pygame.transform.smoothscale(jeton[self.couleur], LITTLEJETONSIZE), CARD3JETON_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.personnage = liste_keys_perso[2]
+                    self.pieces = dico_perso[self.personnage][2]
                     break
 
             i=0
@@ -218,9 +221,11 @@ class Joueur:
             self.screen.blit(bg, (CENTERX - bg.get_size()[0]/2, CENTERY - bg.get_size()[1]/1.5))
             bg_filter = pygame.Surface(self.screen.get_size())
             bg_filter.set_alpha(128)
-            bg_filter.fill((253,251,248))
+            bg_filter.fill(BG_COLOR)
             self.screen.blit(bg_filter, (0,0))
 
+
+            event = pygame.event.post(pygame.event.Event(pygame.MOUSEMOTION, {'pos' : (0,0)}))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     break

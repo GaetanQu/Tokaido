@@ -62,3 +62,5 @@ while menu_event != "Quit" :
         for element in joueur :
             element.choix_couleur(joueur)
             element.choix_perso(joueur)
+
+        Class.Play_split.launch(screen, joueur)
