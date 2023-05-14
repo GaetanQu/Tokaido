@@ -9,6 +9,16 @@ A la base on voulait faire un truc propre, digne de professionnels
 Puis on s'est rappeles qu'on etait en prepa
 """
 
+
+###############################################################################
+#                                                                             #
+#                          IL FAUT JOUER EN 1080P !!!                         #
+#                             (sinon c'est moche)                             #
+#                                                                             #
+###############################################################################
+
+
+
 #Importation de tous les modules et classes nécessaires au bon fonctionnement du programme
 import Class.Authenticator
 import Class.menu #<- ca arrive que le fichier se renomme en "menu.py", sans doute a cause de Git, il faut le renommer en "Menu.py"

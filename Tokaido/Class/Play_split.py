@@ -1,23 +1,30 @@
+from re import M
 import pygame
+import Class.effets_cases
+JETON_SIZE = (125,125)
 
-jetons_persos = {"Chuubei" : pygame.image.load("Tokaido/Class/images/personnages/jetons/chuubei.png"),
-                 "Hiroshige" : pygame.image.load("Tokaido/Class/images/personnages/jetons/hiroshige.png"),
-                 "Hirotada" : pygame.image.load("Tokaido/Class/images/personnages/jetons/hirotada.png"),
-                 "Kinko" : pygame.image.load("Tokaido/Class/images/personnages/jetons/kinko.png"),
-                 "Mitsukuni" : pygame.image.load("Tokaido/Class/images/personnages/jetons/mitsukuni.png"),
-                 "Sasayakko" : pygame.image.load("Tokaido/Class/images/personnages/jetons/sasayakko.png"),
-                 "Satsuki" : pygame.image.load("Tokaido/Class/images/personnages/jetons/satsuki.png"),
-                 "Umegae" : pygame.image.load("Tokaido/Class/images/personnages/jetons/umegae.png"),
-                 "Yoshiyasu" : pygame.image.load("Tokaido/Class/images/personnages/jetons/yoshiyasu.png"),
-                 "Zen-emon" : pygame.image.load("Tokaido/Class/images/personnages/jetons/zen-emon.png"),}
+jetons_persos = {"Chuubei" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/chuubei.png"), JETON_SIZE),
+                 "Hiroshige" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/hiroshige.png"), JETON_SIZE),
+                 "Hirotada" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/hirotada.png"), JETON_SIZE),
+                 "Kinko" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/kinko.png"), JETON_SIZE),
+                 "Mitsukuni" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/mitsukuni.png"), JETON_SIZE),
+                 "Sasayakko" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/sasayakko.png"), JETON_SIZE),
+                 "Satsuki" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/satsuki.png"), JETON_SIZE),
+                 "Umegae" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/umegae.png"), JETON_SIZE),
+                 "Yoshiyasu" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/yoshiyasu.png"), JETON_SIZE),
+                 "Zen-emon" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/zen-emon.png"), JETON_SIZE)}
 
 def launch(screen, liste_joueurs):
+    #for etape in range (4):
+         #while Class.effets_cases.everyone_in_relais (liste_joueurs)==False :
+            #pass
     pygame.display.set_caption("Tokaido")
     affichage_HUD(screen, liste_joueurs)
 
+
 def jouer_tour (liste_joueurs):
     liste_joueurs = ordre(liste_joueurs)
-    pass
+    Class.effets_cases.effet(liste_joueurs[0], liste_joueurs)
 
 def ordre (liste_joueurs):
     liste_joueurs.sort(key=lambda x: x.case)
@@ -27,14 +34,24 @@ def affichage_plateau():
     pass
 
 def affichage_HUD(screen, liste_joueurs):
-    PLAYER_SUFRACE_HEIGHT = 75
+    PLAYER_SUFRACE_HEIGHT = 150
     MAIN_PLAYER_TEXT = liste_joueurs[0].nom
     NEXT_PLAYER_TEXT = liste_joueurs[1].nom
 
-    main_player_surface = pygame.Rect((0,screen.get_size()[1] - PLAYER_SUFRACE_HEIGHT),(screen.get_size()[0], PLAYER_SUFRACE_HEIGHT))
-    other_players_surface = pygame.Rect((0,0), (screen.get_size()[0], PLAYER_SUFRACE_HEIGHT))
+    dico_perso_joueurs = {}
+    for joueur in liste_joueurs:
+        dico_perso_joueurs[joueur.nom] = joueur.personnage
 
-    screen.blit(jetons_persos[liste_joueurs[0].personnage], (0,0))
+    MAIN_PLAYER_POS = (0,screen.get_size()[1] - PLAYER_SUFRACE_HEIGHT)
+    
+    main_player_surface = pygame.Surface((screen.get_size()[0], PLAYER_SUFRACE_HEIGHT))
+    other_players_surface = pygame.Surface((screen.get_size()[0], PLAYER_SUFRACE_HEIGHT))
+
+    main_player_surface.fill((50,50,50))
+    main_player_surface.set_alpha(100)
+
+    screen.blit(main_player_surface, MAIN_PLAYER_POS)
+    screen.blit(jetons_persos[liste_joueurs[0].personnage], (int(3/2 * JETON_SIZE[0]),MAIN_PLAYER_POS[1]))
     pygame.display.flip()
 
     while True:

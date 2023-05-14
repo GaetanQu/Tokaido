@@ -1,6 +1,6 @@
 import random
-import Joueur
-from images.cartes import *
+import Class.Joueur
+from Class.images.cartes import *
 import pygame
 
 
@@ -67,7 +67,7 @@ images_accomplissements=[pygame.image.load('Tokaido/Class/images/cartes/accompli
                          pygame.image.load('Tokaido/Class/images/cartes/accomplissements/repas.png'),
                          pygame.image.load('Tokaido/Class/images/cartes/accomplissements/rencontres.png'),
                          pygame.image.load('Tokaido/Class/images/cartes/accomplissements/sources_chaudes.png'),
-                         pygame.image.load('Tokaido/Class/images/cartes/accomplissements/souvenirs.png.png'),]
+                         pygame.image.load('Tokaido/Class/images/cartes/accomplissements/souvenirs.png'),]
 
 
 
@@ -381,6 +381,11 @@ def effet (current_player, players_list):
 
 
 
+def everyone_in_relais (players_list):
+    for player in players_list :
+        if player.case not in relais_cases :
+            return False
+    return True
 
 
 
@@ -429,4 +434,6 @@ def can_stop_here (current_player):
         return False
     elif current_player.case in temple_cases and current_player.pieces==0:
         return False
+    else : 
+        return True
 
