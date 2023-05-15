@@ -12,7 +12,7 @@ pygame.font.init()
 JAPON = "Tokaido/Fonts/Japon.ttf"
 MAIN_PLAYER_FONT = pygame.font.Font(JAPON, 50)
 CURRENT_STATS_FONT = pygame.font.Font(JAPON, 60)
-LITTLE_STATS_FONT = pygame.font.Font(JAPON, 20)
+LITTLE_STATS_FONT = pygame.font.Font(JAPON, 30)
 
 
 
@@ -131,7 +131,12 @@ def affichage_HUD(screen, liste_joueurs):
                 OP_POS = (10 + (i-2) * (JETON_SIZE[0] + 100), 10)
                 screen.blit(jetons_persos[liste_joueurs[i-1].personnage], OP_POS)
                 screen.blit(little_piece, (OP_POS[0] + JETON_SIZE[0] - 30, OP_POS[1] + JETON_SIZE[1] - 30))
-                screen.blit(little_points, (OP_POS[0] + JETON_SIZE[0], OP_POS[1] + JETON_SIZE[1] - 20))
+
+                little_pieces = LITTLE_STATS_FONT.render(str(liste_joueurs[i-1].pieces), 1, (0,0,0))
+                little_points = LITTLE_STATS_FONT.render(str(liste_joueurs[i-1].points), 1, (0,0,0))
+
+                screen.blit(little_pieces, (OP_POS[0] + JETON_SIZE[0], OP_POS[1] + JETON_SIZE[1] - 10))
+                screen.blit(little_points, (OP_POS[0] + JETON_SIZE[0], OP_POS[1]))
 
             i+=1
 
