@@ -125,7 +125,7 @@ class Menu():
         self.disconnect_rect = self.disconnect_surface.get_rect()
         self.disconnect_rect.center = self.DISCONNECT_POS[0] + DISCONNECT_WIDTH/2, self.DISCONNECT_POS[1] + DISCONNECT_HEIGHT/2
 
-        PLAY_MARGIN_LEFT = 50
+        PLAY_MARGIN_LEFT = 30
         PLAY_MARGIN_BETWEEN = 10
         PLAY_MARGIN_BOTTOM = 50
 
