@@ -68,7 +68,6 @@ class Joueur:
         self.points=0
         self.achievements=[0,0,0,0,0,0,0,0]     #pano_mer, pano_montagne, pano_riziere, temples, repas, source chaude, rencontre, souvenir 
                                                 #on remplace pas 1 si le mec a l'achievment.
-
     def avancer (self):
         self.case+=int(input('Combien de cases?'))
 
@@ -94,7 +93,7 @@ class Joueur:
         self.screen_width, self.screen_height = self.screen.get_size()
         CENTERX, CENTERY = self.screen_width/2, self.screen_height/2
 
-        pygame.display.set_caption("Tokaido - " + self.nom + ", choisissez votre personnage")
+        pygame.display.set_caption("Choisissez votre personnage")
         card_1 = liste_choix_perso[0]
         card_2 = liste_choix_perso[1]
         card_3 = liste_choix_perso[2]
@@ -181,7 +180,7 @@ class Joueur:
             pygame.display.flip()
 
     def choix_couleur(self, liste_joueurs) :
-        pygame.display.set_caption("Tokaido -" + self.nom + ", choisissez votre couleur") #Le soucis du detail, meme si des fois ca bug je comprends pas pourquoi
+        pygame.display.set_caption("Choisissez votre couleur") #Le soucis du detail, meme si des fois ca bug je comprends pas pourquoi
 
         self.screen_width, self.screen_height = self.screen.get_size()
         CENTERX, CENTERY = self.screen_width/2, self.screen_height/2

@@ -1,7 +1,8 @@
-from re import M
 import pygame
 import Class.effets_cases
-JETON_SIZE = (125,125)
+JETON_SIZE = (150,150)
+HUD_COLOR = (141, 147, 190)
+
 
 jetons_persos = {"Chuubei" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/chuubei.png"), JETON_SIZE),
                  "Hiroshige" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/hiroshige.png"), JETON_SIZE),
@@ -50,15 +51,20 @@ def affichage_HUD(screen, liste_joueurs):
         dico_perso_joueurs[joueur.nom] = joueur.personnage
 
     MAIN_PLAYER_POS = (0,screen.get_size()[1] - PLAYER_SUFRACE_HEIGHT)
+    OTHER_PLAYERS_POS = (0,0)
     
     main_player_surface = pygame.Surface((screen.get_size()[0], PLAYER_SUFRACE_HEIGHT))
     other_players_surface = pygame.Surface((screen.get_size()[0], PLAYER_SUFRACE_HEIGHT))
 
-    main_player_surface.fill((50,50,50))
+    main_player_surface.fill(HUD_COLOR)
     main_player_surface.set_alpha(100)
 
+    other_players_surface.fill(HUD_COLOR)
+    other_players_surface.set_alpha(150)
+
     screen.blit(main_player_surface, MAIN_PLAYER_POS)
-    screen.blit(jetons_persos[liste_joueurs[0].personnage], (int(3/2 * JETON_SIZE[0]),MAIN_PLAYER_POS[1]))
+    screen.blit(other_players_surface, OTHER_PLAYERS_POS)
+    screen.blit(jetons_persos[liste_joueurs[0].personnage], (int(0.5 * JETON_SIZE[0]),MAIN_PLAYER_POS[1] - 0.5 * JETON_SIZE[1]/2))
     pygame.display.flip()
 
     while True:
