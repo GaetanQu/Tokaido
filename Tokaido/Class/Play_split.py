@@ -20,14 +20,17 @@ def launch(screen, liste_joueurs):
     #affichage_HUD(screen, liste_joueurs)
 
     for relais in range (4):
-        #while a modif car la le dernier joueur qui arrive ne prend pas sa carte, en gros tous les joueurs qui arrivent au relais mangent sauf le dernier car on sort du while
-         while Class.effets_cases.everyone_in_relais (liste_joueurs)==False :
+        liste_cartes_relais=[]
+        while Class.effets_cases.everyone_in_relais (liste_joueurs)==False :
              liste_joueurs=ordre(liste_joueurs)
             #etape du choix de la case a caler
-             Class.effets_cases.effet(liste_joueurs[0], liste_joueurs)
-         liste_cartes_relais=Class.effet_cases.effet(liste_joueurs[0])
-         for joueur in liste_joueurs : 
-             liste
+             current_player=liste_joueurs[0]
+             Class.effets_cases.effet (current_player, liste_joueurs)
+             if Class.effets_cases.someone_in_relais (current_player)==True : 
+                  liste_cartes_relais=Class.effets_cases.effet(current_player, liste_joueurs, liste_cartes_relais_restantes=liste_cartes_relais)
+             else:
+                 Class.effets_cases.effet (current_player, liste_joueurs)
+
 
 
 def jouer_tour (liste_joueurs):

@@ -329,7 +329,7 @@ def effet_relais (current_player, players_list, possible_cards_relais):
             if new_card==free_card:
                 current_player.pieces+=relais_cartes[new_card][1]
         current_player.points+=relais_cartes[new_card][0]
-        possible_cards.remove(carte_choisie)
+        possible_cards_relais.remove(carte_choisie)
 
     if current_player.personnage=='Chuubei':
         effet_rencontre(current_player)
@@ -349,7 +349,7 @@ def effet_fin_de_partie(current_player):
     pass
 
 
-def effet (current_player, players_list):     
+def effet (current_player, players_list, list_cartes_relais_restantes=[]):     
     if current_player.case in echoppe_cases:
         effet_echoppe (current_player)
     elif current_player.case in pano_cases[0]+pano_cases[1]+pano_cases[2]: 
@@ -371,9 +371,14 @@ def effet (current_player, players_list):
         effet_source_chaude(current_player)
 
     elif current_player.case in relais_cases:
-        list_cartes_relais_restantes=effet_relais (current_player, players_list)
+        list_cartes_relais_restantes=effet_relais (current_player, players_list, list_cartes_relais_restantes)
         return list_cartes_relais_restantes
 
+def someone_in_relais (current_player):
+    if current_player.case in relais_cases:
+        return True
+    else : 
+        return False
 
 
 
