@@ -307,7 +307,7 @@ class Joueur:
     def aff_titre(self, title):
         title_font = pygame.font.Font(JAPON, 100)
         
-        account = title_font.render(self.nom, 1, (200,30,30))
+        account = title_font.render(self.nom, 1, (200,30,30)) #Des fois ca bug(trop souvent), des fois non
         account_size = account.get_size()
 
         title = title_font.render("choisissez votre " + title, 1, (30,30,30))

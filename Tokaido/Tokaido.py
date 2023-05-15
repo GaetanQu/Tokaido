@@ -66,11 +66,12 @@ while menu_event != "Quit" :
 
     elif menu_event[0] == "Split":
         players_list = menu_event[1]
-        joueur = []
+        liste_joueurs = []
         for player in players_list:
-            joueur.append(Class.Joueur.Joueur(player[0], screen))
-        for element in joueur :
-            element.choix_couleur(joueur)
-            element.choix_perso(joueur)
+            liste_joueurs.append(Class.Joueur.Joueur(player[0], screen))
+        for joueur in liste_joueurs :
+            joueur.choix_couleur(liste_joueurs)
+            joueur.choix_perso(liste_joueurs)
+            print(joueur.nom, joueur.personnage, joueur.pieces)
 
-        Class.Play_split.launch(screen, joueur)
+        Class.Play_split.launch(screen, liste_joueurs)
