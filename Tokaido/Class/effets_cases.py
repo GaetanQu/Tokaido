@@ -310,7 +310,7 @@ def effet_relais (current_player, players_list, possible_cards_relais):
     for player in players_list:
         if player.case in relais_cases:
             players_in_relais+=1
-
+    #si il ny a quun joueur dans le relais, cela signifie quon doit generer la liste des cartes tirables ET la return pour les prochains arrivants
     if players_in_relais==1:
         possible_cards_relais=cartes_a_proposer(len(players_list)+1, liste_cartes_case, current_player)
     if current_player.personnage=='Satsuki':
@@ -334,19 +334,15 @@ def effet_relais (current_player, players_list, possible_cards_relais):
     if current_player.personnage=='Chuubei':
         effet_rencontre(current_player)
     elif current_player.personnage=='Hiroshige':
-        possible_cards=[]
+        possible_cards_pano=[]
         for indice in range (3):
-            possible_cards.append(annexe_panorama (current_player,indice, list(pano_cartes[indice].keys()), hiroshige=True ))
-        carte_choisie=choix(current_player, possible_cards)
+            possible_cards_pano.append(annexe_panorama (current_player,indice, list(pano_cartes[indice].keys()), hiroshige=True ))
+        carte_choisie=choix(current_player, possible_cards_pano)
         for i in range (3):
             if carte_choisie[0] in list(pano_cartes[i].keys()):
                 current_player.cartes_pano[i].append(carte_choisie[0])
 
-
-
-
-
-    return possible_cards            
+    return possible_cards_relais          
 
 #a faire, attribution des accomplissements
 def effet_fin_de_partie(current_player):
@@ -376,7 +372,7 @@ def effet (current_player, players_list):
 
     elif current_player.case in relais_cases:
         list_cartes_relais_restantes=effet_relais (current_player, players_list)
-
+        return list_cartes_relais_restantes
 
 
 

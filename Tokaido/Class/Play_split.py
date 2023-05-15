@@ -15,11 +15,18 @@ jetons_persos = {"Chuubei" : pygame.transform.smoothscale(pygame.image.load("Tok
                  "Zen-emon" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/zen-emon.png"), JETON_SIZE)}
 
 def launch(screen, liste_joueurs):
-    #for etape in range (4):
-         #while Class.effets_cases.everyone_in_relais (liste_joueurs)==False :
-            #pass
     pygame.display.set_caption("Tokaido")
-    affichage_HUD(screen, liste_joueurs)
+    #affichage_HUD(screen, liste_joueurs)
+
+    for relais in range (4):
+        #while a modif car la le dernier joueur qui arrive ne prend pas sa carte, en gros tous les joueurs qui arrivent au relais mangent sauf le dernier car on sort du while
+         while Class.effets_cases.everyone_in_relais (liste_joueurs)==False :
+             liste_joueurs=ordre(liste_joueurs)
+            #etape du choix de la case a caler
+             Class.effets_cases.effet(liste_joueurs[0], liste_joueurs)
+         liste_cartes_relais=Class.effet_cases.effet(liste_joueurs[0])
+         for joueur in liste_joueurs : 
+             liste
 
 
 def jouer_tour (liste_joueurs):
