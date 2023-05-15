@@ -12,6 +12,7 @@ pygame.font.init()
 JAPON = "Tokaido/Fonts/Japon.ttf"
 MAIN_PLAYER_FONT = pygame.font.Font(JAPON, 50)
 CURRENT_STATS_FONT = pygame.font.Font(JAPON, 60)
+LITTLE_STATS_FONT = pygame.font.Font(JAPON, 20)
 
 jetons_persos = {"Chuubei" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/chuubei.png"), JETON_SIZE),
                  "Hiroshige" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/hiroshige.png"), JETON_SIZE),
@@ -25,6 +26,8 @@ jetons_persos = {"Chuubei" : pygame.transform.smoothscale(pygame.image.load("Tok
                  "Zen-Emon" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/zen-emon.png"), JETON_SIZE)}
 
 piece = pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/HUD/piece.png"), (100,100))
+little_piece = pygame.transform.smoothscale(piece, (30,30))
+
 
 cards_viewer = pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/HUD/cards_viewer.png"), (100,100))
 hovered_cards_viewer = pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/HUD/hovered_cards_viewer.png"), (100,100))
@@ -33,7 +36,7 @@ cards_viewers_rect = cards_viewer.get_rect()
 
 def launch(screen, liste_joueurs):
     pygame.display.set_caption("Tokaido")
-    #affichage_HUD(screen, liste_joueurs)
+    affichage_HUD(screen, liste_joueurs)
 
     for relais in range (4):
         liste_cartes_relais=[]
@@ -46,7 +49,6 @@ def launch(screen, liste_joueurs):
                   liste_cartes_relais=Class.effets_cases.effet(current_player, liste_joueurs, liste_cartes_relais_restantes=liste_cartes_relais)
              else:
                  Class.effets_cases.effet (current_player, liste_joueurs)
-
 
 def jouer_tour (liste_joueurs):
     liste_joueurs = ordre(liste_joueurs)
@@ -72,6 +74,7 @@ def affichage_HUD(screen, liste_joueurs):
     cards_viewers_rect.center = centrage_rect(cards_viewer, CARDS_VIEWERS_POS)
 
     points = CURRENT_STATS_FONT.render("Points : " + str(liste_joueurs[0].points), 1, (0,0,0))
+    little_points = LITTLE_STATS_FONT.render(str(liste_joueurs[0].points), 1, (0,0,0))
     pieces = CURRENT_STATS_FONT.render(str(liste_joueurs[0].pieces), 1, (0,0,0))
 
     PIECE_POS = (screen.get_size()[0] - 100 -  POINTS_WIDTH, MAIN_PLAYER_POS[1] + PLAYER_SUFRACE_HEIGHT / 2 - 50)
@@ -119,6 +122,16 @@ def affichage_HUD(screen, liste_joueurs):
         screen.blit(piece, PIECE_POS)
         screen.blit(pieces, (PIECE_POS[0] + piece.get_width() - 5, PIECE_POS[1] + piece.get_height() - 50))
         screen.blit(jetons_persos[liste_joueurs[0].personnage], JETON_POS)
+
+        i = 1
+        for joueur in liste_joueurs:
+            if joueur.nom != None :
+                OP_POS = (10 + (i-2) * (JETON_SIZE[0] + 100), 10)
+                screen.blit(jetons_persos[liste_joueurs[i-1].personnage], OP_POS)
+                screen.blit(little_piece, (OP_POS[0] + JETON_SIZE[0] - 30, OP_POS[1] + JETON_SIZE[1] - 30))
+                screen.blit(little_points, (OP_POS[0] + JETON_SIZE[0], OP_POS[1] + JETON_SIZE[1] - 20))
+
+            i+=1
 
         pygame.display.flip()
 
