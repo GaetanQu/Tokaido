@@ -479,6 +479,15 @@ def can_stop_here (current_player, list_players):
         return False
     elif current_player.case in temple_cases and current_player.pieces==0:
         return False
-    else : 
-        return True
+    joueurs_on_case=1
+    for joueur in list_players:
+        if joueur!=current_player :
+            if joueur.case==current_player.case and joueur.case not in cases_doubles:
+                return False
+            elif joueur.case==current_player.case and joueur.case in cases_doubles :
+                joueurs_on_case+=1
+    if joueurs_on_case>2:
+        return False
+
+    return True
 
