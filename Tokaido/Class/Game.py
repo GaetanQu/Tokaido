@@ -48,8 +48,8 @@ def launch(screen, liste_joueurs):
         while Class.effets_cases.everyone_in_relais (liste_joueurs)==False :
             liste_joueurs = ordre(liste_joueurs)
             current_player=liste_joueurs[0]
-            while tour(screen, liste_joueurs, relais) == None:
-                affichage_HUD(screen, liste_joueurs)
+            tour(screen, liste_joueurs, relais)
+            affichage_HUD(screen, liste_joueurs)
             Class.effets_cases.effet (current_player, liste_joueurs)
             if Class.effets_cases.someone_in_relais (current_player)==True : 
                 liste_cartes_relais=Class.effets_cases.effet(current_player, liste_joueurs, liste_cartes_relais_restantes=liste_cartes_relais)

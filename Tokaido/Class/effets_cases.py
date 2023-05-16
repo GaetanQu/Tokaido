@@ -294,7 +294,6 @@ def effet_source_chaude (current_player):
         current_player.cartes_source_chaude.append('carte 3')
         carte_imposee('carte 3', source_cartes, screen)
 
-
 # a finir ici : si perso=hiroshige, proposer un choix pour la carte panorama si hiroshige
 #egalement gerer la variable des cartes proposables aux joueurs suivants
 def effet_relais (current_player, players_list, possible_cards_relais):
@@ -448,7 +447,6 @@ def carte_imposee (given_card, origin_dico, screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if  screen.get_width()-texte.get_width()/2-9 <= mouse[0] <= screen.get_width()-texte.get_width()/2-9 + texte.get_width()+18 and card_pos[1]+scaled_card.get_height()+50 <= mouse[1] <= card_pos[1]+scaled_card.get_height()+50+40:
                     break
-
 
 
 
