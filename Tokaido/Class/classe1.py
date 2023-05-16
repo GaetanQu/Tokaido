@@ -1,5 +1,5 @@
 import pygame
-
+import Joueur
 
 
 
@@ -66,7 +66,7 @@ IMAGES_ACCOMPLISSEMENTS=[pygame.image.load('Tokaido/Class/images/cartes/accompli
                          pygame.image.load('Tokaido/Class/images/cartes/accomplissements/repas.png'),
                          pygame.image.load('Tokaido/Class/images/cartes/accomplissements/rencontres.png'),
                          pygame.image.load('Tokaido/Class/images/cartes/accomplissements/sources_chaudes.png'),
-                         pygame.image.load('Tokaido/Class/images/cartes/accomplissements/souvenirs.png'),]
+                         pygame.image.load('Tokaido/Class/images/cartes/accomplissements/souvenirs.png')]
 
 
 
@@ -84,6 +84,7 @@ PANO_CARTES=[{'mer_1':[1, 0, IMAGES_PANORAMA[0][0]], 'mer_2' : [2, 0, IMAGES_PAN
 SOURCE_CARTES= {'source 2':[2, 0, IMAGES_SOURCE[0]], 'source 3':[3, 0, IMAGES_SOURCE[1]]}
 RENCONTRE_CARTES={'Annaibito': [0,0 , IMAGES_RENCONTRE[0]], 'Kuge': [0,0 , IMAGES_RENCONTRE[1]], 'Miko': [0,0 , IMAGES_RENCONTRE[2]], 'Samurai': [0,0 , IMAGES_RENCONTRE[3]], 'Shokunin': [0,0 , IMAGES_RENCONTRE[4]]} 
 RELAIS_CARTES={'dango': [6, 1, IMAGES_REPAS[0]], 'donburi': [6, 3, IMAGES_REPAS[1]], 'fugu': [6,3 , IMAGES_REPAS[2]], 'misoshiru': [6, 1, IMAGES_REPAS[3]], 'nigirimeshi': [6, 1, IMAGES_REPAS[4]], 'sashimi': [6, 3, IMAGES_REPAS[5]], 'soba': [6, 2, IMAGES_REPAS[6]], 'sushi': [6, 2, IMAGES_REPAS[7]], 'taimeshi': [6, 3, IMAGES_REPAS[8]], 'tempura': [6,2 , IMAGES_REPAS[9]], 'tofu': [6, 2, IMAGES_REPAS[10]], 'udon': [6, 3, IMAGES_REPAS[11]], 'unagi': [6, 3, IMAGES_REPAS[12]], 'yakitori': [6,2 , IMAGES_REPAS[13]]}
+
 
 
 
@@ -118,18 +119,24 @@ def afficher_panorama (screen, current_player):
     POS_CARTE_1=(100, 300)
     add_x=0
     add_y=0   
+    i=0
+    DIVIDER = 5
 
     for famille in current_player.cartes_pano:
+        
         for carte in famille:
-            image=PANO_CARTES[carte][2]
-            hauteur_image=(screen.get_size()[0]-300-200)/3
-            largeur_image=image.get_size()[1]/image.get_size()[0]*hauteur_image
-            pygame.transform.smoothscale (image, (hauteur_image, largeur_image))
+            image=PANO_CARTES[i][carte][2]
+            hauteur_image=image.get_height()/DIVIDER
+            largeur_image=image.get_width()/DIVIDER
+            scaled_image = pygame.transform.smoothscale (image, (largeur_image, hauteur_image))
             image_pos=(POS_CARTE_1[0]+add_x, POS_CARTE_1[1]+add_y)
-            screen.blit(image, image_pos)
-            add_x+=image.get_size()[0]
+            screen.blit(scaled_image, image_pos)
+            add_x+=scaled_image.get_size()[0]
+            pygame.display.flip()
+        i+=1
         add_x=0
         add_y+=hauteur_image+50
+        
 
    
 
@@ -145,6 +152,17 @@ def afficher_source (screen, current_player):
         image_2=source_cartes['source 2'][2]
         #pas finito
 
+pygame.init()
 
-
+screen = pygame.display.set_mode((0,0))
+joueur = Joueur.Joueur("Test", screen)
+joueur.cartes_pano[0].append("mer_1")
+joueur.cartes_pano[0].append("mer_2")
+joueur.cartes_pano[1].append("montagne_1")
+afficher_panorama(screen, joueur)
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            break
 

@@ -41,7 +41,7 @@ players_list = []
 
 account = Class.Authenticator.auth()
 players_list.append(account)
-screen = pygame.display.set_mode((0,0))
+screen = pygame.display.set_mode((1280,720))
 
 
 menu_event = None
@@ -77,6 +77,6 @@ while menu_event != "Quit" :
 
         while i < 5:
             liste_joueurs.append(Class.Joueur.Joueur(None, screen))
-            i+=1                
+            i+=1
 
         Class.Play_split.launch(screen, liste_joueurs)
