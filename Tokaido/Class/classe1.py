@@ -96,7 +96,7 @@ def afficher_echoppe (screen, current_player):
         for carte in famille : 
             #recuperer le chemin dacces de la carte
             image=ECHOPPE_CARTES[carte][2]
-            hauteur_image=(screen.get_size()[0]-300-200)/3
+            hauteur_image=(screen.get_size()[1]-300-200)/3
             largeur_image=image.get_size()[1]/image.get_size()[0]*hauteur_image
             pygame.transform.smoothscale (image, (hauteur_image, largeur_image))
             image_pos=(POS_CARTE_1[0]+add_x+30, POS_CARTE_1[1]+add_y+50)
@@ -122,7 +122,7 @@ def afficher_panorama (screen, current_player):
     for famille in current_player.cartes_pano:
         for carte in famille:
             image=PANO_CARTES[carte][2]
-            hauteur_image=(screen.get_size()[0]-300-200)/3
+            hauteur_image=(screen.get_size()[1]-300-200)/3
             largeur_image=image.get_size()[1]/image.get_size()[0]*hauteur_image
             pygame.transform.smoothscale (image, (hauteur_image, largeur_image))
             image_pos=(POS_CARTE_1[0]+add_x, POS_CARTE_1[1]+add_y)

@@ -432,7 +432,7 @@ def achievments ( current_player, indice_achievment):
 def choix (current_player, possible_cards, multiple_choices_possibility=False):    #PYGAME!!!! cette fonction doit me return une liste comportant la ou 
     while 'le joueur ne clique pas sur valider'==True:          #les cartes choisies par le joueur 
         if 'le joueur clique sur carte'==True:          
-            pass                                        
+            pass
 
 
 
