@@ -14,6 +14,8 @@ MAIN_PLAYER_FONT = pygame.font.Font(JAPON, 50)
 CURRENT_STATS_FONT = pygame.font.Font(JAPON, 60)
 LITTLE_STATS_FONT = pygame.font.Font(JAPON, 20)
 
+
+
 jetons_persos = {"Chuubei" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/chuubei.png"), JETON_SIZE),
                  "Hiroshige" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/hiroshige.png"), JETON_SIZE),
                  "Hirotada" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/hirotada.png"), JETON_SIZE),

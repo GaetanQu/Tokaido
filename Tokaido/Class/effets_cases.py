@@ -4,6 +4,8 @@ from Class.images.cartes import *
 import pygame
 
 
+
+
 images_source_chaude=[pygame.image.load('Tokaido/Class/images/cartes/sources_chaudes/2_points.png'), 
                       pygame.image.load('Tokaido/Class/images/cartes/sources_chaudes/3_points.png')]
 images_objets_echoppe=[[pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/gofu.png'), 

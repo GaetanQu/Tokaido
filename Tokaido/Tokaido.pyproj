@@ -21,6 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Class\classe1.py" />
     <Compile Include="Tokaido.py" />
   </ItemGroup>
   <ItemGroup>
