@@ -7,6 +7,7 @@ On pourra egalement comparer ces dernieres avec celles des autres utilisatteurs 
 """
 A la base on voulait faire un truc propre, digne de professionnels
 Puis on s'est rappeles qu'on etait en prepa
+C'est pas le cas de Jules et Martin apparemment
 """
 
 
@@ -22,7 +23,7 @@ Puis on s'est rappeles qu'on etait en prepa
 #Importation de tous les modules et classes nécessaires au bon fonctionnement du programme
 import Class.Authenticator
 import Class.menu #<- ca arrive que le fichier se renomme en "menu.py", sans doute a cause de Git, il faut le renommer en "Menu.py"
-import Class.Play_split
+import Class.Game
 import Class.Joueur
 import PySimpleGUI as sg
 import pygame
@@ -31,17 +32,12 @@ pygame.init()
 pygame.display.init()
 pygame.font.init()
 
-#Creation du plateau
-case = []
-for i in range (54):
-    case.append(i)
-
 #En premier lieu, l'utilisateur doit s'identifier
 players_list = []
 
 account = Class.Authenticator.auth()
 players_list.append(account)
-screen = pygame.display.set_mode((1280,720))
+screen = pygame.display.set_mode((0,0))
 
 
 menu_event = None
@@ -79,4 +75,4 @@ while menu_event != "Quit" :
             liste_joueurs.append(Class.Joueur.Joueur(None, screen))
             i+=1
 
-        Class.Play_split.launch(screen, liste_joueurs)
+        Class.Game.launch(screen, liste_joueurs)
