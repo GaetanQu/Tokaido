@@ -244,7 +244,7 @@ class Menu():
                         elif self.players_list == None :
                             self.players_list = [self.first_players_list]
                         else :
-                            self.choix_couleur_fade_out()
+                            #self.choix_couleur_fade_out()
                             return("Split", self.players_list)
 
             #Affichage du background
@@ -399,21 +399,25 @@ class Menu():
                     #On teste le nombre de joueurs
                     elif self.split_player_2_rectangle.collidepoint(pygame.mouse.get_pos()):
                         self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
+                        pygame.display.set_mode((0,0))
                         return (self.players_list)
 
                     elif self.split_player_3_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (2):
                             self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
+                        pygame.display.set_mode((0,0))
                         return (self.players_list)
 
                     elif self.split_player_4_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (3):
                             self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
+                        pygame.display.set_mode((0,0))
                         return (self.players_list)
 
                     elif self.split_player_5_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (4):
                             self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
+                        pygame.display.set_mode((0,0))
                         return (self.players_list)
 
                     elif self.settings_rect.collidepoint(pygame.mouse.get_pos()):
@@ -509,7 +513,7 @@ class Menu():
         else :
             self.screen.blit(self.croix, self.CROIX_POS)
 
-    def choix_couleur_fade_out(self):
+    """def choix_couleur_fade_out(self):
         ANIMATION_DURATION = 0.5
         for i in range(int(ANIMATION_DURATION*FPS)):
             self.clock.tick(FPS)
@@ -541,4 +545,4 @@ class Menu():
             filter.set_alpha(i*255/(ANIMATION_DURATION*FPS))
             filter.fill((253,251,248))
             self.screen.blit(filter, (0,0))
-            pygame.display.flip()
+            pygame.display.flip()"""

@@ -31,8 +31,6 @@ pygame.init()
 pygame.display.init()
 pygame.font.init()
 
-
-
 #Creation du plateau
 case = []
 for i in range (54):
@@ -42,8 +40,9 @@ for i in range (54):
 players_list = []
 
 account = Class.Authenticator.auth()
-screen = pygame.display.set_mode((0,0))
 players_list.append(account)
+screen = pygame.display.set_mode((0,0))
+
 
 menu_event = None
 
@@ -67,11 +66,17 @@ while menu_event != "Quit" :
     elif menu_event[0] == "Split":
         players_list = menu_event[1]
         liste_joueurs = []
+
+        i = 0
         for player in players_list:
-            liste_joueurs.append(Class.Joueur.Joueur(player[0], screen))
-        for joueur in liste_joueurs :
+            i+=1
+            joueur = Class.Joueur.Joueur(player[0], screen)
+            liste_joueurs.append(joueur)
             joueur.choix_couleur(liste_joueurs)
             joueur.choix_perso(liste_joueurs)
-            print(joueur.nom, joueur.personnage, joueur.pieces)
+
+        while i < 5:
+            liste_joueurs.append(Class.Joueur.Joueur(None, screen))
+            i+=1                
 
         Class.Play_split.launch(screen, liste_joueurs)
