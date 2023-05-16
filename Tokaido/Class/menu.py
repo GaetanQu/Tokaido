@@ -512,37 +512,3 @@ class Menu():
                 return("quit")
         else :
             self.screen.blit(self.croix, self.CROIX_POS)
-
-    """def choix_couleur_fade_out(self):
-        ANIMATION_DURATION = 0.5
-        for i in range(int(ANIMATION_DURATION*FPS)):
-            self.clock.tick(FPS)
-
-            self.screen.blit(self.bg, self.BG_POS)
-            if self.title_rect.collidepoint(pygame.mouse.get_pos()):
-                self.screen.blit(self.hovered_title, self.TITLE_POS)
-            else :
-                self.screen.blit(self.title, self.TITLE_POS)
-            if self.account_and_back_rect.collidepoint(pygame.mouse.get_pos()):
-                self.screen.blit(self.hovered_account, self.ACCOUNT_POS)
-            else :
-                self.screen.blit(self.account, self.ACCOUNT_POS)
-            if self.play_solo_rect.collidepoint(pygame.mouse.get_pos()) :
-                self.screen.blit(self.hovered_play_solo_surface, self.PLAY_SOLO_POS)
-            else :
-                self.screen.blit(self.play_solo_surface, self.PLAY_SOLO_POS)
-            if self.play_split_rect.collidepoint(pygame.mouse.get_pos()):
-                self.screen.blit(self.hovered_play_split_surface, self.PLAY_SPLIT_POS)
-            else :
-                self.screen.blit(self.play_split_surface, self.PLAY_SPLIT_POS)
-            if self.settings_rect.collidepoint(pygame.mouse.get_pos()):
-                self.screen.blit(self.hovered_settings_surface, self.SETTINGS_POS)
-            else :
-                self.screen.blit(self.settings_surface, self.SETTINGS_POS)
-            self.affichage_constant()
-            
-            filter = pygame.Surface(self.screen.get_size())
-            filter.set_alpha(i*255/(ANIMATION_DURATION*FPS))
-            filter.fill((253,251,248))
-            self.screen.blit(filter, (0,0))
-            pygame.display.flip()"""

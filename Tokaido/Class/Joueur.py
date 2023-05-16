@@ -55,6 +55,7 @@ class Joueur:
         self.screen = screen
         self.nom = nom
         self.couleur=None
+        self.pion = None
         self.personnage=None
         self.pieces=0
         self.cartes_pano=[[],[],[]]             #mer, montagne, riziere
@@ -233,6 +234,7 @@ class Joueur:
                 self.screen.blit(jeton["hovered_bleu"], BLEU_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.couleur = "bleu"
+                    self.pion = jeton["bleu"]
                     break
 
             elif "bleu" in taken_colors:
@@ -245,6 +247,7 @@ class Joueur:
                 self.screen.blit(jeton["hovered_jaune"], JAUNE_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.couleur = "jaune"
+                    self.pion = jeton["jaune"]
                     break
 
             elif "jaune" in taken_colors:
@@ -258,6 +261,7 @@ class Joueur:
                 self.screen.blit(jeton["hovered_rouge"], ROUGE_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.couleur = "rouge"
+                    self.pion = jeton["rouge"]
                     break
 
             elif "rouge" in taken_colors:
@@ -271,6 +275,7 @@ class Joueur:
                 self.screen.blit(jeton["hovered_vert"], VERT_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.couleur = "vert"
+                    self.pion = jeton["vert"]
                     break
 
             elif "vert" in taken_colors:
@@ -283,6 +288,7 @@ class Joueur:
                 self.screen.blit(jeton["hovered_violet"], VIOLET_POS)
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.couleur = "violet"
+                    self.pion = jeton["violet"]
                     break
 
             elif "violet" in taken_colors:

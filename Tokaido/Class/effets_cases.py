@@ -4,8 +4,6 @@ from Class.images.cartes import *
 import pygame
 
 
-
-
 images_source_chaude=[pygame.image.load('Tokaido/Class/images/cartes/sources_chaudes/2_points.png'), 
                       pygame.image.load('Tokaido/Class/images/cartes/sources_chaudes/3_points.png')]
 images_objets_echoppe=[[pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/gofu.png'), 
@@ -113,10 +111,6 @@ achievments=[1,1,1,1,1,1,1,1]
 #trop bg
 
 
-
-
-
-
 def test_case(current_player):             
     if current_player.case in pano_cases[0]:
         return list(pano_cartes[0].keys())
@@ -183,7 +177,6 @@ def effet_echoppe (current_player, shokunin=False):
                     carte_moins_cher=carte_choisie
                     prix_carte_moins_cher=echoppe_cartes[3][carte_choisie][1]
 
-
 def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin, retail_card_zenemon):
     if mot_cle in current_player.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
         for i in range(len(current_player.ordre_famille_echoppe)):  #ne pas oublier d'enlever des pieces
@@ -202,7 +195,6 @@ def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin
         if current_player.personnage=='Zen-Emon'and carte_choisie==retail_card_zenemon:
             current_player.pieces+=echoppe_cartes[indice_cle][carte_choisie][1]-1
 
-   
 #il faut ajouter le fait que si le joueur a deja toute une collection de pano, pas le droit de sarreter sur la case
 def effet_panorama (current_player, mer=False, montagne=False, riziere=False): 
     #mer=false ect ne servent que dans le cas ou le joueur vient de rencontrer annaibito sur case rencontre
@@ -222,7 +214,6 @@ def effet_panorama (current_player, mer=False, montagne=False, riziere=False):
     elif current_player.case in pano_cases[2] or riziere==True:   
         annexe_panorama (current_player, 2, liste_cartes_case)          #SI CASE = PANO RIZIERE
 
-
 def annexe_panorama (current_player, indice_cle, liste_cartes_case, hiroshige=False):
     indice=0
     while liste_cartes_case[indice] in current_player.cartes_pano[indice_cle] :
@@ -239,8 +230,6 @@ def annexe_panorama (current_player, indice_cle, liste_cartes_case, hiroshige=Fa
             return nom_carte
     elif indice==len(liste_cartes_case)-1:
         achievments(current_player, indice_cle)
-
-
 
 
 #annaibito a resoudre, car on a quune carte
@@ -298,7 +287,6 @@ def effet_source_chaude (current_player):
         current_player.points+=3
         current_player.cartes_source_chaude.append('carte 3')
 
-
 # a finir ici : si perso=hiroshige, proposer un choix pour la carte panorama si hiroshige
 #egalement gerer la variable des cartes proposables aux joueurs suivants
 def effet_relais (current_player, players_list, possible_cards_relais):
@@ -346,8 +334,7 @@ def effet_relais (current_player, players_list, possible_cards_relais):
 def effet_fin_de_partie(current_player):
     pass
 
-
-def effet (current_player, players_list, list_cartes_relais_restantes=[]):     
+def effet (current_player, players_list, list_cartes_relais_restantes=[]):
     if current_player.case in echoppe_cases:
         effet_echoppe (current_player)
     elif current_player.case in pano_cases[0]+pano_cases[1]+pano_cases[2]: 
@@ -378,14 +365,11 @@ def someone_in_relais (current_player):
     else : 
         return False
 
-
-
 def everyone_in_relais (players_list):
     for player in players_list :
         if player.case not in relais_cases :
             return False
     return True
-
 
 def pg_test_case (numero):
     if numero in pano_cases[0]:
@@ -407,7 +391,6 @@ def pg_test_case (numero):
     elif numero in ferme_cases :
         return pygame.image.load('Tokaido/Class/images/cases/ferme.png')
 
-
 #constitution de la liste des cartes qu'on proposera au joueur selon le nbr de cartes a tirer
 def cartes_a_proposer( nb_cartes_a_tirer, liste_cartes_case):
     possible_cards=[]                      
@@ -417,7 +400,6 @@ def cartes_a_proposer( nb_cartes_a_tirer, liste_cartes_case):
         del(liste_cartes_case[indice_carte])
     return possible_cards
 
-
 #simple test si lachievment est deja recupere    
 def achievments ( current_player, indice_achievment):       
     if achievments[indice_achievment]==1:
@@ -425,7 +407,6 @@ def achievments ( current_player, indice_achievment):
         achievments[indice_achievment]=0  
         if current_player.personnage=='Mitsukuni':
             current_player.points+=1
-
 
 #multiple_choices_possibility=True lorsque le joueur ne peut en choisir qu'une, 
 #multiple_choices_possibility=False par defaut, si le joueur peut en prendre plusieurs (echoppe)
@@ -435,12 +416,10 @@ def choix (current_player, possible_cards, multiple_choices_possibility=False): 
             pass
 
 
-
 #given_card ici n'est pas une liste, on veut juste 'nom_carte'
 #la fonction ne doit rien renvoyer, ni append, juste montrer au joueur sa nouvelle carte.
 def carte_imposee (current_player, given_card):
     pass
-
 
 #fonction qui return false si le joueur ne peut pas s'arreter sur la case
 def can_stop_here (current_player):
