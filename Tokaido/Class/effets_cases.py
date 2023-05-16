@@ -1,9 +1,13 @@
 import random
-import Class.Joueur
-from Class.images.cartes import *
+import Joueur
+from images.cartes import *
 import pygame
 
 
+pygame.font.init()
+
+JAPON = "Tokaido/Fonts/Japon.ttf"
+POLICE  = pygame.font.Font(JAPON, 40)
 
 
 images_source_chaude=[pygame.image.load('Tokaido/Class/images/cartes/sources_chaudes/2_points.png'), 
@@ -141,7 +145,7 @@ def effet_echoppe (current_player, shokunin=False):
         objet_shokunin=liste_cartes_case[random.randint(0, len(liste_cartes_case)-1)]
         cartes_choisies=[objet_shokunin]       
         #affichage de la carte tiree au sort
-        carte_imposee(current_player, [objet_shokunin])
+        carte_imposee(objet_shokunin, rencontre_cartes, screen)
     else : 
         liste_cartes_case=test_case(current_player)
         #creation de la liste des cartes correspondant a la case
@@ -234,7 +238,7 @@ def annexe_panorama (current_player, indice_cle, liste_cartes_case, hiroshige=Fa
         if hiroshige==False:
             current_player.cartes_pano[indice_cle].append(nom_carte)            #(car les cartes pano se recoivent dans lordre)
             current_player.points+=pano_cartes[indice_cle][nom_carte][0]
-            carte_imposee(current_player, [liste_cartes_case][indice])
+            carte_imposee([liste_cartes_case][indice], pano_cartes[indice_cle], screen)
         else : 
             return nom_carte
     elif indice==len(liste_cartes_case)-1:
@@ -252,7 +256,7 @@ def effet_rencontre(current_player):
         possible_cards=cartes_a_proposer (2, liste_cartes_case)
         nouvelle_rencontre=choix (current_player, possible_cards)
     current_player.cartes_rencontre.append(nouvelle_rencontre)
-    carte_imposee(current_player, nouvelle_rencontre)
+    carte_imposee(nouvelle_rencontre, rencontre_cartes, screen)
     if nouvelle_rencontre=='Kuge':
         current_player.pieces+=3
     elif nouvelle_rencontre=='Samurai':
@@ -262,7 +266,7 @@ def effet_rencontre(current_player):
         current_player.pieces_donnees_temple+=1
     elif nouvelle_rencontre=='Shokunin':
         effet_echoppe(current_player, shokunin=True)
-    elif nouvelle_rencontre=='Annaibito':    #partie bien chiante
+    elif nouvelle_rencontre=='Annaibito':    
         possible_cards=[]
         for indice in range (3):
             possible_cards.append(annexe_panorama (current_player,indice, list(pano_cartes[indice].keys()), hiroshige=True ))
@@ -293,13 +297,13 @@ def effet_source_chaude (current_player):
     if carte==2:
         current_player.points+=2
         current_player.cartes_source.append('carte 2')
-        carte_imposee(current_player, )
+        carte_imposee('carte 2', source_cartes, screen)
     elif carte==3:
         current_player.points+=3
         current_player.cartes_source_chaude.append('carte 3')
+        carte_imposee('carte 3', source_cartes, screen)
 
 
-# a finir ici : si perso=hiroshige, proposer un choix pour la carte panorama si hiroshige
 #egalement gerer la variable des cartes proposables aux joueurs suivants
 def effet_relais (current_player, players_list, possible_cards_relais):
     liste_cartes_case=test_case(current_player.case)
@@ -438,12 +442,35 @@ def choix (current_player, possible_cards, multiple_choices_possibility=False): 
 
 #given_card ici n'est pas une liste, on veut juste 'nom_carte'
 #la fonction ne doit rien renvoyer, ni append, juste montrer au joueur sa nouvelle carte.
-def carte_imposee (current_player, given_card):
-    pass
+def carte_imposee (given_card, origin_dico, screen):
+    DIVIDER=5
+    carte=origin_dico[given_card][2]
+    scaled_card=pygame.transform.smoothscale (carte, (carte.get_width()/DIVIDER, carte.get_height()/DIVIDER))
+    card_pos=(screen.get_width()/2-scaled_card.get_width()/2, screen.get_height()/2-scaled_card.get_height()/2-50)
+
+    police1  = pygame.font.Font(JAPON, 18)
+    texte=police1.render('Accepter la nouvelle carte', 1,(0,0,0) )
+    pygame.draw.rect(screen, (141, 147, 190), ((screen.get_width()-texte.get_width())/2-9, card_pos[1]+scaled_card.get_height()+50, texte.get_width()+18, 40))
+    texte_rect = texte.get_rect(center=(card_pos[0] + scaled_card.get_width() // 2, card_pos[1]+scaled_card.get_height()+50 + 40 // 2))
+
+    screen.blit(scaled_card, card_pos)
+    screen.blit(texte, texte_rect)
+    pygame.display.flip()
+
+    mouse = pygame.mouse.get_pos()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if  screen.get_width()-texte.get_width()/2-9 <= mouse[0] <= screen.get_width()-texte.get_width()/2-9 + texte.get_width()+18 and card_pos[1]+scaled_card.get_height()+50 <= mouse[1] <= card_pos[1]+scaled_card.get_height()+50+40:
+                    break
+
+
+
 
 
 #fonction qui return false si le joueur ne peut pas s'arreter sur la case
-def can_stop_here (current_player):
+def can_stop_here (current_player, list_players):
     if current_player.case in pano_cases[0] and len(current_player.cartes_pano[0])==5:
         return False
     elif current_player.case in pano_cases[1] and len(current_player.cartes_pano[2])==4:

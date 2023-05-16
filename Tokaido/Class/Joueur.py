@@ -1,6 +1,6 @@
 import pygame
 import random
-from Class.Settings import *
+from Settings import *
 
 BG_COLOR = (251,253,248)
 
@@ -62,6 +62,7 @@ class Joueur:
         self.cartes_echoppe=[[],[],[],[]]        #4 familles de cartes, faudrait les mettre dans l'ordre 
         self.ordre_famille_echoppe=[]           #car l'ordre dans lequel le joueur prend les cartes est important. liste prendra en paramètre sushi, kimono, statue, eventail.
         self.cartes_source=[]
+        self.cartes_rencontre=[]
         self.pieces_donnees_temple=0
         self.pieces_depensees_repas=0
         self.case=0
