@@ -389,6 +389,25 @@ def everyone_in_relais (players_list):
     return True
 
 
+def pg_test_case (numero):
+    if numero in pano_cases[0]:
+        return pygame.image.load('Tokaido/Class/images/cases/mer.png')
+    elif numero in pano_cases[1]:
+        return pygame.image.load('Tokaido/Class/images/cases/montagne.png')
+    elif numero in pano_cases[2]:
+        return pygame.image.load('Tokaido/Class/images/cases/riziere.png')
+    elif numero in echoppe_cases:
+        return pygame.image.load('Tokaido/Class/images/cases/echoppe.png')
+    elif numero in source_cases:
+        return pygame.image.load('Tokaido/Class/images/cases/source.png')
+    elif numero in rencontre_cases:
+        return pygame.image.load('Tokaido/Class/images/cases/rencontre.png')
+    elif numero in relais_cases:
+        return pygame.image.load('Tokaido/Class/images/cases/relais.png')
+    elif numero in temple_cases:
+        return pygame.image.load('Tokaido/Class/images/cases/temple.png')
+    elif numero in ferme_cases :
+        return pygame.image.load('Tokaido/Class/images/cases/ferme.png')
 
 
 #constitution de la liste des cartes qu'on proposera au joueur selon le nbr de cartes a tirer
