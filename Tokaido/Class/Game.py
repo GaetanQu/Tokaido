@@ -55,7 +55,7 @@ def launch(screen, liste_joueurs):
             if Class.effets_cases.someone_in_relais (current_player)==True : 
                 liste_cartes_relais=Class.effets_cases.effet(current_player, liste_joueurs, liste_cartes_relais_restantes=liste_cartes_relais)
             else:
-                Class.effets_cases.effet (current_player, liste_joueurs)
+                Class.effets_cases.effet (current_player, liste_joueurs, screen)
 
 
 
@@ -146,6 +146,11 @@ def affichage_HUD(screen, liste_joueurs):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 break
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if cards_viewers_rect.collidepoint(pygame.mouse.get_pos()):
+                    Class.Inventaire.afficher(screen, liste_joueurs[0])
+                    Class.affichage_plateau.launch(screen, liste_joueurs[0], liste_joueurs)
+
 
         
 
