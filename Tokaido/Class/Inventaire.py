@@ -89,7 +89,7 @@ RENCONTRE_CARTES={'Annaibito': [0,0 , IMAGES_RENCONTRE[0]], 'Kuge': [0,0 , IMAGE
 RELAIS_CARTES={'dango': [6, 1, IMAGES_REPAS[0]], 'donburi': [6, 3, IMAGES_REPAS[1]], 'fugu': [6,3 , IMAGES_REPAS[2]], 'misoshiru': [6, 1, IMAGES_REPAS[3]], 'nigirimeshi': [6, 1, IMAGES_REPAS[4]], 'sashimi': [6, 3, IMAGES_REPAS[5]], 'soba': [6, 2, IMAGES_REPAS[6]], 'sushi': [6, 2, IMAGES_REPAS[7]], 'taimeshi': [6, 3, IMAGES_REPAS[8]], 'tempura': [6,2 , IMAGES_REPAS[9]], 'tofu': [6, 2, IMAGES_REPAS[10]], 'udon': [6, 3, IMAGES_REPAS[11]], 'unagi': [6, 3, IMAGES_REPAS[12]], 'yakitori': [6,2 , IMAGES_REPAS[13]]}
 
 def afficher (screen, current_player):    
-    DIVIDER=7
+    DIVIDER=3
     image_souvenirs=pygame.image.load('Tokaido/Class/images/cartes/souvenirs/back.png')
     hauteur_image_souvenirs=image_souvenirs.get_height()/DIVIDER
     largeur_image_souvenirs=image_souvenirs.get_width()/DIVIDER
@@ -134,8 +134,20 @@ def afficher (screen, current_player):
     image_panorama_y=screen.get_height()/2+50
     image_panorama_pos=(image_panorama_x, image_panorama_y)
 
+    souvenirs_rect = scaled_image_souvenirs.get_rect()
+    souvenirs_rect.topleft = (largeur_image_souvenirs, hauteur_image_souvenirs)
 
+    sources_chaudes_rect = scaled_image_sources_chaudes.get_rect()
+    sources_chaudes_rect.topleft = (largeur_image_sources_chaudes, hauteur_image_sources_chaudes)
 
+    rencontres_rect = scaled_image_rencontres.get_rect()
+    rencontres_rect.topleft = (largeur_image_rencontres, hauteur_image_rencontres)
+
+    repas_rect = scaled_image_repas.get_rect()
+    repas_rect.topleft = (largeur_image_repas, hauteur_image_repas)
+
+    panorama_rect = scaled_image_panorama.get_rect()
+    panorama_rect.topleft = (largeur_image_panorama, hauteur_image_panorama)
 
     filter=pygame.Surface(screen.get_size())
     filter.set_alpha (120)
@@ -155,7 +167,37 @@ def afficher (screen, current_player):
 
     pygame.display.flip()
 
+    quit = False
+    while not quit: 
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP:
+                if souvenirs_rect.collidepoint(pygame.mouse.get_pos()):
+                    while event != pygame.MOUSEBUTTONUP :
+                        for event in pygame.event.get():
+                            afficher_echoppe(screen, current_player)
 
+                elif sources_chaudes_rect.collidepoint(pygame.mouse.get_pos()):
+                    while event != pygame.MOUSEBUTTONUP :
+                        for event in pygame.event.get():
+                            afficher_source(screen, current_player)
+
+                elif rencontres_rect.collidepoint(pygame.mouse.get_pos()):
+                    while event != pygame.MOUSEBUTTONUP :
+                        for event in pygame.event.get():
+                             afficher_rencontre(screen, current_player)
+
+                elif repas_rect.collidepoint(pygame.mouse.get_pos()):
+                    while event != pygame.MOUSEBUTTONUP :
+                        for event in pygame.event.get():
+                            afficher_repas(screen, current_player)
+
+                elif panorama_rect.collidepoint(pygame.mouse.get_pos()):
+                    while event != pygame.MOUSEBUTTONUP :
+                        for event in pygame.event.get():
+                            afficher_panorama(screen, current_player)
+                else:
+                    quit = True
+            
 def afficher_echoppe (screen, current_player):
     POS_CARTE_1= (100, 200)
     add_x=0
@@ -164,6 +206,8 @@ def afficher_echoppe (screen, current_player):
     j=0
     DIVIDER=8
     for famille in current_player.cartes_echoppe : 
+        if famille == []:
+            largeur_image = 0
         for carte in famille : 
             #recuperer le chemin dacces de la carte
             image=ECHOPPE_CARTES[j][carte][2]
@@ -179,13 +223,11 @@ def afficher_echoppe (screen, current_player):
                 add_y+=hauteur_image
                 add_x-=(largeur_image+30)
             i+=1
-
         #passage a la famille suivante
         add_x+=screen.get_size()[0]-(6*120)-(3*largeur_image)
         add_y=0
         j+=1
     pygame.display.flip()
-
 
 def afficher_panorama (screen, current_player):
     if len(current_player.cartes_pano[0]+current_player.cartes_pano[1]+current_player.cartes_pano[2])==0:
@@ -210,9 +252,6 @@ def afficher_panorama (screen, current_player):
         i+=1
         add_x=0
         add_y+=hauteur_image+50
-        
-
-   
 
 def afficher_source (screen, current_player):
     #variables qui stockent le nombre de fois que le joueur a cette carte
@@ -274,7 +313,7 @@ def afficher_rencontre (screen, current_player):
             shokunin+=1
     
 
-    DIVIDER=7
+    DIVIDER=3
     image_anna=pygame.image.load('Tokaido/Class/images/cartes/rencontres/annaibito.png')
     hauteur_image_anna=image_anna.get_height()/DIVIDER
     largeur_image_anna=image_anna.get_width()/DIVIDER
@@ -350,26 +389,18 @@ def afficher_rencontre (screen, current_player):
 
     pygame.display.flip()
 
+def afficher_repas(screen, current_player):
+    x,y = 100,250
+    DIVIDER = 4
+    for carte in current_player.carte_repas:
+        image = RELAIS_CARTES[carte][2]
+        scaled_image = pygame.transform.smoothscale(image, (image.get_width()/DIVIDER, image.get_height()/DIVIDER))
+        if x + scaled_image.get_width() > screen.get_width - 100:
+            x = 100
+            y += scaled_image.get_height() + 100
+        else:
+            x += scaled_image.get_width() + 50
 
-#def afficher_temple : 
-
-"""
-pygame.init()
-
-screen = pygame.display.set_mode((0,0))
-joueur = Class.Joueur.Joueur("Test", screen)
-
-joueur.cartes_echoppe[0].append ('daifuku')
-joueur.cartes_echoppe[0].append('kamaboko')
-joueur.cartes_echoppe[1].append('furoshiki')
-joueur.cartes_echoppe[2].append('jubako')
-joueur.cartes_echoppe[3].append('gofu')
-
-"""
-"""afficher_echoppe(screen, joueur)
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            break
-        """
+        screen.blit(scaled_image, (x,y))
+    
+    pygame.display.flip()

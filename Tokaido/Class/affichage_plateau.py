@@ -23,16 +23,15 @@ y_pointeur=550*h
 
 
 def affichage_piste (screen):
+    screen.fill((251,253,248))
     largeur_piste=screen.get_width()
     hauteur_piste=PISTE.get_height()/PISTE.get_width()*screen.get_width()
     scaled_piste=pygame.transform.smoothscale(PISTE, (largeur_piste, hauteur_piste))
     screen.blit(scaled_piste, (0, screen.get_height()/2-hauteur_piste/2))
-    pygame.display.flip()
 
 
 def launch (screen, joueur, list_players):
     scaled_pointeur=pygame.transform.smoothscale (POINTEUR, (20, 20))
-    screen.fill((251,253,248))
 
     affichage_piste (screen)
     x_pointeur=64/25*e
@@ -69,7 +68,6 @@ def launch (screen, joueur, list_players):
                         y_pointeur += ecart_cases_y[compteur+joueur.case]
                         affichage_piste(screen)
                         screen.blit(scaled_pointeur, (x_pointeur, y_pointeur))
-                        pygame.display.flip()
                         compteur+=1
                 elif event.key == pygame.K_LEFT:
                     if compteur>0:
@@ -77,7 +75,6 @@ def launch (screen, joueur, list_players):
                         y_pointeur -= ecart_cases_y[compteur+joueur.case-1]
                         affichage_piste(screen)
                         screen.blit(scaled_pointeur, (x_pointeur, y_pointeur))
-                        pygame.display.flip()
                         compteur-=1
                     
             
