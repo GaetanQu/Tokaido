@@ -1,7 +1,8 @@
 import pygame
 import effets_cases
 import random
-import affichage_plateau
+import Class.affichage_plateau
+import Class.Inventaire
 
 JETON_SIZE = (150,150)
 POINTS_WIDTH = 400
@@ -50,7 +51,7 @@ def launch(screen, liste_joueurs):
             liste_joueurs = ordre(liste_joueurs)
             current_player=liste_joueurs[0]
             Class.affichage_plateau.launch(screen, liste_joueurs[0], liste_joueurs)
-            Class.effets_cases.effet (current_player, liste_joueurs)
+            Class.effets_cases.effet (current_player, liste_joueurs, screen)
             if Class.effets_cases.someone_in_relais (current_player)==True : 
                 liste_cartes_relais=Class.effets_cases.effet(current_player, liste_joueurs, liste_cartes_relais_restantes=liste_cartes_relais)
             else:
@@ -108,6 +109,12 @@ def affichage_HUD(screen, liste_joueurs):
     other_players_surface.fill(HUD_COLOR)
     other_players_surface.set_alpha(150)    
 
+
+    if cards_viewers_rect.collidepoint(pygame.mouse.get_pos()):
+        screen.blit(hovered_cards_viewer, CARDS_VIEWERS_POS)
+    else :
+        screen.blit(cards_viewer, CARDS_VIEWERS_POS)
+
     screen.blit(main_player_surface, MAIN_PLAYER_POS)
     screen.blit(other_players_surface, OTHER_PLAYERS_POS)
     screen.blit(main_player_text_surface, MAIN_PLAYER_TEXT_POS)
@@ -117,6 +124,21 @@ def affichage_HUD(screen, liste_joueurs):
     screen.blit(pieces, (PIECE_POS[0] + piece.get_width() - 5, PIECE_POS[1] + piece.get_height() - 50))
     screen.blit(jetons_persos[liste_joueurs[0].personnage], JETON_POS)
 
+    i = 1
+    for joueur in liste_joueurs:
+        if joueur.nom != None :
+            OP_POS = (10 + (i-2) * (JETON_SIZE[0] + 100), 10)
+            screen.blit(jetons_persos[liste_joueurs[i-1].personnage], OP_POS)
+            screen.blit(little_piece, (OP_POS[0] + JETON_SIZE[0] - 30, OP_POS[1] + JETON_SIZE[1] - 30))
+
+            little_pieces = LITTLE_STATS_FONT.render(str(liste_joueurs[i-1].pieces), 1, (0,0,0))
+            little_points = LITTLE_STATS_FONT.render(str(liste_joueurs[i-1].points), 1, (0,0,0))
+
+            screen.blit(little_pieces, (OP_POS[0] + JETON_SIZE[0], OP_POS[1] + JETON_SIZE[1] - 10))
+            screen.blit(little_points, (OP_POS[0] + JETON_SIZE[0], OP_POS[1]))
+
+        i+=1
+
     
 
     if main_player_rect.collidepoint(pygame.mouse.get_pos()):
@@ -125,36 +147,7 @@ def affichage_HUD(screen, liste_joueurs):
                 pygame.quit()
                 break
 
-        screen.fill(BG_COLOR)
-
-        if cards_viewers_rect.collidepoint(pygame.mouse.get_pos()):
-            screen.blit(hovered_cards_viewer, CARDS_VIEWERS_POS)
-        else :
-            screen.blit(cards_viewer, CARDS_VIEWERS_POS)
-
-        screen.blit(main_player_surface, MAIN_PLAYER_POS)
-        screen.blit(other_players_surface, OTHER_PLAYERS_POS)
-        screen.blit(main_player_text_surface, MAIN_PLAYER_TEXT_POS)
         
-        screen.blit(points, (screen.get_width() - points.get_width() - 50, screen.get_height() - PLAYER_SUFRACE_HEIGHT / 2 - points.get_height()/2))
-        screen.blit(piece, PIECE_POS)
-        screen.blit(pieces, (PIECE_POS[0] + piece.get_width() - 5, PIECE_POS[1] + piece.get_height() - 50))
-        screen.blit(jetons_persos[liste_joueurs[0].personnage], JETON_POS)
-
-        i = 1
-        for joueur in liste_joueurs:
-            if joueur.nom != None :
-                OP_POS = (10 + (i-2) * (JETON_SIZE[0] + 100), 10)
-                screen.blit(jetons_persos[liste_joueurs[i-1].personnage], OP_POS)
-                screen.blit(little_piece, (OP_POS[0] + JETON_SIZE[0] - 30, OP_POS[1] + JETON_SIZE[1] - 30))
-
-                little_pieces = LITTLE_STATS_FONT.render(str(liste_joueurs[i-1].pieces), 1, (0,0,0))
-                little_points = LITTLE_STATS_FONT.render(str(liste_joueurs[i-1].points), 1, (0,0,0))
-
-                screen.blit(little_pieces, (OP_POS[0] + JETON_SIZE[0], OP_POS[1] + JETON_SIZE[1] - 10))
-                screen.blit(little_points, (OP_POS[0] + JETON_SIZE[0], OP_POS[1]))
-
-            i+=1
 
     pygame.display.flip()
 
