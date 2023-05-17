@@ -1,5 +1,5 @@
 import pygame
-import Joueur
+import Class.Joueur
 
 pygame.font.init()
 
@@ -88,7 +88,72 @@ SOURCE_CARTES= {'source 2':[2, 0, IMAGES_SOURCE[0]], 'source 3':[3, 0, IMAGES_SO
 RENCONTRE_CARTES={'Annaibito': [0,0 , IMAGES_RENCONTRE[0]], 'Kuge': [0,0 , IMAGES_RENCONTRE[1]], 'Miko': [0,0 , IMAGES_RENCONTRE[2]], 'Samurai': [0,0 , IMAGES_RENCONTRE[3]], 'Shokunin': [0,0 , IMAGES_RENCONTRE[4]]} 
 RELAIS_CARTES={'dango': [6, 1, IMAGES_REPAS[0]], 'donburi': [6, 3, IMAGES_REPAS[1]], 'fugu': [6,3 , IMAGES_REPAS[2]], 'misoshiru': [6, 1, IMAGES_REPAS[3]], 'nigirimeshi': [6, 1, IMAGES_REPAS[4]], 'sashimi': [6, 3, IMAGES_REPAS[5]], 'soba': [6, 2, IMAGES_REPAS[6]], 'sushi': [6, 2, IMAGES_REPAS[7]], 'taimeshi': [6, 3, IMAGES_REPAS[8]], 'tempura': [6,2 , IMAGES_REPAS[9]], 'tofu': [6, 2, IMAGES_REPAS[10]], 'udon': [6, 3, IMAGES_REPAS[11]], 'unagi': [6, 3, IMAGES_REPAS[12]], 'yakitori': [6,2 , IMAGES_REPAS[13]]}
 
+def afficher (screen, current_player):    
+    DIVIDER=7
+    image_souvenirs=pygame.image.load('Tokaido/Class/images/cartes/souvenirs/back.png')
+    hauteur_image_souvenirs=image_souvenirs.get_height()/DIVIDER
+    largeur_image_souvenirs=image_souvenirs.get_width()/DIVIDER
+    scaled_image_souvenirs=pygame.transform.smoothscale (image_souvenirs, (largeur_image_souvenirs, hauteur_image_souvenirs))
+    image_souvenirs_x=screen.get_width()/2-largeur_image_souvenirs*3/2-100
+    image_souvenirs_y=screen.get_height()/2-hauteur_image_souvenirs-50
+    image_souvenirs_pos=(image_souvenirs_x, image_souvenirs_y)
 
+
+    image_sources_chaudes=pygame.image.load('Tokaido/Class/images/cartes/sources_chaudes/back.png')
+    hauteur_image_sources_chaudes=image_sources_chaudes.get_height()/DIVIDER
+    largeur_image_sources_chaudes=image_sources_chaudes.get_width()/DIVIDER
+    scaled_image_sources_chaudes=pygame.transform.smoothscale (image_sources_chaudes, (largeur_image_sources_chaudes, hauteur_image_sources_chaudes))
+    image_sources_chaudes_x=screen.get_width()/2-largeur_image_sources_chaudes/2
+    image_sources_chaudes_y=screen.get_height()/2-hauteur_image_sources_chaudes-50
+    image_sources_chaudes_pos=(image_sources_chaudes_x, image_sources_chaudes_y)
+
+
+    image_rencontres=pygame.image.load('Tokaido/Class/images/cartes/rencontres/back.png')
+    hauteur_image_rencontres=image_rencontres.get_height()/DIVIDER
+    largeur_image_rencontres=image_rencontres.get_width()/DIVIDER
+    scaled_image_rencontres=pygame.transform.smoothscale (image_rencontres, (largeur_image_rencontres, hauteur_image_rencontres))
+    image_rencontres_x=screen.get_width()/2+largeur_image_rencontres/2+100
+    image_rencontres_y=screen.get_height()/2-hauteur_image_rencontres-50
+    image_rencontres_pos=(image_rencontres_x, image_rencontres_y)
+
+
+    image_repas=pygame.image.load('Tokaido/Class/images/cartes/repas/back.png')
+    hauteur_image_repas=image_repas.get_height()/DIVIDER
+    largeur_image_repas=image_repas.get_width()/DIVIDER
+    scaled_image_repas=pygame.transform.smoothscale (image_repas, (largeur_image_repas, hauteur_image_repas))
+    image_repas_x=screen.get_width()/2-largeur_image_repas-50
+    image_repas_y=screen.get_height()/2+50
+    image_repas_pos=(image_repas_x, image_repas_y)
+
+
+    image_panorama=pygame.image.load('Tokaido/Class/images/cartes/panorama/montagne/back.png')
+    hauteur_image_panorama=image_panorama.get_height()/DIVIDER
+    largeur_image_panorama=image_panorama.get_width()/DIVIDER
+    scaled_image_panorama=pygame.transform.smoothscale (image_panorama, (largeur_image_panorama, hauteur_image_panorama))
+    image_panorama_x=screen.get_width()/2+50
+    image_panorama_y=screen.get_height()/2+50
+    image_panorama_pos=(image_panorama_x, image_panorama_y)
+
+
+
+
+    filter=pygame.Surface(screen.get_size())
+    filter.set_alpha (120)
+    filter.fill((175, 160, 200))
+    screen.blit(filter, (0,0))
+
+    screen.blit (scaled_image_souvenirs, image_souvenirs_pos)
+
+    screen.blit (scaled_image_sources_chaudes, image_sources_chaudes_pos)
+
+    screen.blit (scaled_image_rencontres, image_rencontres_pos)
+
+    screen.blit (scaled_image_repas, image_repas_pos)
+
+    screen.blit (scaled_image_panorama, image_panorama_pos)
+
+
+    pygame.display.flip()
 
 
 def afficher_echoppe (screen, current_player):
@@ -288,11 +353,11 @@ def afficher_rencontre (screen, current_player):
 
 #def afficher_temple : 
 
-
+"""
 pygame.init()
 
 screen = pygame.display.set_mode((0,0))
-joueur = Joueur.Joueur("Test", screen)
+joueur = Class.Joueur.Joueur("Test", screen)
 
 joueur.cartes_echoppe[0].append ('daifuku')
 joueur.cartes_echoppe[0].append('kamaboko')
@@ -300,11 +365,11 @@ joueur.cartes_echoppe[1].append('furoshiki')
 joueur.cartes_echoppe[2].append('jubako')
 joueur.cartes_echoppe[3].append('gofu')
 
-
-afficher_echoppe(screen, joueur)
+"""
+"""afficher_echoppe(screen, joueur)
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             break
-
+        """
