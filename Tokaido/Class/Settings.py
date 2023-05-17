@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 import csv
 
-csv_directory = "Tokaido/class/settings.csv"
+csv_directory = "Tokaido/Class/settings.csv"
 
 class Settings():
     def __init__(self) :

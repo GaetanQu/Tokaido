@@ -1,7 +1,7 @@
 import pygame
 import effets_cases
 import Joueur
-
+import Game
 
 PISTE = pygame.image.load('Tokaido/Class/images/piste_/piste.png')
 POINTEUR=pygame.image.load ('Tokaido/Class/images/piste_/fleche.png')
@@ -19,18 +19,16 @@ ecart_cases_y=[-110, 30, 0, 0, -30, 80, 0, 0, -30, 8, -60, 30, 0, 30]
 
 
 
-def affichage_piste (PISTE, screen):
-    piste=PISTE
+def affichage_piste (screen):
     largeur_piste=screen.get_width()
-    hauteur_piste=piste.get_height()/piste.get_width()*screen.get_width()
-    scaled_piste=pygame.transform.smoothscale(piste, (largeur_piste, hauteur_piste))
+    hauteur_piste=PISTE.get_height()/PISTE.get_width()*screen.get_width()
+    scaled_piste=pygame.transform.smoothscale(PISTE, (largeur_piste, hauteur_piste))
     screen.blit(scaled_piste, (0, screen.get_height()/2-hauteur_piste/2))
     pygame.display.flip()
 
 
-def affichage_pointeur_case (PISTE, POINTEUR, screen, joueur, list_players):
-    pointeur=POINTEUR
-    scaled_pointeur=pygame.transform.smoothscale (pointeur, (20, 20))
+def launch (screen, joueur, list_players):
+    scaled_pointeur=pygame.transform.smoothscale (POINTEUR, (20, 20))
     affichage_piste (PISTE, screen)
     x_pointeur=63
     a=0
@@ -63,7 +61,8 @@ def affichage_pointeur_case (PISTE, POINTEUR, screen, joueur, list_players):
                     if joueur.case+compteur<relais_cases[compteur_relais]:
                         x_pointeur += ecart_cases_x[compteur+joueur.case]
                         y_pointeur += ecart_cases_y[compteur+joueur.case]
-                        affichage_piste(PISTE, screen)
+                        affichage_piste(screen)
+                        Game.affichage_HUD(screen,  list_players)
                         screen.blit(scaled_pointeur, (x_pointeur, y_pointeur))
                         pygame.display.flip()
                         compteur+=1
@@ -71,10 +70,16 @@ def affichage_pointeur_case (PISTE, POINTEUR, screen, joueur, list_players):
                     if compteur>0:
                         x_pointeur -= ecart_cases_x[compteur+joueur.case-1]
                         y_pointeur -= ecart_cases_y[compteur+joueur.case-1]
-                        affichage_piste(PISTE, screen)
+                        affichage_piste(screen)
+                        Game.affichage_HUD(screen,  list_players)
                         screen.blit(scaled_pointeur, (x_pointeur, y_pointeur))
                         pygame.display.flip()
                         compteur-=1
+                else :
+                    Game.affichage_HUD(screen, list_players)
+            
+
+
     
 
 pygame.init()
@@ -82,8 +87,11 @@ pygame.init()
 screen = pygame.display.set_mode((0,0))
 joueur = Joueur.Joueur("Test", screen)
 joueur.case=0
+joueur.personnage='Zen-Emon'
+
 j2=Joueur.Joueur("Test2", screen)
 j2.case=4
+j2.personnage='Hiroshige'
 lst=[joueur, j2]
 affichage_pointeur_case(PISTE,POINTEUR,  screen, joueur, lst)
 
@@ -95,7 +103,7 @@ while True:
 
 
 
-def affichage_HUD(screen, liste_joueurs):
+'''def affichage_HUD(screen, liste_joueurs):
     PLAYER_SUFRACE_HEIGHT = 150
     MAIN_PLAYER_POS = (0,screen.get_size()[1] - PLAYER_SUFRACE_HEIGHT)
     
@@ -177,4 +185,4 @@ def affichage_HUD(screen, liste_joueurs):
         pygame.display.flip()
 
 def centrage_rect(surface, pos):
-    return pos[0] + surface.get_size()[0]/2, pos[1] + surface.get_size()[1]/2
+    return pos[0] + surface.get_size()[0]/2, pos[1] + surface.get_size()[1]/2'''
