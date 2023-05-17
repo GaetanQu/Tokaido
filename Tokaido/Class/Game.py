@@ -1,7 +1,7 @@
 import pygame
-import Class.effets_cases
+import effets_cases
 import random
-import Class.affichage_plateau
+import affichage_plateau
 
 JETON_SIZE = (150,150)
 POINTS_WIDTH = 400

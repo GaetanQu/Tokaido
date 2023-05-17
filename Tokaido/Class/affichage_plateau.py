@@ -10,8 +10,9 @@ relais_cases=[14,27,41]
 
 #ecart entre les cases
 e=25
-ecart_cases_x=[31/25*e,20/25*e,e,e,e,e,e,e,e,e,e*4/5,20/25*e,17/25*e,22/25*e]
-ecart_cases_y=[-110, 30, 0, 0, -30, 80, 0, 0, -30, 8, -60, 30, 0, 30]
+ecart_cases_x=[31/25*e,20/25*e,e,e,e,e,e,e,e,e,e*4/5,20/25*e,17/25*e,22/25*e, e, e,e,e,e,e,e,e,e,e,e,e,e]
+h=1
+ecart_cases_y=[-110*h, 30*h, 0, 0, -30*h, 80*h, 0, 0, -30*h, 8*h, -60*h, 30*h, 0, 30*h, h,h,h,h,h,h,h,h,h,h,h,h,h]
 
 
 
@@ -29,7 +30,7 @@ def affichage_piste (screen):
 
 def launch (screen, joueur, list_players):
     scaled_pointeur=pygame.transform.smoothscale (POINTEUR, (20, 20))
-    affichage_piste (PISTE, screen)
+    affichage_piste (screen)
     x_pointeur=63
     a=0
     while a!=joueur.case :
@@ -58,11 +59,11 @@ def launch (screen, joueur, list_players):
                     else : 
                         joueur.case-=compteur
                 elif event.key == pygame.K_RIGHT:
-                    if joueur.case+compteur<relais_cases[compteur_relais]:
+                    #if joueur.case+compteur<relais_cases[compteur_relais]:
                         x_pointeur += ecart_cases_x[compteur+joueur.case]
                         y_pointeur += ecart_cases_y[compteur+joueur.case]
                         affichage_piste(screen)
-                        Game.affichage_HUD(screen,  list_players)
+                        #Game.affichage_HUD(screen,  list_players)
                         screen.blit(scaled_pointeur, (x_pointeur, y_pointeur))
                         pygame.display.flip()
                         compteur+=1
@@ -71,12 +72,13 @@ def launch (screen, joueur, list_players):
                         x_pointeur -= ecart_cases_x[compteur+joueur.case-1]
                         y_pointeur -= ecart_cases_y[compteur+joueur.case-1]
                         affichage_piste(screen)
-                        Game.affichage_HUD(screen,  list_players)
+                        #Game.affichage_HUD(screen,  list_players)
                         screen.blit(scaled_pointeur, (x_pointeur, y_pointeur))
                         pygame.display.flip()
                         compteur-=1
-                else :
-                    Game.affichage_HUD(screen, list_players)
+
+                #else :
+                    #Game.affichage_HUD(screen, list_players)
             
 
 
@@ -93,7 +95,7 @@ j2=Joueur.Joueur("Test2", screen)
 j2.case=4
 j2.personnage='Hiroshige'
 lst=[joueur, j2]
-affichage_pointeur_case(PISTE,POINTEUR,  screen, joueur, lst)
+launch(screen, joueur, lst)
 
 while True:
     for event in pygame.event.get():

@@ -1,6 +1,4 @@
 import random
-import Joueur
-from images.cartes import *
 import pygame
 
 
