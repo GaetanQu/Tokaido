@@ -135,7 +135,7 @@ def test_case(current_player):
     else :
         return []
 
-def effet_echoppe (current_player, shokunin=False):
+def effet_echoppe (current_player, screen, shokunin=False):
 
     if shokunin==True:
         objet_shokunin=liste_cartes_case[random.randint(0, len(liste_cartes_case)-1)]
@@ -202,7 +202,7 @@ def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin
             current_player.pieces+=echoppe_cartes[indice_cle][carte_choisie][1]-1
 
 #il faut ajouter le fait que si le joueur a deja toute une collection de pano, pas le droit de sarreter sur la case
-def effet_panorama (current_player, mer=False, montagne=False, riziere=False): 
+def effet_panorama (current_player, screen, mer=False, montagne=False, riziere=False): 
     #mer=false ect ne servent que dans le cas ou le joueur vient de rencontrer annaibito sur case rencontre
     if mer==True:
         liste_cartes_case=list(pano_cartes[0].keys())
@@ -214,13 +214,13 @@ def effet_panorama (current_player, mer=False, montagne=False, riziere=False):
         liste_cartes_case=test_case(current_player)
 
     if current_player.case in pano_cases[0] or mer==True:                                               #SI CASE = PANO MER
-        annexe_panorama (current_player, 0, liste_cartes_case)
+        annexe_panorama (current_player, 0, liste_cartes_case, screen)
     elif current_player.case in pano_cases[1] or montagne==True:                                             #SI CASE = PANO MONTAGNE
-        annexe_panorama(current_player, 1, liste_cartes_case)
+        annexe_panorama(current_player, 1, liste_cartes_case, screen)
     elif current_player.case in pano_cases[2] or riziere==True:   
-        annexe_panorama (current_player, 2, liste_cartes_case)          #SI CASE = PANO RIZIERE
+        annexe_panorama (current_player, 2, liste_cartes_case, screen)          #SI CASE = PANO RIZIERE
 
-def annexe_panorama (current_player, indice_cle, liste_cartes_case, hiroshige=False):
+def annexe_panorama (current_player, indice_cle, liste_cartes_case,screen, hiroshige=False ):
     indice=0
     while liste_cartes_case[indice] in current_player.cartes_pano[indice_cle] :
         indice+=1
@@ -239,7 +239,7 @@ def annexe_panorama (current_player, indice_cle, liste_cartes_case, hiroshige=Fa
 
 
 #annaibito a resoudre, car on a quune carte
-def effet_rencontre(current_player):
+def effet_rencontre(current_player, screen):
     liste_cartes_case=test_case(current_player)
     if current_player.personnage!='Yoshiyasu':
         nouvelle_rencontre=cartes_a_proposer (1,  liste_cartes_case)
@@ -281,7 +281,7 @@ def effet_temple (current_player):
     current_player.pieces-=money_given
     current_player.pieces_donnees_temple+=money_given
 
-def effet_source_chaude (current_player):
+def effet_source_chaude (current_player, screen):
     carte=random.randint(2,3)
     if current_player.personnage=='Mitsukuni':
         current_player.points+=1
@@ -297,7 +297,7 @@ def effet_source_chaude (current_player):
 
 # a finir ici : si perso=hiroshige, proposer un choix pour la carte panorama si hiroshige
 #egalement gerer la variable des cartes proposables aux joueurs suivants
-def effet_relais (current_player, players_list, possible_cards_relais):
+def effet_relais (current_player, players_list, possible_cards_relais, screen):
     liste_cartes_case=test_case(current_player.case)
     players_in_relais=0
 
@@ -326,7 +326,7 @@ def effet_relais (current_player, players_list, possible_cards_relais):
         possible_cards_relais.remove(carte_choisie)
 
     if current_player.personnage=='Chuubei':
-        effet_rencontre(current_player)
+        effet_rencontre(current_player, screen)
     elif current_player.personnage=='Hiroshige':
         possible_cards_pano=[]
         for indice in range (3):
@@ -342,14 +342,14 @@ def effet_relais (current_player, players_list, possible_cards_relais):
 def effet_fin_de_partie(current_player):
     pass
 
-def effet (current_player, players_list, list_cartes_relais_restantes=[]):
+def effet (current_player, players_list, screen, list_cartes_relais_restantes=[]):
     if current_player.case in echoppe_cases:
         effet_echoppe (current_player)
     elif current_player.case in pano_cases[0]+pano_cases[1]+pano_cases[2]: 
-        effet_panorama (current_player)
+        effet_panorama (current_player, screen)
 
     elif current_player.case in rencontre_cases:
-        effet_rencontre(current_player)
+        effet_rencontre(current_player, screen)
         if current_player.personnage=='Umegae':
             current_player.points+=1
             current_player.pieces+=1
@@ -361,7 +361,7 @@ def effet (current_player, players_list, list_cartes_relais_restantes=[]):
         effet_temple(current_player)
 
     elif current_player.case in source_cases:
-        effet_source_chaude(current_player)
+        effet_source_chaude(current_player, screen)
 
     elif current_player.case in relais_cases:
         list_cartes_relais_restantes=effet_relais (current_player, players_list, list_cartes_relais_restantes)
@@ -418,7 +418,7 @@ def achievments ( current_player, indice_achievment):
 
 #multiple_choices_possibility=True lorsque le joueur ne peut en choisir qu'une, 
 #multiple_choices_possibility=False par defaut, si le joueur peut en prendre plusieurs (echoppe)
-def choix (current_player, possible_cards, multiple_choices_possibility=False):    #PYGAME!!!! cette fonction doit me return une liste comportant la ou 
+def choix (current_player, possible_cards, origin_dico, multiple_choices_possibility=False):    #PYGAME!!!! cette fonction doit me return une liste comportant la ou 
     while 'le joueur ne clique pas sur valider'==True:          #les cartes choisies par le joueur 
         if 'le joueur clique sur carte'==True:          
             pass

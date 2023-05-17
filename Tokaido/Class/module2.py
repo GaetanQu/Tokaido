@@ -1,4 +1,17 @@
 import pygame
+import effets_cases
+import Joueur
+
+
+PISTE = pygame.image.load('Tokaido/Class/images/piste_/piste.png')
+POINTEUR=pygame.image.load ('Tokaido/Class/images/piste_/fleche.png')
+
+relais_cases=[14,27,41]
+
+#ecart entre les cases
+e=25
+ecart_cases_x=[31/25*e,20/25*e,e,e,e,e,e,e,e,e,e*4/5,20/25*e,17/25*e,22/25*e]
+ecart_cases_y=[-110, 30, 0, 0, -30, 80, 0, 0, -30, 8, -60, 30, 0, 30]
 
 
 
@@ -6,18 +19,79 @@ import pygame
 
 
 
+def affichage_piste (PISTE, screen):
+    piste=PISTE
+    largeur_piste=screen.get_width()
+    hauteur_piste=piste.get_height()/piste.get_width()*screen.get_width()
+    scaled_piste=pygame.transform.smoothscale(piste, (largeur_piste, hauteur_piste))
+    screen.blit(scaled_piste, (0, screen.get_height()/2-hauteur_piste/2))
+    pygame.display.flip()
 
 
+def affichage_pointeur_case (PISTE, POINTEUR, screen, joueur, list_players):
+    pointeur=POINTEUR
+    scaled_pointeur=pygame.transform.smoothscale (pointeur, (20, 20))
+    affichage_piste (PISTE, screen)
+    x_pointeur=63
+    a=0
+    while a!=joueur.case :
+        x_pointeur+=ecart_cases_x[a]
+        a+=1
+    y_pointeur=550
+    a=0
+    while a!=joueur.case:
+        y_pointeur+=ecart_cases_y[a]
+        a+=1
+    screen.blit(scaled_pointeur, (x_pointeur, y_pointeur))
+    pygame.display.flip()
+    no_entry_clic = True
+    
+    compteur=0
+    compteur_relais=0
+    while no_entry_clic:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                no_entry_clic = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN :
+                    joueur.case+=compteur
+                    if  effets_cases.can_stop_here(joueur, list_players)==True:
+                        no_entry_clic = False
+                    else : 
+                        joueur.case-=compteur
+                elif event.key == pygame.K_RIGHT:
+                    if joueur.case+compteur<relais_cases[compteur_relais]:
+                        x_pointeur += ecart_cases_x[compteur+joueur.case]
+                        y_pointeur += ecart_cases_y[compteur+joueur.case]
+                        affichage_piste(PISTE, screen)
+                        screen.blit(scaled_pointeur, (x_pointeur, y_pointeur))
+                        pygame.display.flip()
+                        compteur+=1
+                elif event.key == pygame.K_LEFT:
+                    if compteur>0:
+                        x_pointeur -= ecart_cases_x[compteur+joueur.case-1]
+                        y_pointeur -= ecart_cases_y[compteur+joueur.case-1]
+                        affichage_piste(PISTE, screen)
+                        screen.blit(scaled_pointeur, (x_pointeur, y_pointeur))
+                        pygame.display.flip()
+                        compteur-=1
+    
 
+pygame.init()
 
+screen = pygame.display.set_mode((0,0))
+joueur = Joueur.Joueur("Test", screen)
+joueur.case=0
+j2=Joueur.Joueur("Test2", screen)
+j2.case=4
+lst=[joueur, j2]
+affichage_pointeur_case(PISTE,POINTEUR,  screen, joueur, lst)
 
-
-
-
-
-
-
-
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            break
 
 
 

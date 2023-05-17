@@ -92,30 +92,35 @@ RELAIS_CARTES={'dango': [6, 1, IMAGES_REPAS[0]], 'donburi': [6, 3, IMAGES_REPAS[
 
 
 def afficher_echoppe (screen, current_player):
-    POS_CARTE_1= (30, 200)
+    POS_CARTE_1= (100, 200)
     add_x=0
     add_y=0
     i=0
     j=0
-    DIVIDER=5
+    DIVIDER=8
     for famille in current_player.cartes_echoppe : 
         for carte in famille : 
             #recuperer le chemin dacces de la carte
             image=ECHOPPE_CARTES[j][carte][2]
             hauteur_image=image.get_height()/DIVIDER
-            largeur_image=image.get_width()[1]/DIVIDER
-            scaled_image=pygame.transform.smoothscale (image, (hauteur_image, largeur_image))
-            image_pos=(POS_CARTE_1[0]+add_x+30, POS_CARTE_1[1]+add_y+50)
+            largeur_image=image.get_width()/DIVIDER
+
+            scaled_image=pygame.transform.smoothscale (image, (largeur_image, hauteur_image))
+            image_pos=(POS_CARTE_1[0]+add_x, POS_CARTE_1[1]+add_y+50)
             screen.blit(scaled_image, image_pos)
             if i%2==0:
-                add_x+=largeur_image
+                add_x+=largeur_image+30
             else :
                 add_y+=hauteur_image
-                add_x-=largeur_image
+                add_x-=(largeur_image+30)
             i+=1
+
         #passage a la famille suivante
-        add_x+=screen.get_size()[0]-(6*30)-(3*largeur_image)
+        add_x+=screen.get_size()[0]-(6*120)-(3*largeur_image)
         add_y=0
+        j+=1
+    pygame.display.flip()
+
 
 def afficher_panorama (screen, current_player):
     if len(current_player.cartes_pano[0]+current_player.cartes_pano[1]+current_player.cartes_pano[2])==0:
@@ -281,7 +286,7 @@ def afficher_rencontre (screen, current_player):
     pygame.display.flip()
 
 
-
+#def afficher_temple : 
 
 
 pygame.init()
@@ -289,12 +294,14 @@ pygame.init()
 screen = pygame.display.set_mode((0,0))
 joueur = Joueur.Joueur("Test", screen)
 
-joueur.cartes_rencontre.append ('Annaibito')
-joueur.cartes_rencontre.append ('Annaibito')
-joueur.cartes_rencontre.append ('Kuge')
+joueur.cartes_echoppe[0].append ('daifuku')
+joueur.cartes_echoppe[0].append('kamaboko')
+joueur.cartes_echoppe[1].append('furoshiki')
+joueur.cartes_echoppe[2].append('jubako')
+joueur.cartes_echoppe[3].append('gofu')
 
 
-afficher_rencontre(screen, joueur)
+afficher_echoppe(screen, joueur)
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
