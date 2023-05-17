@@ -294,7 +294,6 @@ def effet_source_chaude (current_player, screen):
         current_player.cartes_source_chaude.append('carte 3')
         carte_imposee('carte 3', source_cartes, screen)
 
-
 # a finir ici : si perso=hiroshige, proposer un choix pour la carte panorama si hiroshige
 #egalement gerer la variable des cartes proposables aux joueurs suivants
 def effet_relais (current_player, players_list, possible_cards_relais, screen):
@@ -422,7 +421,44 @@ def choix (current_player, possible_cards, origin_dico, multiple_choices_possibi
     while 'le joueur ne clique pas sur valider'==True:          #les cartes choisies par le joueur 
         if 'le joueur clique sur carte'==True:          
             pass
+def choix (screen, current_player, possible_cards, dico_possible_cards, multiple_choices_possibility=False):    #PYGAME!!!! cette fonction doit me return une liste comportant la ou les cartes choisies par le joueur
+    cartes_choisies = []
+    
+    POS_CARTES = [(1/4 * screen.get_width() - 670/2, 1/5 * screen.get_height()), (1/2 * screen.get_width() - 670/2, 1/5 * screen.get_height()), (3/4 * screen.get_width() - 670/2, 1/5 * screen.get_height())]
+    
+    POS_CARTES_RECT = []
+    for pos in POS_CARTES:
+        POS_CARTES_RECT.append((pos[0] + 670/2, pos[1] + 1024/2))
 
+    BOUTON_TEXT = POLICE.render("Valider", 1, (0,0,0))
+    BOUTON_POS = (screen.get_width()/2 - BOUTON_TEXT.get_width() /2, screen.get_height()/2 - BOUTON_TEXT.get_height/2)
+    BOUTON_VALIDER_RECT = pygame.Rect((BOUTON_POS[0]-10, BOUTON_POS[1]), (BOUTON_TEXT.get_width() + 10, BOUTON_TEXT.get_height()))
+    
+    pygame.draw.rect(BOUTON_VALIDER_RECT)
+    pygame.blit (BOUTON_TEXT, BOUTON_POS)
+
+    i=0
+    rect = []
+    for carte in possible_cards:
+        screen.blit(dico_possible_cards[carte], POS_CARTES[i])
+        rect.apend(dico_possible_cards[carte].get_rect())
+        rect[i].center(POS_CARTES_RECT[i])
+        i+=1
+    
+    pygame.display.flip()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP:
+                i=0
+                for rectangle in rect:
+                    if rectangle.collidepoint(pygame.mouse.get_pos()):
+                        if possible_cards[i] not in cartes_choisies:
+                            cartes_choisies.append(possible_cards[i])
+                        else :
+                            cartes_choisies.remove(possible_cards[i])
+                if BOUTON_VALIDER_RECT.collidepoint(pygame.mouse.get_pos()):
+                    return cartes_choisies
 
 #given_card ici n'est pas une liste, on veut juste 'nom_carte'
 #la fonction ne doit rien renvoyer, ni append, juste montrer au joueur sa nouvelle carte.
@@ -433,22 +469,21 @@ def carte_imposee (given_card, origin_dico, screen):
     card_pos=(screen.get_width()/2-scaled_card.get_width()/2, screen.get_height()/2-scaled_card.get_height()/2-50)
 
     police1  = pygame.font.Font(JAPON, 18)
-    texte=police1.render('Accepter la nouvelle carte', 1,(0,0,0) )
-    pygame.draw.rect(screen, (141, 147, 190), ((screen.get_width()-texte.get_width())/2-9, card_pos[1]+scaled_card.get_height()+50, texte.get_width()+18, 40))
+    texte=police1.render('Accepter la nouvelle carte', 1,(0,0,0))
+
+    BOUTON_RECT = pygame.Rect((screen.get_width()-texte.get_width())/2-9, card_pos[1]+scaled_card.get_height()+50, texte.get_width()+18, 40)
+    pygame.draw.rect(screen, (141, 147, 190), BOUTON_RECT)
     texte_rect = texte.get_rect(center=(card_pos[0] + scaled_card.get_width() // 2, card_pos[1]+scaled_card.get_height()+50 + 40 // 2))
 
     screen.blit(scaled_card, card_pos)
     screen.blit(texte, texte_rect)
     pygame.display.flip()
 
-    mouse = pygame.mouse.get_pos()
-
     while True:
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if  screen.get_width()-texte.get_width()/2-9 <= mouse[0] <= screen.get_width()-texte.get_width()/2-9 + texte.get_width()+18 and card_pos[1]+scaled_card.get_height()+50 <= mouse[1] <= card_pos[1]+scaled_card.get_height()+50+40:
+                if  BOUTON_RECT.collidepoint(pygame.mouse.get_pos()):
                     break
-
 
 
 
