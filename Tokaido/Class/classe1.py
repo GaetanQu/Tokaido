@@ -1,5 +1,5 @@
 import pygame
-import Joueur
+import Class.Joueur
 import PySimpleGUI as sg
 
 pygame.font.init()
@@ -304,37 +304,13 @@ def afficher_temple (screen, current_player):
             break
 
         if event == 'Valider':
-            nombre_pieces = values['-PIECES-']
+            nombre_pieces = int(values['-PIECES-'])
 
             # Vérifier si la valeur est valide
-            if nombre_pieces.isdigit() and 1 <= int(nombre_pieces) <= 3:
+            if  1 <= nombre_pieces <= 3:
                 window.close()
-                return int(nombre_pieces)
+                return nombre_pieces
             else:
                 sg.popup("Veuillez entrer un nombre de pièces valide (entre 1 et 3).")
         Class.effets_cases.effet_temple(current_player)
     window.close()
-
-
-
-
-
-pygame.init()
-
-screen = pygame.display.set_mode((0,0))
-joueur = Joueur.Joueur("Test", screen)
-
-joueur.cartes_echoppe[0].append ('daifuku')
-joueur.cartes_echoppe[0].append('kamaboko')
-joueur.cartes_echoppe[1].append('furoshiki')
-joueur.cartes_echoppe[2].append('jubako')
-joueur.cartes_echoppe[3].append('gofu')
-
-
-afficher_echoppe(screen, joueur)
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            break
-

@@ -336,7 +336,7 @@ def effet_fin_de_partie(current_player):
 
 def effet (current_player, players_list, screen, list_cartes_relais_restantes=[]):
     if current_player.case in echoppe_cases:
-        effet_echoppe (current_player)
+        effet_echoppe (current_player, screen)
     elif current_player.case in pano_cases[0]+pano_cases[1]+pano_cases[2]: 
         effet_panorama (current_player, screen)
 

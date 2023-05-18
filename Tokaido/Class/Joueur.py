@@ -1,6 +1,6 @@
 import pygame
 import random
-from Settings import *
+from Class.Settings import *
 
 BG_COLOR = (251,253,248)
 
