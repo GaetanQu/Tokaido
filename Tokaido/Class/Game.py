@@ -1,5 +1,5 @@
 import pygame
-import effets_cases
+import Class.effets_cases
 import random
 import Class.affichage_plateau
 import Class.Inventaire
@@ -21,7 +21,7 @@ CURRENT_STATS_FONT = pygame.font.Font(JAPON, 60)
 LITTLE_STATS_FONT = pygame.font.Font(JAPON, 30)
 
 images_cases = {"mer":pygame.image.load("Tokaido/Class/images/cases/panorama_mer.png"),
-                "relais":pygame.image.load("Tokaido/Class/images/cases/relais.png")}
+                "relais":pygame.image.load("Tokaido/Class/images/cases/relais.png")} #inutile?
 
 jetons_persos = {"Chuubei" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/chuubei.png"), JETON_SIZE),
                  "Hiroshige" : pygame.transform.smoothscale(pygame.image.load("Tokaido/Class/images/personnages/jetons/hiroshige.png"), JETON_SIZE),
@@ -51,7 +51,6 @@ def launch(screen, liste_joueurs):
             liste_joueurs = ordre(liste_joueurs)
             current_player=liste_joueurs[0]
             Class.affichage_plateau.launch(screen, liste_joueurs[0], liste_joueurs)
-            Class.effets_cases.effet (current_player, liste_joueurs, screen)
             if Class.effets_cases.someone_in_relais (current_player)==True : 
                 liste_cartes_relais=Class.effets_cases.effet(current_player, liste_joueurs, liste_cartes_relais_restantes=liste_cartes_relais)
             else:
@@ -61,7 +60,7 @@ def launch(screen, liste_joueurs):
 
 def jouer_tour (liste_joueurs):
     liste_joueurs = ordre(liste_joueurs)
-    Class.effets_cases.effet(liste_joueurs[0], liste_joueurs)
+    Class.effets_cases.effet(liste_joueurs[0], liste_joueurs)#inutile?
 
 def ordre (liste_joueurs):
     liste_joueurs.sort(key=lambda x: x.case)
@@ -159,7 +158,10 @@ def affichage_HUD(screen, liste_joueurs):
 def centrage_rect(surface, pos):
     return pos[0] + surface.get_size()[0]/2, pos[1] + surface.get_size()[1]/2
 
-def tour(screen, liste_joueurs, relais, is_generated = False):
+
+
+#fonctions qui servaient pour generer le plateau? inutiles maintenant?
+'''def tour(screen, liste_joueurs, relais, is_generated = False):
     
     if is_generated == False :
         cases_liste = []
@@ -198,4 +200,5 @@ def choix_case(screen, liste_joueurs, liste_case, liste_cases_rect, liste_cases_
         if case_rect.collidepoint(pygame.mouse.get_pos()):
             screen.blit(images_cases["relais"], liste_cases_pos[i])
     pygame.display.update((0,200),(screen.get_width(), screen.get_height()-200))
-    return None
+    return None'''
+

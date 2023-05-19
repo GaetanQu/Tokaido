@@ -315,9 +315,7 @@ def afficher_temple (screen, current_player):
         Class.effets_cases.effet_temple(current_player)
     window.close()
 
-# Exemple d'utilisation de la fonction
-nombre_pieces = demander_nombre_pieces()
-print(nombre_pieces)
+
 
 
 

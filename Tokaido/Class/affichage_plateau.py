@@ -51,7 +51,7 @@ def launch (screen, joueur, list_players):
     compteur=0
     compteur_relais=0
     while no_entry_clic:
-        #Class.Game.affichage_HUD(screen, list_players)
+        Class.Game.affichage_HUD(screen, list_players)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 no_entry_clic = False
@@ -63,21 +63,23 @@ def launch (screen, joueur, list_players):
                     else : 
                         joueur.case-=compteur
                 elif event.key == pygame.K_RIGHT:
-                    #if joueur.case+compteur<relais_cases[compteur_relais]:
+                    if joueur.case+compteur<relais_cases[compteur_relais]:
                         x_pointeur += ecart_cases_x[compteur+joueur.case]
                         y_pointeur += ecart_cases_y[compteur+joueur.case]
                         affichage_piste(screen)
                         screen.blit(scaled_pointeur, (x_pointeur, y_pointeur))
                         compteur+=1
+                        pygame.display.flip()
                 elif event.key == pygame.K_LEFT:
                     if compteur>0:
                         x_pointeur -= ecart_cases_x[compteur+joueur.case-1]
                         y_pointeur -= ecart_cases_y[compteur+joueur.case-1]
                         affichage_piste(screen)
                         screen.blit(scaled_pointeur, (x_pointeur, y_pointeur))
+                        pygame.display.flip()
                         compteur-=1
                     
             
 
 
-    
+

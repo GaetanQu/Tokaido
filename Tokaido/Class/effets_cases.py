@@ -112,7 +112,6 @@ ferme_cases=[7,17,26,31,37,47]
 
 achievments=[1,1,1,1,1,1,1,1]
 
-#trop bg
 
 
 def test_case(current_player):             
@@ -199,7 +198,6 @@ def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin
         if current_player.personnage=='Zen-Emon'and carte_choisie==retail_card_zenemon:
             current_player.pieces+=echoppe_cartes[indice_cle][carte_choisie][1]-1
 
-#il faut ajouter le fait que si le joueur a deja toute une collection de pano, pas le droit de sarreter sur la case
 def effet_panorama (current_player, screen, mer=False, montagne=False, riziere=False): 
     #mer=false ect ne servent que dans le cas ou le joueur vient de rencontrer annaibito sur case rencontre
     if mer==True:
@@ -236,7 +234,6 @@ def annexe_panorama (current_player, indice_cle, liste_cartes_case,screen, hiros
         achievments(current_player, indice_cle)
 
 
-#annaibito a resoudre, car on a quune carte
 def effet_rencontre(current_player, screen):
     liste_cartes_case=test_case(current_player)
     if current_player.personnage!='Yoshiyasu':
@@ -292,8 +289,6 @@ def effet_source_chaude (current_player, screen):
         current_player.cartes_source_chaude.append('carte 3')
         carte_imposee('carte 3', source_cartes, screen)
 
-# a finir ici : si perso=hiroshige, proposer un choix pour la carte panorama si hiroshige
-#egalement gerer la variable des cartes proposables aux joueurs suivants
 def effet_relais (current_player, players_list, possible_cards_relais, screen):
     liste_cartes_case=test_case(current_player.case)
     players_in_relais=0
@@ -305,7 +300,7 @@ def effet_relais (current_player, players_list, possible_cards_relais, screen):
     if players_in_relais==1:
         possible_cards_relais=cartes_a_proposer(len(players_list)+1, liste_cartes_case, current_player)
     if current_player.personnage=='Satsuki':
-        free_card=possible_cards_relais[random.randint(0, len(possible_cards)-1)]
+        free_card=possible_cards_relais[random.randint(0, len(possible_cards_relais)-1)]
     carte_choisie=choix (current_player, possible_cards_relais)[0]
 
     
@@ -413,12 +408,11 @@ def achievments ( current_player, indice_achievment):
         if current_player.personnage=='Mitsukuni':
             current_player.points+=1
 
+
+
+
 #multiple_choices_possibility=True lorsque le joueur ne peut en choisir qu'une, 
 #multiple_choices_possibility=False par defaut, si le joueur peut en prendre plusieurs (echoppe)
-def choix (current_player, possible_cards, origin_dico, multiple_choices_possibility=False):    #PYGAME!!!! cette fonction doit me return une liste comportant la ou 
-    while 'le joueur ne clique pas sur valider'==True:          #les cartes choisies par le joueur 
-        if 'le joueur clique sur carte'==True:          
-            pass
 def choix (screen, current_player, possible_cards, dico_possible_cards, multiple_choices_possibility=False):    #PYGAME!!!! cette fonction doit me return une liste comportant la ou les cartes choisies par le joueur
     cartes_choisies = []
     

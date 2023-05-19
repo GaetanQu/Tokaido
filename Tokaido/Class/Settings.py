@@ -6,7 +6,7 @@ csv_directory = "Tokaido/Class/settings.csv"
 class Settings():
     def __init__(self) :
         self.setting = {}
-        with open(csv_directory, mode = "r") as file :
+        with open(csv_directory, mode="r") as file :
             filereader = csv.reader(file, delimiter=';')
             for ligne in filereader :
                 self.setting[ligne[0]] = ligne[1]
