@@ -399,25 +399,21 @@ class Menu():
                     #On teste le nombre de joueurs
                     elif self.split_player_2_rectangle.collidepoint(pygame.mouse.get_pos()):
                         self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
-                        pygame.display.set_mode((0,0))
                         return (self.players_list)
 
                     elif self.split_player_3_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (2):
                             self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
-                        pygame.display.set_mode((0,0))
                         return (self.players_list)
 
                     elif self.split_player_4_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (3):
                             self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
-                        pygame.display.set_mode((0,0))
                         return (self.players_list)
 
                     elif self.split_player_5_rectangle.collidepoint(pygame.mouse.get_pos()):
                         for i in range (4):
                             self.players_list = self.is_connected(Class.Authenticator.auth(), self.players_list)
-                        pygame.display.set_mode((0,0))
                         return (self.players_list)
 
                     elif self.settings_rect.collidepoint(pygame.mouse.get_pos()):

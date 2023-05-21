@@ -52,7 +52,7 @@ def launch(screen, liste_joueurs):
             current_player=liste_joueurs[0]
             Class.affichage_plateau.launch(screen, liste_joueurs[0], liste_joueurs)
             if Class.effets_cases.someone_in_relais (current_player)==True : 
-                liste_cartes_relais=Class.effets_cases.effet(current_player, liste_joueurs, liste_cartes_relais_restantes=liste_cartes_relais)
+                liste_cartes_relais=Class.effets_cases.effet(current_player, liste_joueurs, screen, liste_cartes_relais)
             else:
                 Class.effets_cases.effet (current_player, liste_joueurs, screen)
 
