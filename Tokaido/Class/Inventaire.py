@@ -136,7 +136,7 @@ def afficher (screen, current_player):
     image_panorama_pos=(image_panorama_x, image_panorama_y)
 
     souvenirs_rect = scaled_image_souvenirs.get_rect()
-    souvenirs_rect.topleft = (largeur_image_souvenirs, hauteur_image_souvenirs)
+    souvenirs_rect.topleft = (image_souvenirs_x, image_souvenirs_y)
 
     sources_chaudes_rect = scaled_image_sources_chaudes.get_rect()
     sources_chaudes_rect.topleft = (largeur_image_sources_chaudes, hauteur_image_sources_chaudes)
@@ -169,35 +169,36 @@ def afficher (screen, current_player):
     pygame.display.flip()
 
     quit = False
+
     while not quit: 
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONUP:
-                if souvenirs_rect.collidepoint(pygame.mouse.get_pos()):
-                    while event != pygame.MOUSEBUTTONUP :
-                        for event in pygame.event.get():
+                while event != pygame.MOUSEBUTTONUP:
+                    for event in pygame.event.get():
+                        if souvenirs_rect.collidepoint(pygame.mouse.get_pos()):
                             afficher_echoppe(screen, current_player)
 
-                elif sources_chaudes_rect.collidepoint(pygame.mouse.get_pos()):
-                    while event != pygame.MOUSEBUTTONUP :
-                        for event in pygame.event.get():
-                            afficher_source(screen, current_player)
+                        elif sources_chaudes_rect.collidepoint(pygame.mouse.get_pos()):
+                            while event != pygame.MOUSEBUTTONUP :
+                                for event in pygame.event.get():
+                                    afficher_source(screen, current_player)
 
-                elif rencontres_rect.collidepoint(pygame.mouse.get_pos()):
-                    while event != pygame.MOUSEBUTTONUP :
-                        for event in pygame.event.get():
-                             afficher_rencontre(screen, current_player)
+                        elif rencontres_rect.collidepoint(pygame.mouse.get_pos()):
+                            while event != pygame.MOUSEBUTTONUP :
+                                for event in pygame.event.get():
+                                        afficher_rencontre(screen, current_player)
 
-                elif repas_rect.collidepoint(pygame.mouse.get_pos()):
-                    while event != pygame.MOUSEBUTTONUP :
-                        for event in pygame.event.get():
-                            afficher_repas(screen, current_player)
+                        elif repas_rect.collidepoint(pygame.mouse.get_pos()):
+                            while event != pygame.MOUSEBUTTONUP :
+                                for event in pygame.event.get():
+                                    afficher_repas(screen, current_player)
 
-                elif panorama_rect.collidepoint(pygame.mouse.get_pos()):
-                    while event != pygame.MOUSEBUTTONUP :
-                        for event in pygame.event.get():
-                            afficher_panorama(screen, current_player)
-                else:
-                    quit = True
+                        elif panorama_rect.collidepoint(pygame.mouse.get_pos()):
+                            while event != pygame.MOUSEBUTTONUP :
+                                for event in pygame.event.get():
+                                    afficher_panorama(screen, current_player)
+                        else:
+                            quit = True
             
 def afficher_echoppe (screen, current_player):
     POS_CARTE_1= (100, 200)
@@ -205,7 +206,7 @@ def afficher_echoppe (screen, current_player):
     add_y=0
     i=0
     j=0
-    DIVIDER=8
+    DIVIDER=5
     for famille in current_player.cartes_echoppe : 
         if famille == []:
             largeur_image = 0
@@ -228,7 +229,11 @@ def afficher_echoppe (screen, current_player):
         add_x+=screen.get_size()[0]-(6*120)-(3*largeur_image)
         add_y=0
         j+=1
-    pygame.display.flip()
+    while True :
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP:
+                return True
+        pygame.display.flip()
 
 def afficher_panorama (screen, current_player):
     if len(current_player.cartes_pano[0]+current_player.cartes_pano[1]+current_player.cartes_pano[2])==0:
@@ -405,30 +410,3 @@ def afficher_repas(screen, current_player):
         screen.blit(scaled_image, (x,y))
     
     pygame.display.flip()
-
-def afficher_temple (screen, current_player):
-
-    layout = [
-        [sg.Text("Combien de pieces voulez-vous donner ?")],
-        [sg.Input(key='-PIECES-')],
-        [sg.Button('Valider')]]
-
-    window = sg.Window('Nombre de pieces', layout)
-
-    while True:
-        event, values = window.read()
-
-        if event == sg.WINDOW_CLOSED:
-            break
-
-        if event == 'Valider':
-            nombre_pieces = int(values['-PIECES-'])
-
-            # Vérifier si la valeur est valide
-            if  1 <= nombre_pieces <= 3:
-                window.close()
-                return nombre_pieces
-            else:
-                sg.popup("Veuillez entrer un nombre de pieces valide (entre 1 et 3).")
-        Class.effets_cases.effet_temple(current_player)
-    window.close()

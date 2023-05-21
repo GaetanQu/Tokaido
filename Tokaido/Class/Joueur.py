@@ -70,8 +70,6 @@ class Joueur:
         self.points=0
         self.achievements=[0,0,0,0,0,0,0,0]     #pano_mer, pano_montagne, pano_riziere, temples, repas, source chaude, rencontre, souvenir 
                                                 #on remplace pas 1 si le mec a l'achievment.
-    def avancer (self):
-        self.case+=int(input('Combien de cases?'))
 
     def choix_perso(self, liste_joueurs):
         self.liste_joueurs = liste_joueurs        
@@ -125,15 +123,16 @@ class Joueur:
                      pygame.Rect(CARD2_POS[0],DESCPOSY,CARDSIZE[0],70),
                      pygame.Rect(CARD3_POS[0],DESCPOSY,CARDSIZE[0],70)]
 
+        bg_filter = pygame.Surface(self.screen.get_size())
+        bg_filter.set_alpha(128)
+        bg_filter.fill(BG_COLOR)
+
         while True:
             clock.tick(FPS)
             self.screen.fill(BG_COLOR)
             
             self.screen.blit(bg, (CENTERX - bg.get_size()[0]/2, CENTERY - bg.get_size()[1]/1.5))
             
-            bg_filter = pygame.Surface(self.screen.get_size())
-            bg_filter.set_alpha(128)
-            bg_filter.fill(BG_COLOR)
             self.screen.blit(bg_filter, (0,0))
 
             event = pygame.event.post(pygame.event.Event(pygame.MOUSEMOTION, {'pos' : (0,0)})) #Je pense que ca peut permettre de regler les problemes

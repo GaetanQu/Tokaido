@@ -20,9 +20,10 @@ C'est pas le cas de Jules et Martin apparemment
 
 
 
+
 #Importation de tous les modules et classes nécessaires au bon fonctionnement du programme
 import Class.Authenticator
-import Class.menu #<- ca arrive que le fichier se renomme en "menu.py", sans doute a cause de Git, il faut le renommer en "Menu.py"
+import Class.menu
 import Class.Game
 import Class.Joueur
 import PySimpleGUI as sg
@@ -73,6 +74,7 @@ while menu_event != "Quit" :
 
         while i < 5:
             liste_joueurs.append(Class.Joueur.Joueur(None, screen))
+            liste_joueurs[i].case = 99 #<- necessaire pour que les objets joueurs inexistants (joueur.nom = None) ne genent pas lors du tri de la liste pour l'ordre de passage
             i+=1
 
         Class.Game.launch(screen, liste_joueurs)

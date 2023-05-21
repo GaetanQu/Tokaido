@@ -285,29 +285,4 @@ def afficher_rencontre (screen, current_player):
 
 
 #fonction pas encore liee au reste
-def afficher_temple (screen, current_player):
 
-    layout = [
-        [sg.Text("Combien de pieces voulez-vous donner ?")],
-        [sg.Input(key='-PIECES-')],
-        [sg.Button('Valider')]]
-
-    window = sg.Window('Nombre de pieces', layout)
-
-    while True:
-        event, values = window.read()
-
-        if event == sg.WINDOW_CLOSED:
-            break
-
-        if event == 'Valider':
-            nombre_pieces = int(values['-PIECES-'])
-
-            # V�rifier si la valeur est valide
-            if  1 <= nombre_pieces <= 3:
-                window.close()
-                return nombre_pieces
-            else:
-                sg.popup("Veuillez entrer un nombre de pieces valide (entre 1 et 3).")
-        Class.effets_cases.effet_temple(current_player)
-    window.close()

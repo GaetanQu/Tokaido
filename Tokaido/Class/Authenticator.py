@@ -77,9 +77,12 @@ def auth() :
 
         #Jouer en tant qu'invite
         if window == login_window and event == "Jouer en tant qu'invite":
-            invite_adj = invite_adj_list[random.randint(0, len(invite_adj_list)-1)]
-            invite_name = invite_name_list[random.randint(0, len(invite_name_list)-1)]
-            player = [invite_adj + "_" + invite_name + " " + str(random.randint(0,100)), 0, 0]
+            invite_adj_length = len(invite_adj_list)-1
+            invite_name_length = len(invite_name_list)-1
+
+            invite_adj = invite_adj_list[int(random.random() * 100) % invite_adj_length]
+            invite_name = invite_name_list[int(random.random() * 100) % invite_name_length]
+            player = [(invite_adj + "_" + invite_name + " " + str(int(random.random()*100))), 0, 0]
             sg.popup("Bienvenue " + player[0] + " !")
             break
 
