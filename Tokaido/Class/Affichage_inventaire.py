@@ -288,7 +288,7 @@ def afficher_rencontre (screen, current_player):
 def afficher_temple (screen, current_player):
 
     layout = [
-        [sg.Text("Combien de pi�ces voulez-vous donner ?")],
+        [sg.Text("Combien de pieces voulez-vous donner ?")],
         [sg.Input(key='-PIECES-')],
         [sg.Button('Valider')]]
 
@@ -308,6 +308,6 @@ def afficher_temple (screen, current_player):
                 window.close()
                 return nombre_pieces
             else:
-                sg.popup("Veuillez entrer un nombre de pi�ces valide (entre 1 et 3).")
+                sg.popup("Veuillez entrer un nombre de pieces valide (entre 1 et 3).")
         Class.effets_cases.effet_temple(current_player)
     window.close()
