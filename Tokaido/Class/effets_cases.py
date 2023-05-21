@@ -145,7 +145,9 @@ def effet_echoppe (current_player, screen, shokunin=False):
         possible_cards=cartes_a_proposer(3, liste_cartes_case)
         
         retail_card_zenemon=possible_cards[random.randint(0, len(possible_cards)-1)]
-        cartes_choisies=choix(current_player, possible_cards, multiple_choices_possibility=True)
+
+        dico_cartes={**echoppe_cartes[0], **echoppe_cartes[1], **echoppe_cartes[2], **echoppe_cartes[3]}
+        cartes_choisies=choix(screen, current_player, possible_cards, dico_cartes, multiple_choices_possibility=True)
     for famille in echoppe_cartes:
         if cartes_choisies[0] in list(famille.keys()):
             carte_moins_cher=cartes_choisies[0]
@@ -240,7 +242,7 @@ def effet_rencontre(current_player, screen):
         nouvelle_rencontre=cartes_a_proposer (1,  liste_cartes_case)
     elif current_player.personnage=='Yoshiyasu':
         possible_cards=cartes_a_proposer (2, liste_cartes_case)
-        nouvelle_rencontre=choix (current_player, possible_cards)
+        nouvelle_rencontre=choix (screen, current_player, possible_cards, rencontre_cartes)
     current_player.cartes_rencontre.append(nouvelle_rencontre)
     carte_imposee(nouvelle_rencontre, rencontre_cartes, screen)
     if nouvelle_rencontre=='Kuge':
@@ -256,7 +258,8 @@ def effet_rencontre(current_player, screen):
         possible_cards=[]
         for indice in range (3):
             possible_cards.append(annexe_panorama (current_player,indice, list(pano_cartes[indice].keys()), hiroshige=True ))
-        carte_choisie=choix(current_player, possible_cards)
+        dico_cartes={**pano_cartes[0], **pano_cartes[1], **pano_cartes[2]}
+        carte_choisie=choix(screen, current_player, possible_cards, dico_cartes)
         for i in range (3):
             if carte_choisie[0] in list(pano_cartes[i].keys()):
                 current_player.cartes_pano[i].append(carte_choisie[0])
@@ -301,7 +304,7 @@ def effet_relais (current_player, players_list, possible_cards_relais, screen):
         possible_cards_relais=cartes_a_proposer(len(players_list)+1, liste_cartes_case, current_player)
     if current_player.personnage=='Satsuki':
         free_card=possible_cards_relais[random.randint(0, len(possible_cards_relais)-1)]
-    carte_choisie=choix (current_player, possible_cards_relais)[0]
+    carte_choisie=choix (screen, current_player, possible_cards_relais, relais_cartes)[0]
 
     
     if len(carte_choisie)==1:
@@ -323,7 +326,9 @@ def effet_relais (current_player, players_list, possible_cards_relais, screen):
         possible_cards_pano=[]
         for indice in range (3):
             possible_cards_pano.append(annexe_panorama (current_player,indice, list(pano_cartes[indice].keys()), hiroshige=True ))
-        carte_choisie=choix(current_player, possible_cards_pano)
+        
+        dico_cartes={**pano_cartes[0], **pano_cartes[1], **pano_cartes[2]}
+        carte_choisie=choix(screen, current_player, possible_cards_pano, dico_cartes)[0]
         for i in range (3):
             if carte_choisie[0] in list(pano_cartes[i].keys()):
                 current_player.cartes_pano[i].append(carte_choisie[0])
@@ -371,25 +376,6 @@ def everyone_in_relais (players_list):
             return False
     return True
 
-def pg_test_case (numero):
-    if numero in pano_cases[0]:
-        return pygame.image.load('Tokaido/Class/images/cases/mer.png')
-    elif numero in pano_cases[1]:
-        return pygame.image.load('Tokaido/Class/images/cases/montagne.png')
-    elif numero in pano_cases[2]:
-        return pygame.image.load('Tokaido/Class/images/cases/riziere.png')
-    elif numero in echoppe_cases:
-        return pygame.image.load('Tokaido/Class/images/cases/echoppe.png')
-    elif numero in source_cases:
-        return pygame.image.load('Tokaido/Class/images/cases/source.png')
-    elif numero in rencontre_cases:
-        return pygame.image.load('Tokaido/Class/images/cases/rencontre.png')
-    elif numero in relais_cases:
-        return pygame.image.load('Tokaido/Class/images/cases/relais.png')
-    elif numero in temple_cases:
-        return pygame.image.load('Tokaido/Class/images/cases/temple.png')
-    elif numero in ferme_cases :
-        return pygame.image.load('Tokaido/Class/images/cases/ferme.png')
 
 #constitution de la liste des cartes qu'on proposera au joueur selon le nbr de cartes a tirer
 def cartes_a_proposer( nb_cartes_a_tirer, liste_cartes_case):
