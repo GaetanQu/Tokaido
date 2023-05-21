@@ -409,7 +409,7 @@ def choix (screen, current_player, possible_cards, dico_possible_cards, multiple
         POS_CARTES_RECT.append((pos[0] + 670/2, pos[1] + 1024/2))
 
     BOUTON_TEXT = POLICE.render("Valider", 1, (0,0,0))
-    BOUTON_POS = (screen.get_width()/2 - BOUTON_TEXT.get_width() /2, screen.get_height()/2 - BOUTON_TEXT.get_height/2)
+    BOUTON_POS = (screen.get_width()/2 - BOUTON_TEXT.get_width() /2, screen.get_height()/2 - BOUTON_TEXT.get_height()/2)
     BOUTON_VALIDER_RECT = pygame.Rect((BOUTON_POS[0]-10, BOUTON_POS[1]), (BOUTON_TEXT.get_width() + 10, BOUTON_TEXT.get_height()))
     
     pygame.draw.rect(BOUTON_VALIDER_RECT)

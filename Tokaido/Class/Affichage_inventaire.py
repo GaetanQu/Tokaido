@@ -71,9 +71,6 @@ IMAGES_ACCOMPLISSEMENTS=[pygame.image.load('Tokaido/Class/images/cartes/accompli
                          pygame.image.load('Tokaido/Class/images/cartes/accomplissements/rencontres.png'),
                          pygame.image.load('Tokaido/Class/images/cartes/accomplissements/sources_chaudes.png'),
                          pygame.image.load('Tokaido/Class/images/cartes/accomplissements/souvenirs.png')]
-
-
-
 ECHOPPE_CARTES=[{'daifuku': [0, 2, IMAGES_ECHOPPE[1][0]], 'kamaboko': [0,1 , IMAGES_ECHOPPE[1][1]], 'konpeito': [0,1 , IMAGES_ECHOPPE[1][2]], 'manju': [0,1 , IMAGES_ECHOPPE[1][3]], 'ocha': [0, 2, IMAGES_ECHOPPE[1][4]], 'sake': [0, 2, IMAGES_ECHOPPE[1][5]]},
                 {'furoshiki': [0,2 , IMAGES_ECHOPPE[3][0]], 'geta': [0, 2, IMAGES_ECHOPPE[3][1]], 'haori': [0,2 , IMAGES_ECHOPPE[3][2]], 'kanzashi': [0, 2, IMAGES_ECHOPPE[3][3]], 'sandogasa': [0,2 , IMAGES_ECHOPPE[3][4]], 'yukata': [0,2 , IMAGES_ECHOPPE[3][5]] },
                 {'jubako': [0, 2, IMAGES_ECHOPPE[2][0]], 'netsuke': [0, 2, IMAGES_ECHOPPE[2][1]], 'shamisen': [0, 3, IMAGES_ECHOPPE[2][2]], 'shikki': [0,2 , IMAGES_ECHOPPE[2][3]], 'sumie': [0, 3, IMAGES_ECHOPPE[2][4]], 'ukiyoe': [0,3 , IMAGES_ECHOPPE[2][5]]},
