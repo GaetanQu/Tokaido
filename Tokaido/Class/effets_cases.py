@@ -135,6 +135,7 @@ def test_case(current_player):
 def effet_echoppe (current_player, screen, shokunin=False):
 
     if shokunin==True:
+
         objet_shokunin=liste_cartes_case[random.randint(0, len(liste_cartes_case)-1)]
         cartes_choisies=[objet_shokunin]       
         #affichage de la carte tiree au sort
