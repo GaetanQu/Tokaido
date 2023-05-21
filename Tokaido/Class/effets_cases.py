@@ -191,7 +191,7 @@ def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin
                 current_player.pieces-=echoppe_cartes[indice_cle][carte_choisie][1]
     else : 
         current_player.ordre_famille_echoppe.append(mot_cle)
-        current_player.points+=2*len(current_player.ordre_famille_echoppe)+1
+        current_player.points+=2*len(current_player.ordre_famille_echoppe)-1
     current_player.cartes_echoppe[indice_cle].append(carte_choisie)
     del (echoppe_cartes[carte_choisie])
 
