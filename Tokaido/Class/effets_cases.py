@@ -145,7 +145,7 @@ def effet_echoppe (current_player, screen, shokunin=False):
         possible_cards=cartes_a_proposer(3, liste_cartes_case)
         
         retail_card_zenemon=possible_cards[random.randint(0, len(possible_cards)-1)]
-        cartes_choisies=choix(current_player, possible_cards, multiple_choices_possibility=True)
+        cartes_choisies=choix(screen, current_player, possible_cards, echoppe_cartes, True)
     for famille in echoppe_cartes:
         if cartes_choisies[0] in list(famille.keys()):
             carte_moins_cher=cartes_choisies[0]
@@ -423,7 +423,7 @@ def choix (screen, current_player, possible_cards, dico_possible_cards, multiple
         POS_CARTES_RECT.append((pos[0] + 670/2, pos[1] + 1024/2))
 
     BOUTON_TEXT = POLICE.render("Valider", 1, (0,0,0))
-    BOUTON_POS = (screen.get_width()/2 - BOUTON_TEXT.get_width() /2, screen.get_height()/2 - BOUTON_TEXT.get_height/2)
+    BOUTON_POS = (screen.get_width()/2 - BOUTON_TEXT.get_width() /2, screen.get_height()/2 - BOUTON_TEXT.get_height()/2)
     BOUTON_VALIDER_RECT = pygame.Rect((BOUTON_POS[0]-10, BOUTON_POS[1]), (BOUTON_TEXT.get_width() + 10, BOUTON_TEXT.get_height()))
     
     pygame.draw.rect(BOUTON_VALIDER_RECT)

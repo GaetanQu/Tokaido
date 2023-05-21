@@ -78,8 +78,3 @@ def launch (screen, joueur, list_players):
                         screen.blit(scaled_pointeur, (x_pointeur, y_pointeur))
                         pygame.display.flip()
                         compteur-=1
-                    
-            
-
-
-
