@@ -51,6 +51,7 @@ def launch(screen, liste_joueurs):
             liste_joueurs = ordre(liste_joueurs)
             current_player=liste_joueurs[0]
             Class.affichage_plateau.launch(screen, liste_joueurs[0], liste_joueurs, relais)
+            pygame.display.flip()
             if Class.effets_cases.someone_in_relais (current_player)==True : 
                 liste_cartes_relais=Class.effets_cases.effet(current_player, liste_joueurs, screen, liste_cartes_relais)
             else:
@@ -146,13 +147,9 @@ def affichage_HUD(screen, liste_joueurs):
                 break
             elif event.type == pygame.MOUSEBUTTONUP:
                 if cards_viewers_rect.collidepoint(pygame.mouse.get_pos()):
-                    Class.Inventaire.afficher(screen, liste_joueurs[0])
+                    Class.Inventaire.afficher(screen, liste_joueurs)
                     Class.affichage_plateau.launch(screen, liste_joueurs[0], liste_joueurs)
 
-
-        
-
-    pygame.display.flip()
 
 def centrage_rect(surface, pos):
     return pos[0] + surface.get_size()[0]/2, pos[1] + surface.get_size()[1]/2

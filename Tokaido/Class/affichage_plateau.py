@@ -93,6 +93,8 @@ def launch (screen, joueur, list_players, compteur_relais):
 
     while no_entry_clic:
         Class.Game.affichage_HUD(screen, list_players)
+        pygame.display.flip()
+
 
 
 
