@@ -309,7 +309,7 @@ def effet_rencontre(current_player, screen, chuubei=False):
         current_player.points+=1
         current_player.pieces_donnees_temple+=1
     elif nom_nouvelle_rencontre=='Shokunin':
-        effet_echoppe(current_player, shokunin=True)
+        effet_echoppe(current_player, screen, shokunin=True)
     elif nom_nouvelle_rencontre=='Annaibito':    
         possible_cards=[]
         for indice in range (3):
