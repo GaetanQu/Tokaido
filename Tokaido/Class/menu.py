@@ -19,6 +19,8 @@ class Menu():
 
     #main player = [Pseudo, Victoires, Defaites]
     def __init__(self, players_list, screen):
+        pygame.init()
+
         self.screen = screen
         self.first_players_list = players_list
         self.players_list = players_list
@@ -304,7 +306,6 @@ class Menu():
                 if self.disconnect_rect.collidepoint(pygame.mouse.get_pos()):
                     self.screen.blit(self.hovered_disconnect_surface, self.DISCONNECT_POS)
                     if event.type == pygame.MOUSEBUTTONUP :
-                        pygame.quit()
                         return "deconnexion"
                 else :
                     self.screen.blit(self.disconnect_surface, self.DISCONNECT_POS)
