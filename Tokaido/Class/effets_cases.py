@@ -156,7 +156,7 @@ def effet_echoppe (current_player, screen, shokunin=False):
         objet_shokunin=liste_cartes_case[random.randint(0, len(liste_cartes_case)-1)]
         cartes_choisies=[objet_shokunin]
         #affichage de la carte tiree au sort
-        carte_imposee([objet_shokunin], rencontre_cartes, screen)
+        carte_imposee(objet_shokunin, rencontre_cartes, screen)
     else : 
         liste_cartes_case=test_case(current_player)
         #creation de la liste des cartes correspondant a la case
@@ -178,6 +178,7 @@ def effet_echoppe (current_player, screen, shokunin=False):
                     if prix_carte_moins_cher>echoppe_cartes[0][carte_choisie][1]: 
                         carte_moins_cher=carte_choisie
                         prix_carte_moins_cher=echoppe_cartes[0][carte_choisie][1]
+                del (echoppe_cartes[0][carte_choisie])
 
             elif carte_choisie in list(echoppe_cartes[1].keys()):
                 annexe_echoppe (current_player, carte_choisie, 'kimono', 1, shokunin)
@@ -185,12 +186,15 @@ def effet_echoppe (current_player, screen, shokunin=False):
                     if prix_carte_moins_cher>echoppe_cartes[1][carte_choisie][1]: 
                         carte_moins_cher=carte_choisie
                         prix_carte_moins_cher=echoppe_cartes[1][carte_choisie][1]
+                del (echoppe_cartes[1][carte_choisie])
+
             elif carte_choisie in list(echoppe_cartes[2].keys()):
                 annexe_echoppe (current_player, carte_choisie , 'statue', 2, shokunin)
                 if current_player.personnage=='Sasayakko' and shokunin==False and len(cartes_choisies)>=2:
                     if prix_carte_moins_cher>echoppe_cartes[2][carte_choisie][1]: 
                         carte_moins_cher=carte_choisie
                         prix_carte_moins_cher=echoppe_cartes[2][carte_choisie][1]
+                del (echoppe_cartes[2][carte_choisie])
 
             elif carte_choisie in list(echoppe_cartes[3].keys()):
                 annexe_echoppe (current_player, carte_choisie, 'eventail', 3, shokunin)
@@ -198,6 +202,7 @@ def effet_echoppe (current_player, screen, shokunin=False):
                     if prix_carte_moins_cher>echoppe_cartes[3][carte_choisie][1]: 
                         carte_moins_cher=carte_choisie
                         prix_carte_moins_cher=echoppe_cartes[3][carte_choisie][1]
+                del (echoppe_cartes[3][carte_choisie])
 
 def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin):
     if mot_cle in current_player.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
@@ -219,7 +224,8 @@ def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin
             for carte in carte_choisie :
                 liste_prix.append(echoppe_cartes[indice_cle][carte][1])
             current_player.pieces+=max(liste_prix)-1
-    del (echoppe_cartes[indice_cle][carte_choisie])
+    
+
 
 
 def effet_panorama (current_player, screen, mer=False, montagne=False, riziere=False): 
@@ -309,11 +315,11 @@ def effet_rencontre(current_player, screen, chuubei=False):
         current_player.points+=1
         current_player.pieces_donnees_temple+=1
     elif nom_nouvelle_rencontre=='Shokunin':
-        effet_echoppe(current_player, shokunin=True)
+        effet_echoppe(current_player, screen, shokunin=True)
     elif nom_nouvelle_rencontre=='Annaibito':    
         possible_cards=[]
         for indice in range (3):
-            possible_cards.append(annexe_panorama (current_player,indice, list(pano_cartes[indice].keys()), hiroshige=True ))
+            possible_cards.append(annexe_panorama (current_player,indice, list(pano_cartes[indice].keys()), screen, hiroshige=True ))
         dico_cartes={**pano_cartes[0], **pano_cartes[1], **pano_cartes[2]}
         carte_choisie=choix(screen, current_player, possible_cards, dico_cartes)
         for i in range (3):
@@ -396,10 +402,10 @@ def effet_relais (current_player, players_list, possible_cards_relais, screen):
             possible_cards_pano.append(annexe_panorama (current_player,indice, list(pano_cartes[indice].keys()), screen, hiroshige=True ))
         
         dico_cartes={**pano_cartes[0], **pano_cartes[1], **pano_cartes[2]}
-        carte_choisie=choix(screen, current_player, possible_cards_pano, dico_cartes)[0]
+        carte_choisie_hiro=choix(screen, current_player, possible_cards_pano, dico_cartes)[0]
         for i in range (3):
-            if carte_choisie[0] in list(pano_cartes[i].keys()):
-                current_player.cartes_pano[i].append(carte_choisie[0])
+            if carte_choisie_hiro in list(pano_cartes[i].keys()):
+                current_player.cartes_pano[i].append(carte_choisie_hiro)
                 current_player.points+=len(current_player.cartes_pano[i])
 
     return possible_cards_relais          
