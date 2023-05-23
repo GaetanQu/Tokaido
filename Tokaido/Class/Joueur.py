@@ -71,6 +71,7 @@ class Joueur:
         self.achievements=[0,0,0,0,0,0,0,0]     #pano_mer, pano_montagne, pano_riziere, temples, repas, source chaude, rencontre, souvenir 
                                                 #on remplace pas 1 si le mec a l'achievment.
 
+
     def choix_perso(self, liste_joueurs):
         self.liste_joueurs = liste_joueurs        
         liste_perso_joueurs = []

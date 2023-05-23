@@ -47,10 +47,10 @@ def launch(screen, liste_joueurs):
     pygame.display.set_caption("Tokaido")
     for relais in range (4):
         liste_cartes_relais=[]
-        while Class.effets_cases.everyone_in_relais (liste_joueurs)==False :
+        while Class.effets_cases.everyone_in_relais (liste_joueurs)==False or liste_cartes_relais==[]:
             liste_joueurs = ordre(liste_joueurs)
             current_player=liste_joueurs[0]
-            Class.affichage_plateau.launch(screen, liste_joueurs[0], liste_joueurs)
+            Class.affichage_plateau.launch(screen, liste_joueurs[0], liste_joueurs, relais)
             if Class.effets_cases.someone_in_relais (current_player)==True : 
                 liste_cartes_relais=Class.effets_cases.effet(current_player, liste_joueurs, screen, liste_cartes_relais)
             else:
@@ -58,9 +58,8 @@ def launch(screen, liste_joueurs):
 
 
 
-def jouer_tour (liste_joueurs):
-    liste_joueurs = ordre(liste_joueurs)
-    Class.effets_cases.effet(liste_joueurs[0], liste_joueurs)#inutile?
+
+
 
 def ordre (liste_joueurs):
     liste_joueurs.sort(key=lambda x: x.case)

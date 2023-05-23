@@ -1,7 +1,6 @@
 """
 Voici le code initial du programme.
 On y lancera d'abord l'authentificateur, puis un menu permettant de jouer et d'afficher ses statistiques.
-On pourra egalement comparer ces dernieres avec celles des autres utilisatteurs enregistres.
 """
 
 """
