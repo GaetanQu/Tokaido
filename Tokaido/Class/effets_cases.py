@@ -156,7 +156,7 @@ def effet_echoppe (current_player, screen, shokunin=False):
         objet_shokunin=liste_cartes_case[random.randint(0, len(liste_cartes_case)-1)]
         cartes_choisies=[objet_shokunin]
         #affichage de la carte tiree au sort
-        carte_imposee([objet_shokunin], rencontre_cartes, screen)
+        carte_imposee([objet_shokunin], list(echoppe_cartes[0].keys())+list(echoppe_cartes[1].keys())+list(echoppe_cartes[2].keys())+list(echoppe_cartes[3].keys()), screen)
     else : 
         liste_cartes_case=test_case(current_player)
         #creation de la liste des cartes correspondant a la case
@@ -219,10 +219,10 @@ def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin
     if shokunin==False :
         current_player.pieces-=echoppe_cartes[indice_cle][carte_choisie][1]
         if current_player.personnage=='Zen-Emon':
-            liste_nom = []
             liste_prix = []
+            lst=list(echoppe_cartes[0].keys())+list(echoppe_cartes[1].keys())+list(echoppe_cartes[2].keys())+list(echoppe_cartes[3].keys())
             for carte in carte_choisie :
-                liste_prix.append(echoppe_cartes[indice_cle][carte][1])
+                liste_prix.append(lst[indice_cle][carte][1])
             current_player.pieces+=max(liste_prix)-1
     
 
