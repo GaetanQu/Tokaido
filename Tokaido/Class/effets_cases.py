@@ -375,7 +375,7 @@ def effet_relais (current_player, players_list, possible_cards_relais, screen):
 
         possible_cards_relais=cartes_a_proposer(nb_players+1, liste_cartes_case)
     if current_player.personnage=='Satsuki':
-        free_card=possible_cards_relais[random.randint(0, len(possible_cards_relais)-1)]
+        free_card=possible_cards_relais[0]
     carte_choisie=choix(screen, current_player, possible_cards_relais, relais_cartes)
 
 
@@ -490,8 +490,7 @@ def choix (screen, current_player, possible_cards, dico_possible_cards, multiple
     BOUTON_VALIDER_RECT = BOUTON_VALIDER.get_rect()
     BOUTON_VALIDER_RECT.topleft = BOUTON_POS[0] - 15, BOUTON_POS[1]
     
-    screen.blit(BOUTON_VALIDER, (BOUTON_POS[0]-15, BOUTON_POS[1]))
-    screen.blit(BOUTON_TEXT, BOUTON_POS)
+
 
     i=0
     rect = []
@@ -501,8 +500,11 @@ def choix (screen, current_player, possible_cards, dico_possible_cards, multiple
         rect.append(dico_possible_cards[carte][2].get_rect())
         rect[i].topleft = POS_CARTES[i]
         i+=1
-        pygame.display.flip()
-    
+ 
+
+    screen.blit(BOUTON_VALIDER, (BOUTON_POS[0]-15, BOUTON_POS[1]))
+    screen.blit(BOUTON_TEXT, BOUTON_POS)
+    pygame.display.flip()
     while True:
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONUP:
