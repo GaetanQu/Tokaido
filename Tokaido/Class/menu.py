@@ -389,6 +389,7 @@ class Menu():
 
                 #On verifie si l'utilisateur a deja ferme le programme
                 if ["Closed", None, None] in self.players_list:
+                    self.players_list  = []
                     self.players_list = [self.main_player]
 
                 if self.affichage_constant_avec_interaction(event) == "quit":

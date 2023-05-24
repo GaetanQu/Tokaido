@@ -60,7 +60,7 @@ class Joueur:
         self.pieces=0
         self.cartes_pano=[[],[],[]]             #mer, montagne, riziere
         self.cartes_repas=[]
-        self.cartes_echoppe=[[],[],[],[]]        #4 familles de cartes, faudrait les mettre dans l'ordre 
+        self.cartes_echoppe = [[],[],[],[]]        #4 familles de cartes, faudrait les mettre dans l'ordre 
         self.ordre_famille_echoppe=[]           #car l'ordre dans lequel le joueur prend les cartes est important. liste prendra en paramètre sushi, kimono, statue, eventail.
         self.cartes_source=[]
         self.cartes_rencontre=[]
