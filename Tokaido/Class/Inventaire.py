@@ -106,7 +106,7 @@ IMAGES_BACK = {'souvenirs'  :rescale(pygame.image.load('Tokaido/Class/images/car
 
 def afficher (screen, liste_joueurs):
     #On definit une seule fois les valeurs de largeur et hauteur d'ecran
-    #Assez logiquement on comprend que ça demande moins de ressources que de remesurer a chaque fois
+    #Assez logiquement on comprend que ï¿½a demande moins de ressources que de remesurer a chaque fois
     screen_width, screen_height = screen.get_size()
 
     #Positions des cartes et de leurs colliders:

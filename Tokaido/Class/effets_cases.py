@@ -128,7 +128,7 @@ temple_cases=[2,9,16,21,36,43]
 
 ferme_cases=[7,17,26,31,37,47]
 
-achievments=[1,1,1,1,1,1,1,1]
+achievments_list=[1,1,1,1,1,1,1,1]
 
 
 
@@ -156,7 +156,7 @@ def effet_echoppe (current_player, screen, shokunin=False):
         objet_shokunin=liste_cartes_case[random.randint(0, len(liste_cartes_case)-1)]
         cartes_choisies=[objet_shokunin]
         #affichage de la carte tiree au sort
-        carte_imposee(objet_shokunin, rencontre_cartes, screen)
+        carte_imposee([objet_shokunin], rencontre_cartes, screen)
     else : 
         liste_cartes_case=test_case(current_player)
         #creation de la liste des cartes correspondant a la case
@@ -464,7 +464,7 @@ def cartes_a_proposer(nb_cartes_a_tirer, liste_cartes_case):
 
 #simple test si lachievment est deja recupere    
 def achievments ( current_player, indice_achievment):       
-    if achievments[indice_achievment]==1:
+    if achievments_list[indice_achievment]==1:
         current_player.achievments[indice_achievment]=1
         achievments[indice_achievment]=0  
         if current_player.personnage=='Mitsukuni':

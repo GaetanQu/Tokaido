@@ -68,7 +68,7 @@ class Joueur:
         self.pieces_depensees_repas=0
         self.case=0
         self.points=0
-        self.achievements=[0,0,0,0,0,0,0,0]     #pano_mer, pano_montagne, pano_riziere, temples, repas, source chaude, rencontre, souvenir 
+        self.achievments=[0,0,0,0,0,0,0,0]     #pano_mer, pano_montagne, pano_riziere, temples, repas, source chaude, rencontre, souvenir 
                                                 #on remplace pas 1 si le mec a l'achievment.
 
 
