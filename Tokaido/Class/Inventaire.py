@@ -9,6 +9,7 @@ AFFICHAGE_SOURCE  = pygame.font.Font(JAPON, 40)
 
 #dividers pour chaque categorie de carte que l'on veut afficher
 MENU_DIVIDER = 3.5
+SOUVENIRS_DIVIDER = 3
 
 
 def rescale(image, divider):
@@ -19,36 +20,54 @@ def hover_rescale(image, pos):
     hovered_image_pos = (pos[0] - (hovered_image.get_width() - image.get_width())/2, pos[1] - (hovered_image.get_height() - image.get_height())/2)
     return(hovered_image, hovered_image_pos)
 
+def aff_plateau(screen, liste_joueurs): #Permet, lorsqu'on parcours l'inventaire, d'avoir un affichage léger
+    screen.fill((0,0,0))
+    Affichage_plateau.affichage_piste(screen)
+    Game.affichage_HUD(screen, liste_joueurs)
+    filtre(screen)
+
+def aff_back(screen, image, hovered_image, rect, pos):
+    if rect.collidepoint(pygame.mouse.get_pos()):
+        screen.blit(hovered_image, pos)
+    else:
+        screen.blit(image, pos)
+
 IMAGES_SOURCE={'source_2' :pygame.image.load('Tokaido/Class/images/cartes/sources_chaudes/2_points.png'),  #Images des cartes sources, rapportant 2 ou 3 points
                'source_3' :pygame.image.load('Tokaido/Class/images/cartes/sources_chaudes/3_points.png')}
 
-IMAGES_SOUVENIRS={'accessoires' :{'gofu'  :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/gofu.png'), #Famille des accessoires
-                                'hashi' :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/hashi.png'),
-                                'koma'  :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/koma.png'),
-                                'uchiwa':pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/uchiwa.png'),
-                                'washi' :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/washi.png'),
-                                'yunomi':pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/yunomi.png')},
+#IMAGES_SOUVENIRS = [{},{},{}]
+#--> [0] = accessoires
+#--> [1] = nourriture
+#--> [2] = objets
+#--> [3] = vetements
+
+IMAGES_SOUVENIRS={'gofu'  :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/gofu.png'), SOUVENIRS_DIVIDER), #Famille des accessoires
+                   'hashi' :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/hashi.png'), SOUVENIRS_DIVIDER),
+                   'koma'  :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/koma.png'), SOUVENIRS_DIVIDER),
+                   'uchiwa':rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/uchiwa.png'), SOUVENIRS_DIVIDER),
+                   'washi' :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/washi.png'), SOUVENIRS_DIVIDER),
+                   'yunomi':rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/accessoires/yunomi.png'), SOUVENIRS_DIVIDER),
                 
-                'nourriture'  :{'daifuku'   :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/daifuku.png'), #Famille de la nourriture
-                                'kamaboko'  :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/kamaboko.png'),
-                                'konpeito'  :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/konpeito.png'),
-                                'manju'     :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/manju.png'),
-                                'ocha'      :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/ocha.png'),
-                                'sake'      :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/sake.png')},
+                  'daifuku'   :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/daifuku.png'), SOUVENIRS_DIVIDER), #Famille de la nourriture
+                   'kamaboko'  :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/kamaboko.png'), SOUVENIRS_DIVIDER),
+                   'konpeito'  :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/konpeito.png'), SOUVENIRS_DIVIDER),
+                   'manju'     :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/manju.png'), SOUVENIRS_DIVIDER),
+                   'ocha'      :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/ocha.png'), SOUVENIRS_DIVIDER),
+                   'sake'      :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/nourriture/sake.png'), SOUVENIRS_DIVIDER),
          
-                'objets'      :{'jubako'    :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/jubako.png'), #Famille des objets
-                                'netsuke'   :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/netsuke.png'),
-                                'shamisen'  :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/shamisen.png'),
-                                'shikki'    :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/shikki.png'),
-                                'sumie'     :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/sumie.png'),
-                                'ukiyoe'    :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/ukiyoe.png')},
-                
-                'vetements'   :{'furoshiki' :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/furoshiki.png'), #Famille des vetements
-                                'geta'      :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/geta.png'),
-                                'haori'     :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/haori.png'),
-                                'kanzashi'  :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/kanzashi.png'),
-                                'sandogasa' :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/sandogasa.png'),
-                                'yukata'    :pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/yukata.png')}}
+                  'jubako'    :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/jubako.png'), SOUVENIRS_DIVIDER), #Famille des objets
+                   'netsuke'   :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/netsuke.png'), SOUVENIRS_DIVIDER),
+                   'shamisen'  :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/shamisen.png'), SOUVENIRS_DIVIDER),
+                   'shikki'    :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/shikki.png'), SOUVENIRS_DIVIDER),
+                   'sumie'     :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/sumie.png'), SOUVENIRS_DIVIDER),
+                   'ukiyoe'    :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/objets/ukiyoe.png'), SOUVENIRS_DIVIDER),
+                 
+                  'furoshiki' :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/furoshiki.png'), SOUVENIRS_DIVIDER), #Famille des vetements
+                   'geta'      :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/geta.png'), SOUVENIRS_DIVIDER),
+                   'haori'     :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/haori.png'), SOUVENIRS_DIVIDER),
+                   'kanzashi'  :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/kanzashi.png'), SOUVENIRS_DIVIDER),
+                   'sandogasa' :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/sandogasa.png'), SOUVENIRS_DIVIDER),
+                   'yukata'    :rescale(pygame.image.load('Tokaido/Class/images/cartes/souvenirs/vetements/yukata.png'), SOUVENIRS_DIVIDER)}
 
 
 IMAGES_REPAS={'dango'       :pygame.image.load('Tokaido/Class/images/cartes/repas/dango.png'),  #Tous les repas disponibles aux relais
@@ -104,6 +123,12 @@ IMAGES_BACK = {'souvenirs'  :rescale(pygame.image.load('Tokaido/Class/images/car
                'repas'      :rescale(pygame.image.load('Tokaido/Class/images/cartes/repas/back.png'), MENU_DIVIDER),
                'panorama'   :rescale(pygame.image.load('Tokaido/Class/images/cartes/panorama/montagne/back.png'), MENU_DIVIDER)}
 
+back = pygame.transform.smoothscale(pygame.image.load('Tokaido/Class/images/HUD/back.png'), (75,75))
+hovered_back = pygame.transform.smoothscale(pygame.image.load('Tokaido/Class/images/HUD/hovered_back.png'), (75,75))
+back_rect = back.get_rect()
+BACK_POS = (10, 160)
+back_rect.topleft = BACK_POS
+
 def afficher (screen, liste_joueurs):
     #On definit une seule fois les valeurs de largeur et hauteur d'ecran
     #Assez logiquement on comprend que �a demande moins de ressources que de remesurer a chaque fois
@@ -139,15 +164,10 @@ def afficher (screen, liste_joueurs):
     RENCONTRES_RECT = IMAGES_BACK['rencontres'].get_rect()
     RENCONTRES_RECT.topleft = RENCONTRES_POS
 
-    filtre(screen)
-
     quit = False
     while not quit:
-        Affichage_plateau.affichage_piste(screen)
-        Game.affichage_HUD(screen, liste_joueurs)
-        filtre(screen)
-
-        if SOUVENIRS_RECT.collidepoint(pygame.mouse.get_pos()):
+        aff_plateau(screen, liste_joueurs)
+        if SOUVENIRS_RECT.collidepoint(pygame.mouse.get_pos()):         #Affichage des cartes du menu d'inventaire
             screen.blit(hovered_souvenirs, hovered_souvenirs_pos)
         else:
             screen.blit(IMAGES_BACK['souvenirs'], SOUVENIRS_POS)
@@ -178,42 +198,41 @@ def afficher (screen, liste_joueurs):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return 1
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if SOUVENIRS_RECT.collidepoint(pygame.mouse.get_pos()):
+                    echoppe(screen, liste_joueurs)
+                else:
+                    Affichage_plateau.affichage_piste(screen)
+                    quit = True
 
-            
-def afficher_echoppe (screen, current_player):
-    POS_CARTE_1= (100, 200)
-    add_x=0
-    add_y=0
-    i=0
-    j=0
-    DIVIDER=5
-    for famille in current_player.cartes_echoppe : 
-        if famille == []:
-            largeur_image = 0
-        for carte in famille : 
-            #recuperer le chemin dacces de la carte
-            image=ECHOPPE_CARTES[j][carte][2]
-            hauteur_image=image.get_height()/DIVIDER
-            largeur_image=image_width()/DIVIDER
+def echoppe(screen, liste_joueurs):     #RAPPEL : joueur.cartes_echoppe = [[],[];[],[]]
+    aff_plateau(screen, liste_joueurs)
+    
+    LAYER_Y = 1/5 * screen.get_height() - 512/SOUVENIRS_DIVIDER
+    for famille in liste_joueurs[0].cartes_echoppe:
+        POS_X = 2/7 * screen.get_width() - 335/SOUVENIRS_DIVIDER
+        indice_famille = 0
+        for nom_carte in famille:
+            screen.blit(IMAGES_SOUVENIRS[nom_carte],(POS_X, LAYER_Y))
+            indice_famille+=1
+            POS_X += 1/7 * screen.get_width()
 
-            scaled_image=pygame.transform.smoothscale (image, (largeur_image, hauteur_image))
-            image_pos=(POS_CARTE_1[0]+add_x, POS_CARTE_1[1]+add_y+50)
-            screen.blit(scaled_image, image_pos)
-            if i%2==0:
-                add_x+=largeur_image+30
-            else :
-                add_y+=hauteur_image
-                add_x-=(largeur_image+30)
-            i+=1
-        #passage a la famille suivante
-        add_x+=screen.get_size()[0]-(6*120)-(3*largeur_image)
-        add_y=0
-        j+=1
-    while True :
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONUP:
-                return True
+        LAYER_Y += 1/(len(famille)+1)*screen.get_height()
+        
         pygame.display.flip()
+
+    quit = False
+    while not quit:
+        aff_back(screen, back, hovered_back, back_rect, BACK_POS)
+        pygame.display.update(back_rect)
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP and back_rect.collidepoint(pygame.mouse.get_pos()):
+                quit = True
+
+def panorama(screen, liste_joueurs):
+    LAYER_MER_Y = 1/4*screen.get_height()
+
 
 def afficher_panorama (screen, current_player):
     if len(current_player.cartes_pano[0]+current_player.cartes_pano[1]+current_player.cartes_pano[2])==0:

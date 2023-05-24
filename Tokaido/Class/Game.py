@@ -138,8 +138,6 @@ def affichage_HUD(screen, liste_joueurs):
 
         i+=1
 
-    
-
     if main_player_rect.collidepoint(pygame.mouse.get_pos()):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -148,8 +146,6 @@ def affichage_HUD(screen, liste_joueurs):
             elif event.type == pygame.MOUSEBUTTONUP:
                 if cards_viewers_rect.collidepoint(pygame.mouse.get_pos()):
                     Class.Inventaire.afficher(screen, liste_joueurs)
-                    Class.affichage_plateau.launch(screen, liste_joueurs[0], liste_joueurs)
-
 
 def centrage_rect(surface, pos):
     return pos[0] + surface.get_size()[0]/2, pos[1] + surface.get_size()[1]/2
