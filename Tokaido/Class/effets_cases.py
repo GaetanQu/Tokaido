@@ -325,6 +325,7 @@ def effet_rencontre(current_player, screen, chuubei=False):
         for i in range (3):
             if carte_choisie[0] in list(pano_cartes[i].keys()):
                 current_player.cartes_pano[i].append(carte_choisie[0])
+                current_player.points+=len(current_player.cartes_pano[i])
     if current_player.personnage!='Yoshiyasu':
         carte_imposee(nouvelle_rencontre, rencontre_cartes, screen)
        
