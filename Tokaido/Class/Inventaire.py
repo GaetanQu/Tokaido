@@ -210,7 +210,7 @@ def echoppe(screen, liste_joueurs):     #RAPPEL : joueur.cartes_echoppe = [[],[]
     
     LAYER_Y = 1/5 * screen.get_height() - 512/SOUVENIRS_DIVIDER
     for famille in liste_joueurs[0].cartes_echoppe:
-        POS_X = 2/7 * screen.get_width() - 335/SOUVENIRS_DIVIDER
+        POS_X = 1/7 * screen.get_width() - 335/SOUVENIRS_DIVIDER
         indice_famille = 0
         for nom_carte in famille:
             screen.blit(IMAGES_SOUVENIRS[nom_carte],(POS_X, LAYER_Y))
