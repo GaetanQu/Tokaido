@@ -78,7 +78,7 @@ images_accomplissements=[pygame.transform.smoothscale(pygame.image.load('Tokaido
                          pygame.transform.smoothscale(pygame.image.load('Tokaido/Class/images/cartes/accomplissements/sources_chaudes.png'), SCALED_SIZE),
                          pygame.transform.smoothscale(pygame.image.load('Tokaido/Class/images/cartes/accomplissements/souvenirs.png'), SCALED_SIZE)]
 
-
+croix = pygame.transform.smoothscale(pygame.image.load('Tokaido/Class/images/menu/croix.png'), (120,120))
 
 cases_doubles=[1,5,6,7,9,11,17,18,19,20,22,24,30,32,34,36,37,40,43,45,47,48,51,52]
 
@@ -156,7 +156,10 @@ def effet_echoppe (current_player, screen, shokunin=False):
         objet_shokunin=liste_cartes_case[random.randint(0, len(liste_cartes_case)-1)]
         cartes_choisies=[objet_shokunin]
         #affichage de la carte tiree au sort
-        carte_imposee([objet_shokunin], list(echoppe_cartes[0].keys())+list(echoppe_cartes[1].keys())+list(echoppe_cartes[2].keys())+list(echoppe_cartes[3].keys()), screen)
+
+        for famille in echoppe_cartes:
+            if objet_shokunin in list(famille.keys()):
+                carte_imposee([objet_shokunin], famille, screen)
     else : 
         liste_cartes_case=test_case(current_player)
         #creation de la liste des cartes correspondant a la case
@@ -305,7 +308,8 @@ def effet_rencontre(current_player, screen, chuubei=False):
     current_player.cartes_rencontre.append(nouvelle_rencontre)
 
     nom_nouvelle_rencontre = nouvelle_rencontre[0]
-
+    if current_player.personnage!='Yoshiyasu':
+        carte_imposee(nouvelle_rencontre, rencontre_cartes, screen)
     if nom_nouvelle_rencontre=='Kuge':
         current_player.pieces+=3
     elif nom_nouvelle_rencontre=='Samurai':
@@ -325,8 +329,6 @@ def effet_rencontre(current_player, screen, chuubei=False):
             if carte_choisie[0] in list(pano_cartes[i].keys()):
                 current_player.cartes_pano[i].append(carte_choisie[0])
                 current_player.points+=len(current_player.cartes_pano[i])
-    if current_player.personnage!='Yoshiyasu':
-        carte_imposee(nouvelle_rencontre, rencontre_cartes, screen)
        
 def effet_ferme (current_player):
     current_player.pieces+=3
@@ -516,6 +518,8 @@ def choix (screen, current_player, possible_cards, dico_possible_cards, multiple
                             cartes_choisies.append(possible_cards[i])
                         else :
                             cartes_choisies.remove(possible_cards[i])
+                        if current_player.personnage == 'Satsuki' and current_player.case in relais_cases:
+                            screen.blit(croix, (POS_CARTES[0][0] + 5, POS_CARTES[0][1]))
                     i+=1
                 if BOUTON_VALIDER_RECT.collidepoint(pygame.mouse.get_pos()):
                     return cartes_choisies
