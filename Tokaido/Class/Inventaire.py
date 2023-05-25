@@ -9,7 +9,7 @@ AFFICHAGE_SOURCE  = pygame.font.Font(JAPON, 40)
 
 #dividers pour chaque categorie de carte que l'on veut afficher
 MENU_DIVIDER = 3.5
-SOUVENIRS_DIVIDER = 3
+SOUVENIRS_DIVIDER = 4
 
 
 def rescale(image, divider):
