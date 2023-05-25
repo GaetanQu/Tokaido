@@ -265,7 +265,7 @@ def annexe_panorama (current_player, indice_cle, liste_cartes_case,screen, hiros
     elif indice==len(liste_cartes_case)-1:
         achievments(current_player, indice_cle)
 
-def effet_temple (screen, current_player):
+def effet_temple_sg (screen, current_player):
 
     layout = [
         [sg.Text("Combien de pieces voulez-vous donner ?")],
@@ -286,10 +286,13 @@ def effet_temple (screen, current_player):
             # V�rifier si la valeur est valide
             if  1 <= nombre_pieces <= 3:
                 window.close()
-                return nombre_pieces
+                current_player.pieces -= nombre_pieces
+                current_player.pieces_donnees_temple += nombre_pieces
+                current_player.points += nombre_pieces
+                effet_temple(current_player)
+                return 0
             else:
                 sg.popup("Veuillez entrer un nombre de pieces valide (entre 1 et 3).")
-        Class.effets_cases.effet_temple(current_player)
     window.close()
 
 def effet_rencontre(current_player, screen, chuubei=False):
@@ -339,12 +342,6 @@ def effet_temple (current_player):
     if current_player.personnage=='Hirotada':
         current_player.pieces_donnees_temple+=1
         current_player.points+=1
-    money_given=int(input('Combien dargent donnez-vous?'))
-    while money_given<1 or money_given>3 or money_given>current_player.pieces:
-        money_given=int(input('Mauvais montant, reesayez : '))
-    current_player.pieces-=money_given
-    current_player.pieces_donnees_temple+=money_given
-    current_player.points += money_given
 
 def effet_source_chaude (current_player, screen):
     carte=random.randint(2,3)
@@ -432,7 +429,7 @@ def effet (current_player, players_list, screen, list_cartes_relais_restantes=[]
         effet_ferme(current_player)
 
     elif current_player.case in temple_cases:
-        effet_temple(current_player)
+        effet_temple_sg(screen, current_player)
 
     elif current_player.case in source_cases:
         effet_source_chaude(current_player, screen)

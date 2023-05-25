@@ -217,7 +217,7 @@ def echoppe(screen, liste_joueurs):     #RAPPEL : joueur.cartes_echoppe = [[],[]
             indice_famille+=1
             POS_X += 1/7 * screen.get_width()
 
-        LAYER_Y += 1/(len(famille)+1)*screen.get_height()
+        LAYER_Y += 1/5*screen.get_height()
         
         pygame.display.flip()
 
