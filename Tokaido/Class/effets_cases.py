@@ -265,32 +265,7 @@ def annexe_panorama (current_player, indice_cle, liste_cartes_case,screen, hiros
     elif indice==len(liste_cartes_case)-1:
         achievments(current_player, indice_cle)
 
-def effet_temple (screen, current_player):
 
-    layout = [
-        [sg.Text("Combien de pieces voulez-vous donner ?")],
-        [sg.Input(key='-PIECES-')],
-        [sg.Button('Valider')]]
-
-    window = sg.Window('Nombre de pieces', layout)
-
-    while True:
-        event, values = window.read()
-
-        if event == sg.WINDOW_CLOSED:
-            break
-
-        if event == 'Valider':
-            nombre_pieces = int(values['-PIECES-'])
-
-            # V�rifier si la valeur est valide
-            if  1 <= nombre_pieces <= 3:
-                window.close()
-                return nombre_pieces
-            else:
-                sg.popup("Veuillez entrer un nombre de pieces valide (entre 1 et 3).")
-        Class.effets_cases.effet_temple(current_player)
-    window.close()
 
 def effet_rencontre(current_player, screen, chuubei=False):
     liste_cartes_case=test_case(current_player)    
@@ -466,7 +441,7 @@ def effet (current_player, players_list, screen, list_cartes_relais_restantes=[]
         effet_ferme(current_player)
 
     elif current_player.case in temple_cases:
-        effet_temple(current_player)
+        effet_temple_sg(screen, current_player)
 
     elif current_player.case in source_cases:
         effet_source_chaude(current_player, screen)

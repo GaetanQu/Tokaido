@@ -9,7 +9,7 @@ AFFICHAGE_SOURCE  = pygame.font.Font(JAPON, 40)
 
 #dividers pour chaque categorie de carte que l'on veut afficher
 MENU_DIVIDER = 3.5
-SOUVENIRS_DIVIDER = 3
+SOUVENIRS_DIVIDER = 4
 
 
 def rescale(image, divider):
@@ -218,7 +218,7 @@ def echoppe(screen, liste_joueurs):     #RAPPEL : joueur.cartes_echoppe = [[],[]
             indice_famille+=1
             POS_X += 1/7 * screen.get_width()
 
-        LAYER_Y += 1/(len(famille)+1)*screen.get_height()
+        LAYER_Y += 1/5*screen.get_height()
         
         pygame.display.flip()
 
