@@ -175,7 +175,7 @@ def effet_echoppe (current_player, screen, shokunin=False):
     
         for carte_choisie in cartes_choisies : 
             if carte_choisie in list(echoppe_cartes[0].keys()):
-                annexe_echoppe (current_player, carte_choisie, 'sushi', 0, shokunin)
+                annexe_echoppe (current_player, carte_choisie, 'sushi', 0, cartes_choisies,  shokunin)
                     #determiner la carte qui sera gratuite pour sasayakko
                 if current_player.personnage=='Sasayakko' and shokunin==False and len(cartes_choisies)>=2:
                     if prix_carte_moins_cher>echoppe_cartes[0][carte_choisie][1]: 
@@ -184,7 +184,7 @@ def effet_echoppe (current_player, screen, shokunin=False):
                 del (echoppe_cartes[0][carte_choisie])
 
             elif carte_choisie in list(echoppe_cartes[1].keys()):
-                annexe_echoppe (current_player, carte_choisie, 'kimono', 1, shokunin)
+                annexe_echoppe (current_player, carte_choisie, 'kimono', 1, cartes_choisies, shokunin)
                 if current_player.personnage=='Sasayakko' and shokunin==False and len(cartes_choisies)>=2:
                     if prix_carte_moins_cher>echoppe_cartes[1][carte_choisie][1]: 
                         carte_moins_cher=carte_choisie
@@ -192,7 +192,7 @@ def effet_echoppe (current_player, screen, shokunin=False):
                 del (echoppe_cartes[1][carte_choisie])
 
             elif carte_choisie in list(echoppe_cartes[2].keys()):
-                annexe_echoppe (current_player, carte_choisie , 'statue', 2, shokunin)
+                annexe_echoppe (current_player, carte_choisie , 'statue', 2,cartes_choisies, shokunin)
                 if current_player.personnage=='Sasayakko' and shokunin==False and len(cartes_choisies)>=2:
                     if prix_carte_moins_cher>echoppe_cartes[2][carte_choisie][1]: 
                         carte_moins_cher=carte_choisie
@@ -200,14 +200,14 @@ def effet_echoppe (current_player, screen, shokunin=False):
                 del (echoppe_cartes[2][carte_choisie])
 
             elif carte_choisie in list(echoppe_cartes[3].keys()):
-                annexe_echoppe (current_player, carte_choisie, 'eventail', 3, shokunin)
+                annexe_echoppe (current_player, carte_choisie, 'eventail', 3, cartes_choisies, shokunin)
                 if current_player.personnage=='Sasayakko' and shokunin==False and len(cartes_choisies)>=2:
                     if prix_carte_moins_cher>echoppe_cartes[3][carte_choisie][1]: 
                         carte_moins_cher=carte_choisie
                         prix_carte_moins_cher=echoppe_cartes[3][carte_choisie][1]
                 del (echoppe_cartes[3][carte_choisie])
 
-def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin):
+def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, cartes_choisies, shokunin):
     if mot_cle in current_player.ordre_famille_echoppe:     #alors on va chercher le rang de sushi pr savoir le nb de points a attribuer
         for i in range(len(current_player.ordre_famille_echoppe)):  #ne pas oublier d'enlever des pieces
             if current_player.ordre_famille_echoppe[i]==mot_cle:
@@ -221,9 +221,9 @@ def annexe_echoppe (current_player, carte_choisie, mot_cle, indice_cle, shokunin
     #on retire des pieces ssi cest pas le shokunin (rencontre) qui donne la carte
     if shokunin==False :
         current_player.pieces-=echoppe_cartes[indice_cle][carte_choisie][1]
-        if current_player.personnage=='Zen-Emon':
+        if current_player.personnage=='Zen-Emon' :
             liste_prix = []
-            for carte in carte_choisie :
+            for carte in cartes_choisies :
                 liste_prix.append(echoppe_cartes[indice_cle][carte][1])
             current_player.pieces+=max(liste_prix)-1
     
@@ -306,29 +306,29 @@ def effet_rencontre(current_player, screen, chuubei=False):
         nouvelle_rencontre=cartes_a_proposer (1,  liste_cartes_case)
 
     current_player.cartes_rencontre.append(nouvelle_rencontre)
-
-    nom_nouvelle_rencontre = nouvelle_rencontre[0]
-    if current_player.personnage!='Yoshiyasu':
-        carte_imposee(nouvelle_rencontre, rencontre_cartes, screen)
-    if nom_nouvelle_rencontre=='Kuge':
-        current_player.pieces+=3
-    elif nom_nouvelle_rencontre=='Samurai':
-        current_player.points+=3
-    elif nom_nouvelle_rencontre=='Miko':
-        current_player.points+=1
-        current_player.pieces_donnees_temple+=1
-    elif nom_nouvelle_rencontre=='Shokunin':
-        effet_echoppe(current_player, screen, shokunin=True)
-    elif nom_nouvelle_rencontre=='Annaibito':    
-        possible_cards=[]
-        for indice in range (3):
-            possible_cards.append(annexe_panorama (current_player,indice, list(pano_cartes[indice].keys()), screen, hiroshige=True ))
-        dico_cartes={**pano_cartes[0], **pano_cartes[1], **pano_cartes[2]}
-        carte_choisie=choix(screen, current_player, possible_cards, dico_cartes)
-        for i in range (3):
-            if carte_choisie[0] in list(pano_cartes[i].keys()):
-                current_player.cartes_pano[i].append(carte_choisie[0])
-                current_player.points+=len(current_player.cartes_pano[i])
+    if len(nouvelle_rencontre)!=0:
+        nom_nouvelle_rencontre = nouvelle_rencontre[0]
+        if current_player.personnage!='Yoshiyasu':
+            carte_imposee(nouvelle_rencontre, rencontre_cartes, screen)
+        if nom_nouvelle_rencontre=='Kuge':
+            current_player.pieces+=3
+        elif nom_nouvelle_rencontre=='Samurai':
+            current_player.points+=3
+        elif nom_nouvelle_rencontre=='Miko':
+            current_player.points+=1
+            current_player.pieces_donnees_temple+=1
+        elif nom_nouvelle_rencontre=='Shokunin':
+            effet_echoppe(current_player, screen, shokunin=True)
+        elif nom_nouvelle_rencontre=='Annaibito':    
+            possible_cards=[]
+            for indice in range (3):
+                possible_cards.append(annexe_panorama (current_player,indice, list(pano_cartes[indice].keys()), screen, hiroshige=True ))
+            dico_cartes={**pano_cartes[0], **pano_cartes[1], **pano_cartes[2]}
+            carte_choisie=choix(screen, current_player, possible_cards, dico_cartes)
+            for i in range (3):
+                if carte_choisie[0] in list(pano_cartes[i].keys()):
+                    current_player.cartes_pano[i].append(carte_choisie[0])
+                    current_player.points+=len(current_player.cartes_pano[i])
        
 def effet_ferme (current_player):
     current_player.pieces+=3
@@ -339,12 +339,41 @@ def effet_temple (current_player):
     if current_player.personnage=='Hirotada':
         current_player.pieces_donnees_temple+=1
         current_player.points+=1
-    money_given=int(input('Combien dargent donnez-vous?'))
-    while money_given<1 or money_given>3 or money_given>current_player.pieces:
-        money_given=int(input('Mauvais montant, reesayez : '))
-    current_player.pieces-=money_given
-    current_player.pieces_donnees_temple+=money_given
-    current_player.points += money_given
+
+    import PySimpleGUI as sg
+
+    # Créer la disposition de la fenêtre
+    layout = [
+        [sg.Text("Combien de pièces voulez-vous donner ?")],
+        [sg.Input(key='-PIECES-')],
+        [sg.Button('Valider')]
+    ]
+
+    # Créer la fenêtre
+    window = sg.Window('Nombre de pièces', layout)
+
+    while True:
+        event, values = window.read()
+
+        if event == sg.WINDOW_CLOSED:
+            break
+
+        if event == 'Valider':
+            nombre_pieces = values['-PIECES-']
+
+            # Vérifier si la valeur est valide
+            if nombre_pieces.isdigit() and 1 <= int(nombre_pieces) <= 3:
+                window.close()
+            else:
+                sg.popup("Veuillez entrer un nombre de pièces valide (entre 1 et 3).")
+
+    window.close()
+    current_player.pieces-=int(nombre_pieces)
+    current_player.pieces_donnees_temple+=int(nombre_pieces)
+    current_player.points+=int(nombre_pieces)
+
+
+
 
 def effet_source_chaude (current_player, screen):
     carte=random.randint(2,3)
@@ -413,8 +442,13 @@ def effet_relais (current_player, players_list, possible_cards_relais, screen):
     return possible_cards_relais          
 
 #a faire, attribution des accomplissements
-def effet_fin_de_partie(current_player):
-    pass
+def effet_fin_de_partie(players_list, current_player):
+    for player in players_list:
+        i=0
+        for accomplissement in player.achievments:
+            if accomplissement==1:
+                if i==0:
+                    player.points+=5
 
 def effet (current_player, players_list, screen, list_cartes_relais_restantes=[]):
     if current_player.case in echoppe_cases:
@@ -468,7 +502,7 @@ def cartes_a_proposer(nb_cartes_a_tirer, liste_cartes_case):
 def achievments ( current_player, indice_achievment):       
     if achievments_list[indice_achievment]==1:
         current_player.achievments[indice_achievment]=1
-        achievments[indice_achievment]=0  
+        achievments_list[indice_achievment]=0  
         if current_player.personnage=='Mitsukuni':
             current_player.points+=1
 

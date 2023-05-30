@@ -201,6 +201,7 @@ def afficher (screen, liste_joueurs):
             elif event.type == pygame.MOUSEBUTTONUP:
                 if SOUVENIRS_RECT.collidepoint(pygame.mouse.get_pos()):
                     echoppe(screen, liste_joueurs)
+
                 else:
                     Affichage_plateau.affichage_piste(screen)
                     quit = True
@@ -244,16 +245,18 @@ def afficher_panorama (screen, current_player):
     i=0
     DIVIDER = 5
 
+
     for famille in current_player.cartes_pano:
         for carte in famille:
-            image=PANO_CARTES[i][carte][2]
-            hauteur_image=image.get_height()/DIVIDER
-            largeur_image=image_width()/DIVIDER
-            scaled_image = pygame.transform.smoothscale (image, (largeur_image, hauteur_image))
-            image_pos=(POS_CARTE_1[0]+add_x, POS_CARTE_1[1]+add_y)
-            screen.blit(scaled_image, image_pos)
-            add_x+=scaled_image.get_size()[0]
-            pygame.display.flip()
+            if carte in list(IMAGES_PANORAMA.keys()):
+                image=PANO_CARTES[i][carte][2]
+                hauteur_image=image.get_height()/DIVIDER
+                largeur_image=image.get_width()/DIVIDER
+                scaled_image = pygame.transform.smoothscale (image, (largeur_image, hauteur_image))
+                image_pos=(POS_CARTE_1[0]+add_x, POS_CARTE_1[1]+add_y)
+                screen.blit(scaled_image, image_pos)
+                add_x+=scaled_image.get_size()[0]
+                pygame.display.flip()
         i+=1
         add_x=0
         add_y+=hauteur_image+50
