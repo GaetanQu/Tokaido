@@ -300,10 +300,11 @@ def effet_rencontre(current_player, screen, chuubei=False):
                 possible_cards.append(annexe_panorama (current_player,indice, list(pano_cartes[indice].keys()), screen, hiroshige=True ))
             dico_cartes={**pano_cartes[0], **pano_cartes[1], **pano_cartes[2]}
             carte_choisie=choix(screen, current_player, possible_cards, dico_cartes)
-            for i in range (3):
-                if carte_choisie[0] in list(pano_cartes[i].keys()):
-                    current_player.cartes_pano[i].append(carte_choisie[0])
-                    current_player.points+=len(current_player.cartes_pano[i])
+            if len(carte_choisie)!=0:
+                for i in range (3):
+                    if carte_choisie[0] in list(pano_cartes[i].keys()):
+                        current_player.cartes_pano[i].append(carte_choisie[0])
+                        current_player.points+=len(current_player.cartes_pano[i])
        
 def effet_ferme (current_player):
     current_player.pieces+=3
