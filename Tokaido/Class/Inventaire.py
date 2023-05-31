@@ -201,7 +201,14 @@ def afficher (screen, liste_joueurs):
             elif event.type == pygame.MOUSEBUTTONUP:
                 if SOUVENIRS_RECT.collidepoint(pygame.mouse.get_pos()):
                     echoppe(screen, liste_joueurs)
-
+                elif SOURCES_RECT.collidepoint(pygame.mouse.get_pos()):
+                    afficher_source(screen, liste_joueurs[0], liste_joueurs)
+                elif PANORAMA_RECT.collidepoint(pygame.mouse.get_pos()):
+                    afficher_panorama(screen, liste_joueurs[0], liste_joueurs)
+                elif RENCONTRES_RECT.collidepoint(pygame.mouse.get_pos()):
+                    afficher_rencontre(screen, liste_joueurs[0], liste_joueurs)
+                elif REPAS_RECT.collidepoint(pygame.mouse.get_pos()):
+                    afficher_repas(screen, liste_joueurs[0], liste_joueurs)
                 else:
                     Affichage_plateau.affichage_piste(screen)
                     quit = True
@@ -231,37 +238,69 @@ def echoppe(screen, liste_joueurs):     #RAPPEL : joueur.cartes_echoppe = [[],[]
             if event.type == pygame.MOUSEBUTTONUP and back_rect.collidepoint(pygame.mouse.get_pos()):
                 quit = True
 
-def panorama(screen, liste_joueurs):
-    LAYER_MER_Y = 1/4*screen.get_height()
 
 
-def afficher_panorama (screen, current_player):
-    if len(current_player.cartes_pano[0]+current_player.cartes_pano[1]+current_player.cartes_pano[2])==0:
-        return False
+def afficher_panorama (screen, current_player, liste_joueurs):
+    aff_plateau(screen, liste_joueurs)
 
     POS_CARTE_1=(100, 200)
     add_x=0
     add_y=0   
     i=0
     DIVIDER = 5
-
+    LAYER_MER = 1/4*screen.get_height()
+    LAYER_MONTAGNE = 1/2*screen.get_height()
+    LAYER_RIZIERE = 3/4*screen.get_height()
 
     for famille in current_player.cartes_pano:
-        for carte in famille:
-            if carte in list(IMAGES_PANORAMA.keys()):
-                image=PANO_CARTES[i][carte][2]
-                hauteur_image=image.get_height()/DIVIDER
-                largeur_image=image.get_width()/DIVIDER
-                scaled_image = pygame.transform.smoothscale (image, (largeur_image, hauteur_image))
-                image_pos=(POS_CARTE_1[0]+add_x, POS_CARTE_1[1]+add_y)
-                screen.blit(scaled_image, image_pos)
-                add_x+=scaled_image.get_size()[0]
-                pygame.display.flip()
-        i+=1
-        add_x=0
-        add_y+=hauteur_image+50
+        if len(famille)!=0:
+            if famille[0] in ['mer_1', 'mer_2', 'mer_3', 'mer_4', 'mer_5', ]:
+                add_x=0
+                for k in range (len(famille)):
+                    image=IMAGES_PANORAMA['mer'][k]
+                    hauteur_image=image.get_height()/DIVIDER
+                    largeur_image=image.get_width()/DIVIDER
+                    scaled_image = pygame.transform.smoothscale (image, (largeur_image, hauteur_image))
+                    image_pos=(POS_CARTE_1[0]+add_x, LAYER_MER)
+                    screen.blit(scaled_image, image_pos)
+                    add_x+=scaled_image.get_size()[0]
+            elif famille[0] in ['montagne_1','montagne_2','montagne_3','montagne_4', ]:
+                add_x=0
+                for k in range (len(famille)):
+                    image=IMAGES_PANORAMA['montagne'][k]
+                    hauteur_image=image.get_height()/DIVIDER
+                    largeur_image=image.get_width()/DIVIDER
+                    scaled_image = pygame.transform.smoothscale (image, (largeur_image, hauteur_image))
+                    image_pos=(POS_CARTE_1[0]+add_x, LAYER_MONTAGNE)
+                    screen.blit(scaled_image, image_pos)
+                    add_x+=scaled_image.get_size()[0]
+            elif famille[0] in ['riziere_1','riziere_2', 'riziere_3' ]:
+                add_x=0
+                for k in range (len(famille)):
+                    image=IMAGES_PANORAMA['riziere'][k]
+                    hauteur_image=image.get_height()/DIVIDER
+                    largeur_image=image.get_width()/DIVIDER
+                    scaled_image = pygame.transform.smoothscale (image, (largeur_image, hauteur_image))
+                    image_pos=(POS_CARTE_1[0]+add_x, LAYER_RIZIERE)
+                    screen.blit(scaled_image, image_pos)
+                    add_x+=scaled_image.get_size()[0]
 
-def afficher_source (screen, current_player):
+        pygame.display.flip()
+    quit = False
+    while not quit:
+        aff_back(screen, back, hovered_back, back_rect, BACK_POS)
+        pygame.display.update(back_rect)
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP and back_rect.collidepoint(pygame.mouse.get_pos()):
+                quit = True
+
+
+
+
+def afficher_source (screen, current_player, liste_joueurs):
+    aff_plateau(screen, liste_joueurs)
+
     #variables qui stockent le nombre de fois que le joueur a cette carte
     source_2=0
     source_3=0
@@ -275,20 +314,20 @@ def afficher_source (screen, current_player):
         elif carte=='source 3':
             source_3+=1
 
-    image_2=SOURCE_CARTES['source 2'][2]
+    image_2=IMAGES_SOURCE['source_2']
     hauteur_image_2=image_2.get_height()/DIVIDER
-    largeur_image_2=image_2_width()/DIVIDER
+    largeur_image_2=image_2.get_width()/DIVIDER
     scaled_image_2=pygame.transform.smoothscale (image_2, (largeur_image_2, hauteur_image_2))
-    image_2_x=screen_width()/2-largeur_image_2-50
+    image_2_x=screen.get_width()/2-largeur_image_2-50
     image_2_y=screen.get_height()/2-hauteur_image_2/2
     image_2_pos=(image_2_x, image_2_y)
     image_2_text_surface = AFFICHAGE_SOURCE.render("x"+str(source_2), 1, (0,0,0))
     image_2_text_pos = (image_2_x+largeur_image_2-15, image_2_y+hauteur_image_2-15)
 
-    image_3=SOURCE_CARTES['source 3'][2]
+    image_3=IMAGES_SOURCE['source_3']
     hauteur_image_3=image_3.get_height()/DIVIDER
-    largeur_image_3=image_3_width()/DIVIDER
-    image_3_x=screen_width()/2+50
+    largeur_image_3=image_3.get_width()/DIVIDER
+    image_3_x=screen.get_width()/2+50
     image_3_y=screen.get_height()/2-hauteur_image_2/2
     image_3_pos=(image_3_x, image_3_y)
     scaled_image_3=pygame.transform.smoothscale (image_3, (largeur_image_3, hauteur_image_3))
@@ -302,7 +341,17 @@ def afficher_source (screen, current_player):
 
     pygame.display.flip()
 
-def afficher_rencontre (screen, current_player):
+    quit = False
+    while not quit:
+        aff_back(screen, back, hovered_back, back_rect, BACK_POS)
+        pygame.display.update(back_rect)
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP and back_rect.collidepoint(pygame.mouse.get_pos()):
+                quit = True
+
+def afficher_rencontre (screen, current_player, liste_joueurs):
+    aff_plateau(screen, liste_joueurs)
     annaibito=0
     kuge=0
     miko=0
@@ -321,52 +370,53 @@ def afficher_rencontre (screen, current_player):
             shokunin+=1
     
 
-    DIVIDER=3
+    DIVIDER_x=5*screen.get_width()/1366
+    DIVIDER_y=5*screen.get_height()/768
     image_anna=pygame.image.load('Tokaido/Class/images/cartes/rencontres/annaibito.png')
-    hauteur_image_anna=image_anna.get_height()/DIVIDER
-    largeur_image_anna=image_anna_width()/DIVIDER
+    hauteur_image_anna=image_anna.get_height()/DIVIDER_y
+    largeur_image_anna=image_anna.get_width()/DIVIDER_x
     scaled_image_anna=pygame.transform.smoothscale (image_anna, (largeur_image_anna, hauteur_image_anna))
-    image_anna_x=screen_width()/2-largeur_image_anna*3/2-100
+    image_anna_x=screen.get_width()/2-largeur_image_anna*3/2-100
     image_anna_y=screen.get_height()/2-hauteur_image_anna-50
     image_anna_pos=(image_anna_x, image_anna_y)
     image_anna_text_surface = AFFICHAGE_SOURCE.render("x"+str(annaibito), 1, (0,0,0))
     image_anna_text_pos = (image_anna_x+largeur_image_anna-15, image_anna_y+hauteur_image_anna-15)
 
     image_kuge=pygame.image.load('Tokaido/Class/images/cartes/rencontres/kuge.png')
-    hauteur_image_kuge=image_kuge.get_height()/DIVIDER
-    largeur_image_kuge=image_kuge_width()/DIVIDER
+    hauteur_image_kuge=image_kuge.get_height()/DIVIDER_y
+    largeur_image_kuge=image_kuge.get_width()/DIVIDER_x
     scaled_image_kuge=pygame.transform.smoothscale (image_kuge, (largeur_image_kuge, hauteur_image_kuge))
-    image_kuge_x=screen_width()/2-largeur_image_kuge/2
+    image_kuge_x=screen.get_width()/2-largeur_image_kuge/2
     image_kuge_y=screen.get_height()/2-hauteur_image_kuge-50
     image_kuge_pos=(image_kuge_x, image_kuge_y)
     image_kuge_text_surface = AFFICHAGE_SOURCE.render("x"+str(kuge), 1, (0,0,0))
     image_kuge_text_pos = (image_kuge_x+largeur_image_kuge-15, image_kuge_y+hauteur_image_kuge-15)
 
     image_miko=pygame.image.load('Tokaido/Class/images/cartes/rencontres/miko.png')
-    hauteur_image_miko=image_miko.get_height()/DIVIDER
-    largeur_image_miko=image_miko_width()/DIVIDER
+    hauteur_image_miko=image_miko.get_height()/DIVIDER_y
+    largeur_image_miko=image_miko.get_width()/DIVIDER_x
     scaled_image_miko=pygame.transform.smoothscale (image_miko, (largeur_image_miko, hauteur_image_miko))
-    image_miko_x=screen_width()/2+largeur_image_miko/2+100
+    image_miko_x=screen.get_width()/2+largeur_image_miko/2+100
     image_miko_y=screen.get_height()/2-hauteur_image_miko-50
     image_miko_pos=(image_miko_x, image_miko_y)
     image_miko_text_surface = AFFICHAGE_SOURCE.render("x"+str(miko), 1, (0,0,0))
     image_miko_text_pos = (image_miko_x+largeur_image_miko-15, image_miko_y+hauteur_image_miko-15)
 
     image_samu=pygame.image.load('Tokaido/Class/images/cartes/rencontres/samurai.png')
-    hauteur_image_samu=image_samu.get_height()/DIVIDER
-    largeur_image_samu=image_samu_width()/DIVIDER
+    hauteur_image_samu=image_samu.get_height()/DIVIDER_y
+    largeur_image_samu=image_samu.get_width()/DIVIDER_x
     scaled_image_samu=pygame.transform.smoothscale (image_samu, (largeur_image_samu, hauteur_image_samu))
-    image_samu_x=screen_width()/2-largeur_image_samu-50
+    image_samu_x=screen.get_width()/2-largeur_image_samu-50
     image_samu_y=screen.get_height()/2+50
     image_samu_pos=(image_samu_x, image_samu_y)
     image_samu_text_surface = AFFICHAGE_SOURCE.render("x"+str(samurai), 1, (0,0,0))
     image_samu_text_pos = (image_samu_x+largeur_image_samu-15, image_samu_y+hauteur_image_samu-15)
 
     image_shoku=pygame.image.load('Tokaido/Class/images/cartes/rencontres/shokunin.png')
-    hauteur_image_shoku=image_shoku.get_height()/DIVIDER
-    largeur_image_shoku=image_shoku_width()/DIVIDER
+    hauteur_image_shoku=image_shoku.get_height()/DIVIDER_y
+    largeur_image_shoku=image_shoku.get_width()/DIVIDER_x
     scaled_image_shoku=pygame.transform.smoothscale (image_shoku, (largeur_image_shoku, hauteur_image_shoku))
-    image_shoku_x=screen_width()/2+50
+    image_shoku_x=screen.get_width()/2+50
     image_shoku_y=screen.get_height()/2+50
     image_shoku_pos=(image_shoku_x, image_shoku_y)
     image_shoku_text_surface = AFFICHAGE_SOURCE.render("x"+str(shokunin), 1, (0,0,0))
@@ -397,22 +447,42 @@ def afficher_rencontre (screen, current_player):
 
     pygame.display.flip()
 
-def afficher_repas(screen, current_player):
-    x,y = 100,250
-    DIVIDER = 4
-    for carte in current_player.carte_repas:
-        image = RELAIS_CARTES[carte][2]
-        scaled_image = pygame.transform.smoothscale(image, (image_width()/DIVIDER, image.get_height()/DIVIDER))
-        if x + scaled_image_width() > screen_width - 100:
-            x = 100
-            y += scaled_image.get_height() + 100
-        else:
-            x += scaled_image_width() + 50
+    quit = False
+    while not quit:
+        aff_back(screen, back, hovered_back, back_rect, BACK_POS)
+        pygame.display.update(back_rect)
 
-        screen.blit(scaled_image, (x,y))
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP and back_rect.collidepoint(pygame.mouse.get_pos()):
+                quit = True
+
+def afficher_repas(screen, current_player, liste_joueurs):
+    aff_plateau(screen, liste_joueurs)
+    if len(current_player.cartes_repas)!=0:
+        DIVIDER_x = 4*screen.get_width()/1366
+        DIVIDER_y = 4*screen.get_height()/768
+        LAYER_y = screen.get_height()/2-IMAGES_REPAS[current_player.cartes_repas[0]].get_height()/DIVIDER_y
+
+        POS_CARTE_0_x = screen.get_width()/2-5/2*IMAGES_REPAS[current_player.cartes_repas[0]].get_width()/DIVIDER_x
+
+        add_x = 0
+        for carte in current_player.cartes_repas:
+            image = IMAGES_REPAS[carte]
+            scaled_image = pygame.transform.smoothscale(image, (image.get_width()/DIVIDER_x, image.get_height()/DIVIDER_y))
+            screen.blit(scaled_image, (POS_CARTE_0_x + add_x, LAYER_y))
+            add_x+=2*image.get_width()/DIVIDER_x
+
     
     pygame.display.flip()
 
+    quit = False
+    while not quit:
+        aff_back(screen, back, hovered_back, back_rect, BACK_POS)
+        pygame.display.update(back_rect)
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP and back_rect.collidepoint(pygame.mouse.get_pos()):
+                quit = True
 def filtre(screen):
     filter=pygame.Surface(screen.get_size())
     filter.set_alpha (120)

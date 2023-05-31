@@ -280,7 +280,7 @@ def effet_rencontre(current_player, screen, chuubei=False):
     else:
         nouvelle_rencontre=cartes_a_proposer (1,  liste_cartes_case)
 
-    current_player.cartes_rencontre.append(nouvelle_rencontre)
+    current_player.cartes_rencontre.append(nouvelle_rencontre[0])
     if len(nouvelle_rencontre)!=0:
         nom_nouvelle_rencontre = nouvelle_rencontre[0]
         if current_player.personnage!='Yoshiyasu':
@@ -441,7 +441,7 @@ def effet (current_player, players_list, screen, list_cartes_relais_restantes=[]
         effet_ferme(current_player)
 
     elif current_player.case in temple_cases:
-        effet_temple_sg(screen, current_player)
+        effet_temple( current_player)
 
     elif current_player.case in source_cases:
         effet_source_chaude(current_player, screen)
